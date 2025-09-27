@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Order • Marxia Café y Bocaditos</title>
+  <meta name="description" content="Order Marxia Café y Bocaditos products with delivery in Guayaquil." />
+  <link rel="stylesheet" href="order.css" />
+</head>
+<body class="theme-light palette-summer" data-lang="en">
+  <header class="topbar">
+    <a class="back" href="index.html" aria-label="Back">←</a>
+    <h1 data-i18n="title">Place your order</h1>
+    <div class="spacer"></div>
+  </header>
+
+  <main class="layout">
+    <!-- ————— PRODUCTS / CAROUSEL ————— -->
+    <section class="panel products">
+      <h2 data-i18n="menu">Menu</h2>
+
+      <div class="carousel" aria-roledescription="carousel">
+        <button class="nav prev" aria-label="Previous">‹</button>
+
+        <ul class="track" id="productTrack" aria-live="polite">
+          <!-- JS injects 10 product slides -->
+        </ul>
+
+        <button class="nav next" aria-label="Next">›</button>
+      </div>
+
+      <div class="carousel-hint" data-i18n="tapToAdd">
+        Tap/click a product image to add it to your cart.
+      </div>
+    </section>
+
+    <!-- ————— CART ————— -->
+    <aside class="panel cart">
+      <h2 data-i18n="cart">Order Cart</h2>
+      <table class="cart-table" aria-describedby="cartTotals">
+        <thead>
+          <tr>
+            <th data-i18n="item">Item</th>
+            <th class="qty" data-i18n="qty">Qty</th>
+            <th class="price" data-i18n="price">Price</th>
+            <th class="line" data-i18n="total">Total</th>
+          </tr>
+        </thead>
+        <tbody id="cartBody"><tr class="empty"><td colspan="4" data-i18n="empty">Your cart is empty.</td></tr></tbody>
+      </table>
+
+      <div class="totals" id="cartTotals">
+        <div><span data-i18n="subtotal">Subtotal</span><strong id="subtotal">$0.00</strong></div>
+        <div><span>VAT <span id="vatPct">15%</span></span><strong id="vat">$0.00</strong></div>
+        <div class="grand"><span data-i18n="grand">Total</span><strong id="grand">$0.00</strong></div>
+      </div>
+
+      <button id="acceptOrderBtn" class="btn primary" disabled data-i18n="acceptOrder">Accept Order</button>
+    </aside>
+  </main>
+
+  <!-- ————— ADDRESS / WHATSAPP MODAL ————— -->
+  <dialog id="addressModal" class="modal">
+    <form method="dialog" id="addressForm" class="form">
+      <h3 data-i18n="enterDelivery">Enter delivery address & WhatsApp</h3>
+
+      <label>
+        <span data-i18n="name">Full name</span>
+        <input required id="custName" autocomplete="name" />
+      </label>
+
+      <label>
+        <span data-i18n="whatsapp">WhatsApp number (+593…)</span>
+        <input required id="waNumber" placeholder="+593 99 999 9999" inputmode="tel" />
+      </label>
+
+      <label>
+        <span data-i18n="address">Address</span>
+        <input required id="address" placeholder="Street, number, sector" autocomplete="street-address" />
+      </label>
+
+      <label>
+        <span data-i18n="refs">Reference notes</span>
+        <textarea id="refs" rows="2" placeholder="House color, nearby store, etc."></textarea>
+      </label>
+
+      <div class="actions">
+        <button value="cancel" class="btn ghost" data-i18n="cancel">Cancel</button>
+        <button id="verifyMapBtn" class="btn" value="verify" data-i18n="verify">Accept & verify address</button>
+      </div>
+    </form>
+
+    <div class="mapWrap" hidden>
+      <h4 data-i18n="confirmMap">Confirm location</h4>
+      <iframe id="mapFrame" title="Map preview"></iframe>
+      <div class="actions">
+        <button id="editAddressBtn" class="btn ghost" data-i18n="edit">Edit</button>
+        <button id="sendWhatsappBtn" class="btn primary" data-i18n="send">Send to WhatsApp</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- ————— FLOATING ACTION BUTTONS ————— -->
+  <div class="fabs" role="group" aria-label="Quick settings">
+    <button id="themeBtn" class="fab" title="Light / Dark" aria-pressed="false">☼/☾</button>
+    <button id="paletteBtn" class="fab" title="Summer/Spring" aria-pressed="true">🎨</button>
+    <button id="langBtn" class="fab" title="EN / ES">EN/ES</button>
+  </div>
+
+  <script src="order.js" defer></script>
+</body>
+</html>
