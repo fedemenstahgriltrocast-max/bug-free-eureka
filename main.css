@@ -60,155 +60,17 @@
 body {
   margin: 0;
   min-height: 100vh;
-  background: linear-gradient(
-    135deg,
-    #a47551 0%,
-    #b76e79 10%,
-    #7a6a9a 25%,
-    #5c7fa3 40%,
-    #6a8ca2 55%,
-    #2f5d62 70%,
-    #5a6e3c 80%,
-    #4b6043 90%,
-    #c89f64 95%,
-    #d85c53 100%
-  );
-  background-attachment: fixed;
-  background-size: 280% 280%;
-  background-position: 0% 50%;
-  background-color: #a47551;
+  background-color: var(--background-top);
   color: var(--text-main);
   display: flex;
   flex-direction: column;
   position: relative;
   overflow-x: hidden;
   transition: background var(--transition), color var(--transition);
-  animation: gradientFlow 36s ease-in-out infinite;
 }
 
 [data-theme="dark"] body {
-  background: linear-gradient(
-      135deg,
-      rgba(164, 117, 81, 0.35) 0%,
-      rgba(183, 110, 121, 0.32) 12%,
-      rgba(122, 106, 154, 0.38) 26%,
-      rgba(92, 127, 163, 0.34) 42%,
-      rgba(106, 140, 162, 0.36) 57%,
-      rgba(47, 93, 98, 0.4) 70%,
-      rgba(90, 110, 60, 0.35) 82%,
-      rgba(75, 96, 67, 0.35) 92%,
-      rgba(200, 159, 100, 0.38) 97%,
-      rgba(216, 92, 83, 0.34) 100%
-    ),
-    #050508;
-  background-size: 320% 320%;
-  background-position: 100% 50%;
-  animation: gradientFlowDark 42s ease-in-out infinite;
-}
-
-@keyframes gradientFlow {
-  0% {
-    background-position: 0% 50%;
-  }
-
-  50% {
-    background-position: 100% 50%;
-  }
-
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-@keyframes gradientFlowDark {
-  0% {
-    background-position: 100% 50%;
-  }
-
-  50% {
-    background-position: 0% 50%;
-  }
-
-  100% {
-    background-position: 100% 50%;
-  }
-}
-
-body::before,
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  transition: opacity 6s ease-in-out;
-  will-change: opacity;
-}
-
-body::before {
-  background: radial-gradient(circle at 18% 22%, rgba(255, 196, 124, 0.38), transparent 48%),
-    radial-gradient(circle at 84% 18%, rgba(255, 154, 138, 0.32), transparent 54%),
-    radial-gradient(circle at 22% 82%, rgba(255, 222, 164, 0.26), transparent 56%),
-    linear-gradient(160deg, #ffe8a3 0%, #ffb38a 45%, #ffd5a5 100%);
-  animation: seasonalSummer 28s ease-in-out infinite;
-}
-
-body::after {
-  background: radial-gradient(circle at 22% 25%, rgba(183, 235, 218, 0.45), transparent 52%),
-    radial-gradient(circle at 76% 72%, rgba(255, 196, 253, 0.35), transparent 60%),
-    radial-gradient(circle at 12% 78%, rgba(197, 240, 174, 0.28), transparent 60%),
-    linear-gradient(170deg, #e4f9f5 0%, #ffe6fa 50%, #fef6e4 100%);
-  animation: seasonalSpring 28s ease-in-out infinite;
-  opacity: 0;
-}
-
-@keyframes seasonalSummer {
-  0%,
-  40% {
-    opacity: 1;
-  }
-
-  50% {
-    opacity: 0.45;
-  }
-
-  60%,
-  100% {
-    opacity: 0;
-  }
-}
-
-@keyframes seasonalSpring {
-  0%,
-  40% {
-    opacity: 0;
-  }
-
-  50% {
-    opacity: 0.55;
-  }
-
-  60%,
-  100% {
-    opacity: 1;
-  }
-}
-
-[data-theme="dark"] body::before,
-[data-theme="dark"] body::after {
-  animation: none;
-  opacity: 0;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  body::before,
-  body::after {
-    animation: none;
-  }
-
-  body::after {
-    opacity: 0;
-  }
+  background-color: var(--background-bottom);
 }
 
 .skip-link {
