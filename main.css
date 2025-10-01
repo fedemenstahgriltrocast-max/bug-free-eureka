@@ -334,10 +334,10 @@ body {
 }
 
 .order {
-  background: var(--surface);
+  background: transparent;
   border-radius: var(--radius-lg);
   padding: clamp(2rem, 4vw, 3rem);
-  box-shadow: var(--shadow-layered);
+  box-shadow: none;
   display: grid;
   gap: clamp(1.5rem, 4vw, 2.5rem);
   justify-items: center;
@@ -346,6 +346,11 @@ body {
   margin-inline: auto;
   --shape-font-boost: 0px;
   transition: box-shadow var(--transition), filter var(--transition), transform var(--transition);
+}
+
+.order:hover {
+  transform: none;
+  box-shadow: none;
 }
 
 
