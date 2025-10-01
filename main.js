@@ -5,6 +5,18 @@ const CURRENCY = "USD";
 /* I18N */
 const STR = {
   en:{
+    /* landing */
+    subtitle: "Breakfasts, pastries, and delivery throughout Guayaquil.",
+    orderNow: "Order now",
+    freshIngredients: "Fresh Ingredients",
+    freshIngredientsDesc: "Each order is prepared with locally sourced breads, fruits, and cheeses.",
+    fastDelivery: "Fast Delivery",
+    fastDeliveryDesc: "We deliver to Saucés, Alborada, Guayacanes, Tarazana, and Brisas del Río.",
+    celebrateMoment: "Celebrate Every Moment",
+    celebrateMomentDesc: "Surprise someone special with customizable breakfast boxes and pastries.",
+    contact: "Contact",
+
+    /* app */
     title:"Place your order", menu:"Menu", tapToAdd:"Tap/click a product image to add it to your cart.",
     cart:"Order Cart", item:"Item", qty:"Qty", price:"Price", total:"Total",
     empty:"Your cart is empty.", subtotal:"Subtotal", grand:"Total",
@@ -14,12 +26,24 @@ const STR = {
     edit:"Edit", send:"Send to WhatsApp"
   },
   es:{
+    /* landing */
+    subtitle: "Desayunos, bocaditos y entregas en todo Guayaquil.",
+    orderNow: "Ordenar ahora",
+    freshIngredients: "Ingredientes Frescos",
+    freshIngredientsDesc: "Cada pedido se prepara con panes, frutas y quesos de origen local.",
+    fastDelivery: "Entrega Rápida",
+    fastDeliveryDesc: "Entregamos en Saucés, Alborada, Guayacanes, Tarazana y Brisas del Río.",
+    celebrateMoment: "Celebra Cada Momento",
+    celebrateMomentDesc: "Sorprende a alguien especial con cajas de desayuno y bocaditos personalizables.",
+    contact: "Contacto",
+
+    /* app */
     title:"Realiza tu pedido", menu:"Menú", tapToAdd:"Toca/clic en la imagen para añadir al carrito.",
     cart:"Carrito", item:"Artículo", qty:"Cant.", price:"Precio", total:"Total",
     empty:"Tu carrito está vacío.", subtotal:"Subtotal", grand:"Total",
     acceptOrder:"Aceptar pedido", enterDelivery:"Ingresa dirección y WhatsApp",
-    name:"Nombre completo", whatsapp:"Número de WhatsApp (+593…)", address:"Dirección", refs:"Referencias",
-    cancel:"Cancelar", verify:"Aceptar y verificar dirección", confirmMap:"Confirma ubicación",
+    name:"Nombre completo", whatsapp:"Número de WhatsApp (+593…)", address:"Dirección", refs:"Notas de referencia",
+    cancel:"Cancelar", verify:"Aceptar y verificar dirección", confirmMap:"Confirmar ubicación",
     edit:"Editar", send:"Enviar a WhatsApp"
   }
 };
