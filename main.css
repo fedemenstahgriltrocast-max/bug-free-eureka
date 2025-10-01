@@ -1749,3 +1749,55 @@ body::after {
     max-width: 360px;
   }
 }
+
+.features {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: clamp(2rem, 5vw, 3rem);
+    box-shadow: var(--shadow-layered);
+    margin-top: clamp(2.5rem, 4vw, 3.5rem);
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: clamp(1.5rem, 4vw, 2.5rem);
+    text-align: center;
+}
+
+.feature-card h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1.25rem;
+}
+
+.feature-card p {
+    margin: 0;
+    color: var(--text-muted);
+}
+
+.contact-landing {
+    text-align: center;
+    padding: 2rem 0;
+}
+
+.contact-landing h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1.5rem;
+}
+
+.contact-landing p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 1.1rem;
+}
+
+.contact-landing a {
+  color: var(--accent-strong);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.contact-landing a:hover,
+.contact-landing a:focus-visible {
+  text-decoration: underline;
+}
