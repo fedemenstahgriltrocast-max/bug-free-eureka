@@ -8,7 +8,14 @@
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://www.marxia.com/">
   <link rel="alternate" href="https://www.marxia.com/" hreflang="es">
-  <link rel="stylesheet" href="main.css">
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+    integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="../main.css">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -36,7 +43,7 @@
       <span aria-hidden="true" class="logo">☕</span>
       <p>
         <strong id="brandTitle">Marxia Café y Bocaditos</strong>
-        <span id="brandSubtitle">Breakfasts, pastries &amp; catering in Guayaquil</span>
+        <span id="brandSubtitle" data-i18n="brandSubtitle">Breakfasts, pastries &amp; catering in Guayaquil</span>
       </p>
     </div>
     <nav aria-label="Quick settings" class="topbar__toggles">
@@ -100,7 +107,15 @@
             </button>
             <div class="product-carousel__viewport">
               <ul class="product-carousel__track">
-                <li class="product-card" data-name="Cup of Coffee" data-price="0.60">
+                <li
+                  class="product-card"
+                  data-name="Cup of Coffee"
+                  data-price="0.60"
+                  data-label-en="Cup of Coffee"
+                  data-label-es="Una taza de Café"
+                  data-meta-en="Café"
+                  data-meta-es="Café"
+                >
                   <img
                     class="product-card__image"
                     src="https://twilight-glade-ca07.distraction.workers.dev/img/cup-of-coffee"
@@ -111,7 +126,7 @@
                     referrerpolicy="no-referrer">
                   <div class="product-card__info">
                     <h3>Cup of Coffee</h3>
-                    <p class="product-card__meta">Tueste medio · 12 oz</p>
+                    <p class="product-card__meta">Café</p>
                   </div>
                   <div class="product-card__footer">
                     <div class="product-card__actions">
@@ -122,7 +137,13 @@
                     <span class="product-card__quantity" data-i18n="inCart" data-i18n-count="0" aria-live="polite">In cart: 0</span>
                   </div>
                 </li>
-                <li class="product-card" data-name="Coffee Tortilla Egg Sausage" data-price="3.20">
+                <li
+                  class="product-card"
+                  data-name="Coffee Tortilla Egg Sausage"
+                  data-price="3.20"
+                  data-label-en="Coffee Tortilla Egg Sausage"
+                  data-label-es="Café Tortilla, huevo, salchicha"
+                >
                   <img
                     class="product-card__image"
                     src="https://twilight-glade-ca07.distraction.workers.dev/img/v2coffee-tortilla-eggs-sausage"
@@ -133,7 +154,7 @@
                     referrerpolicy="no-referrer">
                   <div class="product-card__info">
                     <h3>Coffee Tortilla Egg Sausage</h3>
-                    <p class="product-card__meta">Café + tortilla + huevos + salchicha</p>
+                    <p class="product-card__meta">Café tortilla huevo salchicha</p>
                   </div>
                   <div class="product-card__footer">
                     <div class="product-card__actions">
@@ -144,7 +165,13 @@
                     <span class="product-card__quantity" data-i18n="inCart" data-i18n-count="0" aria-live="polite">In cart: 0</span>
                   </div>
                 </li>
-                <li class="product-card" data-name="Tortilla" data-price="1.60">
+                <li
+                  class="product-card"
+                  data-name="Tortilla"
+                  data-price="1.60"
+                  data-label-en="Tortilla"
+                  data-label-es="Tortilla"
+                >
                   <img
                     class="product-card__image"
                     src="https://twilight-glade-ca07.distraction.workers.dev/img/tortilla"
@@ -155,7 +182,7 @@
                     referrerpolicy="no-referrer">
                   <div class="product-card__info">
                     <h3>Tortilla</h3>
-                    <p class="product-card__meta">4 porciones</p>
+                    <p class="product-card__meta">Tortilla</p>
                   </div>
                   <div class="product-card__footer">
                     <div class="product-card__actions">
@@ -166,18 +193,24 @@
                     <span class="product-card__quantity" data-i18n="inCart" data-i18n-count="0" aria-live="polite">In cart: 0</span>
                   </div>
                 </li>
-                <li class="product-card" data-name="1 Fried Egg 1 Sausage" data-price="2.00">
+                <li
+                  class="product-card"
+                  data-name="1 Fried Egg 1 Sausage"
+                  data-price="2.00"
+                  data-label-en="Fried Egg, Sausage"
+                  data-label-es="huevo frito, salchicha"
+                >
                   <img
                     class="product-card__image"
                     src="https://twilight-glade-ca07.distraction.workers.dev/img/friedEggs-sausage"
-                    alt="1 Fried Egg 1 Sausage"
+                    alt="Fried Egg, Sausage"
                     loading="lazy"
                     width="400"
                     height="300"
                     referrerpolicy="no-referrer">
                   <div class="product-card__info">
-                    <h3>1 Fried Egg 1 Sausage</h3>
-                    <p class="product-card__meta">1 huevo frito + 1 salchicha</p>
+                    <h3>Fried Egg, Sausage</h3>
+                    <p class="product-card__meta"> huevo frito salchicha</p>
                   </div>
                   <div class="product-card__footer">
                     <div class="product-card__actions">
@@ -199,7 +232,7 @@
                     referrerpolicy="no-referrer">
                   <div class="product-card__info">
                     <h3>Pepsi Cola</h3>
-                    <p class="product-card__meta">Botella 355 ml</p>
+                    <p class="product-card__meta">Botella de 500 ml</p>
                   </div>
                   <div class="product-card__footer">
                     <div class="product-card__actions">
@@ -221,7 +254,7 @@
                     referrerpolicy="no-referrer">
                   <div class="product-card__info">
                     <h3>Fanta Cola</h3>
-                    <p class="product-card__meta">Botella 355 ml</p>
+                    <p class="product-card__meta">Botella de 500 ml</p>
                   </div>
                   <div class="product-card__footer">
                     <div class="product-card__actions">
@@ -243,7 +276,7 @@
                     referrerpolicy="no-referrer">
                   <div class="product-card__info">
                     <h3>Gallito Cola</h3>
-                    <p class="product-card__meta">Botella 355 ml</p>
+                    <p class="product-card__meta">Botella de 500 ml</p>
                   </div>
                   <div class="product-card__footer">
                     <div class="product-card__actions">
@@ -265,7 +298,7 @@
                     referrerpolicy="no-referrer">
                   <div class="product-card__info">
                     <h3>Inca Cola</h3>
-                    <p class="product-card__meta">Botella 355 ml</p>
+                    <p class="product-card__meta">Botella de 500 ml</p>
                   </div>
                   <div class="product-card__footer">
                     <div class="product-card__actions">
@@ -287,7 +320,7 @@
                     referrerpolicy="no-referrer">
                   <div class="product-card__info">
                     <h3>Manzana Cola</h3>
-                    <p class="product-card__meta">Botella 355 ml</p>
+                    <p class="product-card__meta">Botella de 500 ml</p>
                   </div>
                   <div class="product-card__footer">
                     <div class="product-card__actions">
@@ -309,7 +342,7 @@
                     referrerpolicy="no-referrer">
                   <div class="product-card__info">
                     <h3>Seven Up</h3>
-                    <p class="product-card__meta">Botella 355 ml</p>
+                    <p class="product-card__meta">Botella de 500 ml</p>
                   </div>
                   <div class="product-card__footer">
                     <div class="product-card__actions">
@@ -393,7 +426,7 @@
       <article class="panel panel--contact" aria-labelledby="contact-title">
         <h3 id="contact-title" data-i18n="contactTitle">We deliver to</h3>
         <p data-i18n="contactAreas">Saucés · Alborada · Guayacanes · Tarazana · Brisas del Río</p>
-        <p data-i18n="contactWhatsApp">WhatsApp <a href="https://wa.me/593987654321">+593 958 741 463</a></p>
+        <p data-i18n="contactWhatsApp">WhatsApp <a href="https://wa.me/593958741463">+593 958 741 463</a></p>
       </article>
 
       <article class="panel panel--orders" aria-labelledby="orders-title">
@@ -450,7 +483,13 @@
               data-label-es="1 hr 30 min"
             >1 hr 30 min</button>
           </div>
-          <p class="delivery-time__selection" data-delivery-selection aria-live="polite" data-i18n-skip-text="true"></p>
+          <p
+            class="delivery-time__selection"
+            data-delivery-selection
+            aria-live="polite"
+            data-i18n-skip-text="true"
+            hidden
+          ></p>
         </div>
         <div class="order-actions">
           <button
@@ -495,19 +534,29 @@
     <button class="fab" type="button" id="fabPay" aria-pressed="false" data-fab-label="fabPayLabel">💳</button>
   </aside>
 
-  <section class="drawer" id="chatDrawer" aria-hidden="true" aria-labelledby="chatDrawerTitle">
+  <section
+    class="drawer"
+    id="chatDrawer"
+    aria-hidden="true"
+    aria-labelledby="chatDrawerTitle"
+    hidden
+  >
     <div class="drawer__content">
       <header class="drawer__header">
         <h2 id="chatDrawerTitle" data-i18n="chatTitle">Live chat</h2>
         <button
           type="button"
-          class="drawer__close"
+          class="drawer__close drawer__close--text"
           data-close-drawer
           data-close-target="fabChat"
           data-i18n="chatClose"
           data-i18n-attr="aria-label"
+          data-i18n-skip-text="true"
           aria-label="Close chat"
-        >✕</button>
+        >
+          <span class="drawer__close-icon" aria-hidden="true">✕</span>
+          <span class="drawer__close-label" data-i18n="chatClose">Close chat</span>
+        </button>
       </header>
       <div class="drawer__body">
         <p data-i18n="chatWelcome">Hola 👋 ¿Cómo podemos ayudarte hoy?</p>
@@ -520,7 +569,13 @@
     </div>
   </section>
 
-  <section class="drawer" id="payDrawer" aria-hidden="true" aria-labelledby="payDrawerTitle">
+  <section
+    class="drawer"
+    id="payDrawer"
+    aria-hidden="true"
+    aria-labelledby="payDrawerTitle"
+    hidden
+  >
     <div class="drawer__content">
       <header class="drawer__header">
         <h2 id="payDrawerTitle" data-i18n="payTitle">Checkout preview</h2>
@@ -529,33 +584,47 @@
           class="drawer__close"
           data-close-drawer
           data-close-target="fabPay"
-          data-i18n="payClose"
-          data-i18n-attr="aria-label"
-          aria-label="Close payment summary"
+          aria-label="Close"
         >✕</button>
       </header>
       <div class="drawer__body">
         <ul class="payment-list" data-payment-items aria-live="polite"></ul>
         <p class="payment-list__empty" data-payment-empty data-i18n="orderSummaryEmpty">Your basket is empty. Add menu favorites to see them here.</p>
+        <p class="payment-list__eta" data-payment-delivery aria-live="polite" hidden></p>
         <p class="payment-list__total">
           <span class="payment-list__total-amount">
             <strong data-i18n="ordersTotal">Total</strong>: <span data-payment-total>$0.00</span>
           </span>
-          <button
-            type="button"
-            class="button button--ghost button--ghost--compact"
-            data-action="clear-cart"
-            data-i18n="clearOrder"
-            disabled
-          >Clear</button>
+          <span class="payment-list__actions">
+            <button
+              type="button"
+              class="button button--ghost button--ghost--compact"
+              data-action="clear-cart"
+              data-i18n="clearOrder"
+              disabled
+            >Clear</button>
+            <button
+              type="button"
+              class="button button--ghost button--ghost--compact"
+              data-close-drawer
+              data-close-target="fabPay"
+              data-i18n="payCloseAction"
+            >Close</button>
+          </span>
         </p>
-        <button type="button" class="button button--primary" data-i18n="payNow">Pay now</button>
+        <button type="button" class="button button--primary" data-i18n="payNow">Confirm transaction</button>
       </div>
     </div>
   </section>
 
   <footer class="footer" role="contentinfo">
     <small>© <span id="copyrightYear"></span> Marxia Café y Bocaditos. <span data-i18n="rights">All rights reserved.</span></small>
+    <p class="footer__security">
+      <span class="footer__security-icon" aria-hidden="true">
+        <i class="fa-solid fa-cloudflare"></i>
+      </span>
+      <span class="footer__security-text" data-i18n="edgeSecurity">Edge protected via Cloudflare Zero Trust</span>
+    </p>
   </footer>
   <script src="../main.js" defer></script>
 </body>

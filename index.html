@@ -1,78 +1,631 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Marxia Café y Bocaditos - Breakfasts, pastries, and delivery throughout Guayaquil." />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Marxia Café y Bocaditos</title>
-  <link rel="stylesheet" href="styles.css" />
-  <style>
-    .lang-switcher {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-    }
-    .lang-switcher button {
-      background-color: #fff;
-      border: 1px solid #ddd;
-      border-radius: 9999px;
-      padding: 0.5rem 1rem;
-      cursor: pointer;
-      font-weight: 600;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      width: 50px;
-      text-align: center;
-    }
-  </style>
+  <meta name="description" content="Hand-crafted breakfasts, pastries, and coffee delivered across Guayaquil by Marxia Café y Bocaditos.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.marxia.com/">
+  <link rel="alternate" href="https://www.marxia.com/" hreflang="es">
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+    integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="main.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CafeOrCoffeeShop",
+    "name": "Marxia Café y Bocaditos",
+    "url": "https://www.marxia.com/",
+    "image": "https://www.marxia.com/assets/hero.jpg",
+    "servesCuisine": ["Breakfast", "Coffee", "Pastry"],
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Guayaquil",
+      "addressCountry": "EC"
+    },
+    "sameAs": [
+      "https://www.instagram.com/marxiacafe"
+    ],
+    "telephone": "+593958741463"
+  }
+  </script>
 </head>
 <body>
-  <div class="pattern-bg">
-    <div class="lang-switcher">
-      <button id="lang-toggle">EN</button>
+  <a class="skip-link" href="#mainContent">Skip to content</a>
+  <header class="topbar" role="banner">
+    <div class="topbar__brand">
+      <span aria-hidden="true" class="logo">☕</span>
+      <p>
+        <strong id="brandTitle">Marxia Café y Bocaditos</strong>
+        <span id="brandSubtitle" data-i18n="brandSubtitle">Breakfasts, pastries &amp; catering in Guayaquil</span>
+      </p>
     </div>
-    <main class="container">
-      <header class="header">
-        <h1>Marxia Café y Bocaditos</h1>
-        <p class="subtitle" data-i18n="subtitle">Breakfasts, pastries, and delivery throughout Guayaquil.</p>
-        <a href="app/order.html" class="btn" data-i18n="orderNow">Order now</a>
+    <nav aria-label="Quick settings" class="topbar__toggles">
+      <div class="toggle-group" role="group" aria-label="Language selection">
+        <button
+          class="toggle-button"
+          id="languageToggle"
+          type="button"
+          aria-pressed="false"
+          aria-label="Switch to Spanish"
+        >ES</button></div>
+
+      <div class="toggle-group" role="group" aria-label="Theme selection">
+        <button
+          class="toggle-button toggle-button--theme"
+          id="themeToggle"
+          type="button"
+          aria-pressed="false"
+          aria-label="Switch to dark theme"
+        >Dark</button></div></nav>
+  </header>
+
+  <main class="page" id="mainContent">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero__content">
+        <h1 id="hero-title" data-i18n="headline">Marxia Café y Bocaditos</h1>
+        <p class="tagline" data-i18n="tagline">Breakfasts, pastries, and delivery throughout Guayaquil.</p>
+        <div class="hero__cta">
+          <a href="app/order.html" id="orderButton" class="cta" type="button" data-i18n="orderNow">Order now</a>
+          <p class="hero__promise" data-i18n="promise">Fresh flavors every morning.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="order" aria-labelledby="order-title">
+      <div class="accordion">
+        <h2 class="accordion__title">
+          <button
+            class="accordion__trigger"
+            type="button"
+            aria-expanded="true"
+            aria-controls="seasonalFavorites"
+            id="order-title">
+            <span data-i18n="orderTitle">Our menu</span>
+            <span class="accordion__icon" aria-hidden="true">▾</span>
+          </button>
+        </h2>
+        <div class="accordion__content" id="seasonalFavorites" role="region" aria-labelledby="order-title">
+          <p class="accordion__description" data-i18n="orderSubtitle">Tap to explore our handcrafted favorites.</p>
+          <div class="product-carousel" data-carousel>
+            <button
+              class="product-carousel__control product-carousel__control--prev"
+              type="button"
+              data-carousel-prev
+              aria-label="Previous favorites"
+              data-i18n="carouselPrev"
+              data-i18n-attr="aria-label"
+              data-i18n-skip-text="true"
+            >
+              <span aria-hidden="true">&#8249;</span>
+            </button>
+            <div class="product-carousel__viewport">
+              <ul class="product-carousel__track">
+                <li
+                  class="product-card"
+                  data-name="Cup of Coffee"
+                  data-price="0.60"
+                  data-label-en="Cup of Coffee"
+                  data-label-es="Una taza de Café"
+                  data-meta-en="Café"
+                  data-meta-es="Café"
+                >
+                  <img
+                    class="product-card__image"
+                    src="https://twilight-glade-ca07.distraction.workers.dev/img/cup-of-coffee"
+                    alt="Cup of Coffee"
+                    loading="lazy"
+                    width="400"
+                    height="300"
+                    referrerpolicy="no-referrer">
+                  <div class="product-card__info">
+                    <h3>Cup of Coffee</h3>
+                    <p class="product-card__meta">Café</p>
+                  </div>
+                  <div class="product-card__footer">
+                    <div class="product-card__actions">
+                      <button type="button" class="product-card__button" data-cart="add" data-i18n="addToOrder">+ Add</button>
+                      <span class="product-card__price" aria-label="Price">$0.60</span>
+                      <button type="button" class="product-card__button product-card__button--remove" data-cart="remove" data-i18n="removeFromOrder" disabled>- Remove</button>
+                    </div>
+                    <span class="product-card__quantity" data-i18n="inCart" data-i18n-count="0" aria-live="polite">In cart: 0</span>
+                  </div>
+                </li>
+                <li
+                  class="product-card"
+                  data-name="Coffee Tortilla Egg Sausage"
+                  data-price="3.20"
+                  data-label-en="Coffee Tortilla Egg Sausage"
+                  data-label-es="Café Tortilla, huevo, salchicha"
+                >
+                  <img
+                    class="product-card__image"
+                    src="https://twilight-glade-ca07.distraction.workers.dev/img/v2coffee-tortilla-eggs-sausage"
+                    alt="Coffee Tortilla Egg Sausage"
+                    loading="lazy"
+                    width="400"
+                    height="300"
+                    referrerpolicy="no-referrer">
+                  <div class="product-card__info">
+                    <h3>Coffee Tortilla Egg Sausage</h3>
+                    <p class="product-card__meta">Café tortilla huevo salchicha</p>
+                  </div>
+                  <div class="product-card__footer">
+                    <div class="product-card__actions">
+                      <button type="button" class="product-card__button" data-cart="add" data-i18n="addToOrder">+ Add</button>
+                      <span class="product-card__price" aria-label="Price">$3.20</span>
+                      <button type="button" class="product-card__button product-card__button--remove" data-cart="remove" data-i18n="removeFromOrder" disabled>- Remove</button>
+                    </div>
+                    <span class="product-card__quantity" data-i18n="inCart" data-i18n-count="0" aria-live="polite">In cart: 0</span>
+                  </div>
+                </li>
+                <li
+                  class="product-card"
+                  data-name="Tortilla"
+                  data-price="1.60"
+                  data-label-en="Tortilla"
+                  data-label-es="Tortilla"
+                >
+                  <img
+                    class="product-card__image"
+                    src="https://twilight-glade-ca07.distraction.workers.dev/img/tortilla"
+                    alt="Tortilla"
+                    loading="lazy"
+                    width="400"
+                    height="300"
+                    referrerpolicy="no-referrer">
+                  <div class="product-card__info">
+                    <h3>Tortilla</h3>
+                    <p class="product-card__meta">Tortilla</p>
+                  </div>
+                  <div class="product-card__footer">
+                    <div class="product-card__actions">
+                      <button type="button" class="product-card__button" data-cart="add" data-i18n="addToOrder">+ Add</button>
+                      <span class="product-card__price" aria-label="Price">$1.60</span>
+                      <button type="button" class="product-card__button product-card__button--remove" data-cart="remove" data-i18n="removeFromOrder" disabled>- Remove</button>
+                    </div>
+                    <span class="product-card__quantity" data-i18n="inCart" data-i18n-count="0" aria-live="polite">In cart: 0</span>
+                  </div>
+                </li>
+                <li
+                  class="product-card"
+                  data-name="1 Fried Egg 1 Sausage"
+                  data-price="2.00"
+                  data-label-en="Fried Egg, Sausage"
+                  data-label-es="huevo frito, salchicha"
+                >
+                  <img
+                    class="product-card__image"
+                    src="https://twilight-glade-ca07.distraction.workers.dev/img/friedEggs-sausage"
+                    alt="Fried Egg, Sausage"
+                    loading="lazy"
+                    width="400"
+                    height="300"
+                    referrerpolicy="no-referrer">
+                  <div class="product-card__info">
+                    <h3>Fried Egg, Sausage</h3>
+                    <p class="product-card__meta"> huevo frito salchicha</p>
+                  </div>
+                  <div class="product-card__footer">
+                    <div class="product-card__actions">
+                      <button type="button" class="product-card__button" data-cart="add" data-i18n="addToOrder">+ Add</button>
+                      <span class="product-card__price" aria-label="Price">$2.00</span>
+                      <button type="button" class="product-card__button product-card__button--remove" data-cart="remove" data-i18n="removeFromOrder" disabled>- Remove</button>
+                    </div>
+                    <span class="product-card__quantity" data-i18n="inCart" data-i18n-count="0" aria-live="polite">In cart: 0</span>
+                  </div>
+                </li>
+                <li class="product-card" data-name="Pepsi Cola" data-price="0.60">
+                  <img
+                    class="product-card__image"
+                    src="https://twilight-glade-ca07.distraction.workers.dev/img/pepsi-cola"
+                    alt="Pepsi Cola"
+                    loading="lazy"
+                    width="400"
+                    height="300"
+                    referrerpolicy="no-referrer">
+                  <div class="product-card__info">
+                    <h3>Pepsi Cola</h3>
+                    <p class="product-card__meta">Botella de 500 ml</p>
+                  </div>
+                  <div class="product-card__footer">
+                    <div class="product-card__actions">
+                      <button type="button" class="product-card__button" data-cart="add" data-i18n="addToOrder">+ Add</button>
+                      <span class="product-card__price" aria-label="Price">$0.60</span>
+                      <button type="button" class="product-card__button product-card__button--remove" data-cart="remove" data-i18n="removeFromOrder" disabled>- Remove</button>
+                    </div>
+                    <span class="product-card__quantity" data-i18n="inCart" data-i18n-count="0" aria-live="polite">In cart: 0</span>
+                  </div>
+                </li>
+                <li class="product-card" data-name="Fanta Cola" data-price="0.60">
+                  <img
+                    class="product-card__image"
+                    src="https://twilight-glade-ca07.distraction.workers.dev/img/fanta-cola"
+                    alt="Fanta Cola"
+                    loading="lazy"
+                    width="400"
+                    height="300"
+                    referrerpolicy="no-referrer">
+                  <div class="product-card__info">
+                    <h3>Fanta Cola</h3>
+                    <p class="product-card__meta">Botella de 500 ml</p>
+                  </div>
+                  <div class="product-card__footer">
+                    <div class="product-card__actions">
+                      <button type="button" class="product-card__button" data-cart="add" data-i18n="addToOrder">+ Add</button>
+                      <span class="product-card__price" aria-label="Price">$0.60</span>
+                      <button type="button" class="product-card__button product-card__button--remove" data-cart="remove" data-i18n="removeFromOrder" disabled>- Remove</button>
+                    </div>
+                    <span class="product-card__quantity" data-i18n="inCart" data-i18n-count="0" aria-live="polite">In cart: 0</span>
+                  </div>
+                </li>
+                <li class="product-card" data-name="Gallito Cola" data-price="0.60">
+                  <img
+                    class="product-card__image"
+                    src="https://twilight-glade-ca07.distraction.workers.dev/img/gallito-cola"
+                    alt="Gallito Cola"
+                    loading="lazy"
+                    width="400"
+                    height="300"
+                    referrerpolicy="no-referrer">
+                  <div class="product-card__info">
+                    <h3>Gallito Cola</h3>
+                    <p class="product-card__meta">Botella de 500 ml</p>
+                  </div>
+                  <div class="product-card__footer">
+                    <div class="product-card__actions">
+                      <button type="button" class="product-card__button" data-cart="add" data-i18n="addToOrder">+ Add</button>
+                      <span class="product-card__price" aria-label="Price">$0.60</span>
+                      <button type="button" class="product-card__button product-card__button--remove" data-cart="remove" data-i18n="removeFromOrder" disabled>- Remove</button>
+                    </div>
+                    <span class="product-card__quantity" data-i18n="inCart" data-i18n-count="0" aria-live="polite">In cart: 0</span>
+                  </div>
+                </li>
+                <li class="product-card" data-name="Inca Cola" data-price="0.60">
+                  <img
+                    class="product-card__image"
+                    src="https://twilight-glade-ca07.distraction.workers.dev/img/inca-cola"
+                    alt="Inca Cola"
+                    loading="lazy"
+                    width="400"
+                    height="300"
+                    referrerpolicy="no-referrer">
+                  <div class="product-card__info">
+                    <h3>Inca Cola</h3>
+                    <p class="product-card__meta">Botella de 500 ml</p>
+                  </div>
+                  <div class="product-card__footer">
+                    <div class="product-card__actions">
+                      <button type="button" class="product-card__button" data-cart="add" data-i18n="addToOrder">+ Add</button>
+                      <span class="product-card__price" aria-label="Price">$0.60</span>
+                      <button type="button" class="product-card__button product-card__button--remove" data-cart="remove" data-i18n="removeFromOrder" disabled>- Remove</button>
+                    </div>
+                    <span class="product-card__quantity" data-i18n="inCart" data-i18n-count="0" aria-live="polite">In cart: 0</span>
+                  </div>
+                </li>
+                <li class="product-card" data-name="Manzana Cola" data-price="0.60">
+                  <img
+                    class="product-card__image"
+                    src="https://twilight-glade-ca07.distraction.workers.dev/img/manzana-cola"
+                    alt="Manzana Cola"
+                    loading="lazy"
+                    width="400"
+                    height="300"
+                    referrerpolicy="no-referrer">
+                  <div class="product-card__info">
+                    <h3>Manzana Cola</h3>
+                    <p class="product-card__meta">Botella de 500 ml</p>
+                  </div>
+                  <div class="product-card__footer">
+                    <div class="product-card__actions">
+                      <button type="button" class="product-card__button" data-cart="add" data-i18n="addToOrder">+ Add</button>
+                      <span class="product-card__price" aria-label="Price">$0.60</span>
+                      <button type="button" class="product-card__button product-card__button--remove" data-cart="remove" data-i18n="removeFromOrder" disabled>- Remove</button>
+                    </div>
+                    <span class="product-card__quantity" data-i18n="inCart" data-i18n-count="0" aria-live="polite">In cart: 0</span>
+                  </div>
+                </li>
+                <li class="product-card" data-name="Seven Up" data-price="0.60">
+                  <img
+                    class="product-card__image"
+                    src="https://twilight-glade-ca07.distraction.workers.dev/img/seven_up"
+                    alt="Seven Up"
+                    loading="lazy"
+                    width="400"
+                    height="300"
+                    referrerpolicy="no-referrer">
+                  <div class="product-card__info">
+                    <h3>Seven Up</h3>
+                    <p class="product-card__meta">Botella de 500 ml</p>
+                  </div>
+                  <div class="product-card__footer">
+                    <div class="product-card__actions">
+                      <button type="button" class="product-card__button" data-cart="add" data-i18n="addToOrder">+ Add</button>
+                      <span class="product-card__price" aria-label="Price">$0.60</span>
+                      <button type="button" class="product-card__button product-card__button--remove" data-cart="remove" data-i18n="removeFromOrder" disabled>- Remove</button>
+                    </div>
+                    <span class="product-card__quantity" data-i18n="inCart" data-i18n-count="0" aria-live="polite">In cart: 0</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <button
+              class="product-carousel__control product-carousel__control--next"
+              type="button"
+              data-carousel-next
+              aria-label="Next favorites"
+              data-i18n="carouselNext"
+              data-i18n-attr="aria-label"
+              data-i18n-skip-text="true"
+            >
+              <span aria-hidden="true">&#8250;</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="insights" aria-labelledby="insights-title">
+      <header class="section-header">
+        <h2 id="insights-title" data-i18n="insightsTitle">Experience dashboard</h2>
+        <p data-i18n="insightsSubtitle"></p>
       </header>
+      <div class="insights__grid insights__grid--metrics">
+        <article class="panel" aria-labelledby="sentiment-title">
+          <header>
+            <h3 id="sentiment-title" data-i18n="sentimentTitle">End consumer sentiment</h3>
+            <p class="panel__meta" data-i18n="sentimentUpdated">Updated every 30 minutes</p>
+          </header>
+          <div class="sentiment">
+            <div class="sentiment__score" aria-label="Average rating 4.6 out of 5">
+              <span class="sentiment__value">4.6</span>
+              <span class="sentiment__label" data-i18n="sentimentScore">Average rating</span>
+            </div>
+            <div class="sentiment__stars" role="img" aria-label="4.6 out of 5 stars">
+              ★★★★☆
+            </div>
+            <p class="sentiment__reviews" data-i18n="sentimentReviews">1,248 verified reviews</p>
+          </div>
+        </article>
 
-      <section class="cards">
-        <div class="card">
-          <h3 data-i18n="freshIngredients">Fresh Ingredients</h3>
-          <p data-i18n="freshIngredientsDesc">Each order is prepared with locally sourced breads, fruits, and cheeses.</p>
-        </div>
-        <div class="card">
-          <h3 data-i18n="fastDelivery">Fast Delivery</h3>
-          <p data-i18n="fastDeliveryDesc">We deliver to Saucés, Alborada, Guayacanes, Tarazana, and Brisas del Río.</p>
-        </div>
-        <div class="card">
-          <h3 data-i18n="celebrateMoment">Celebrate Every Moment</h3>
-          <p data-i18n="celebrateMomentDesc">Surprise someone special with customizable breakfast boxes and pastries.</p>
-        </div>
-      </section>
+        <article class="panel" aria-labelledby="visitors-title">
+          <header>
+            <h3 id="visitors-title" data-i18n="visitorsTitle">Visitors</h3>
+            <p class="panel__meta" data-i18n="visitorsMeta">Foot &amp; site traffic</p>
+          </header>
+          <figure class="line-chart" aria-describedby="visitors-stats">
+            <svg viewBox="0 0 240 120" role="img" aria-labelledby="visitors-title">
+              <polyline class="line-chart__grid" points="0,100 240,100"></polyline>
+              <polyline class="line-chart__line" points="0,90 40,80 80,85 120,60 160,65 200,40 240,45"></polyline>
+            </svg>
+            <figcaption id="visitors-stats" data-i18n="visitorsCaption">Today 320 · This month 8,450 · Last year 92,300</figcaption>
+          </figure>
+        </article>
 
-      <footer class="footer">
-        <h4 data-i18n="contact">Contact</h4>
-        <p>WhatsApp <a href="https://wa.me/593987654321" target="_blank">+593 95 874 1463</a></p>
-      </footer>
-    </main>
-  </div>
-  <script src="main.js"></script>
-  <script>
+        <article class="panel" aria-labelledby="sales-title">
+          <header>
+            <h3 id="sales-title" data-i18n="salesTitle">Online sales</h3>
+            <p class="panel__meta" data-i18n="salesMeta">Room to grow</p>
+          </header>
+          <figure class="line-chart" aria-describedby="sales-stats">
+            <svg viewBox="0 0 240 120" role="img" aria-labelledby="sales-title">
+              <polyline class="line-chart__grid" points="0,100 240,100"></polyline>
+              <polyline class="line-chart__line line-chart__line--accent" points="0,95 40,90 80,70 120,60 160,55 200,35 240,25"></polyline>
+            </svg>
+            <figcaption id="sales-stats" data-i18n="salesCaption">Today $620 · This month $18,400 · Last year $212,000</figcaption>
+          </figure>
+        </article>
+      </div>
 
-    const langToggleBtn = document.getElementById('lang-toggle');
-    let currentLang = 'en';
-    // Initialize the page with English
-    applyI18n(currentLang);
-    langToggleBtn.addEventListener('click', () => {
-      // Switch language
-      currentLang = (currentLang === 'en') ? 'es' : 'en';
-      // Apply translations
-      applyI18n(currentLang);
-      // Update button text
-      langToggleBtn.textContent = currentLang.toUpperCase();
-    });
-  </script>
+      <article class="panel panel--contact" aria-labelledby="contact-title">
+        <h3 id="contact-title" data-i18n="contactTitle">We deliver to</h3>
+        <p data-i18n="contactAreas">Saucés · Alborada · Guayacanes · Tarazana · Brisas del Río</p>
+        <p data-i18n="contactWhatsApp">WhatsApp <a href="https://wa.me/593958741463">+593 958 741 463</a></p>
+      </article>
+
+      <article class="panel panel--orders" aria-labelledby="orders-title">
+        <header>
+          <h3 id="orders-title" data-i18n="ordersTitle">Order details</h3>
+          <p class="panel__meta" data-i18n="ordersMeta">Secure checkout enabled</p>
+        </header>
+        <h4 class="order-summary__heading" data-i18n="orderItems">Selected items</h4>
+        <ul class="order-summary__items" data-summary-items aria-live="polite"></ul>
+        <p class="order-summary__empty" id="orderSummaryEmpty" data-i18n="orderSummaryEmpty">Your basket is empty. Add menu favorites to see them here.</p>
+        <dl class="order-summary">
+          <div>
+            <dt data-i18n="ordersSubtotal">Subtotal</dt>
+            <dd data-summary="subtotal">$0.00</dd>
+          </div>
+          <div>
+            <dt data-i18n="ordersTax">VAT 15%</dt>
+            <dd data-summary="tax">$0.00</dd>
+          </div>
+          <div>
+            <dt data-i18n="ordersDelivery">Delivery</dt>
+            <dd data-summary="delivery">$0.00</dd>
+          </div>
+          <div class="order-summary__total">
+            <dt data-i18n="ordersTotal">Total</dt>
+            <dd data-summary="total">$0.00</dd>
+          </div>
+        </dl>
+        <div class="delivery-time" role="group" aria-labelledby="delivery-title">
+          <span id="delivery-title" data-i18n="deliveryTitle">Delivery time</span>
+          <div class="delivery-time__options">
+            <button
+              type="button"
+              class="chip"
+              aria-pressed="true"
+              data-delivery-minutes="45"
+              data-label-en="45 min"
+              data-label-es="45 min"
+            >45 min</button>
+            <button
+              type="button"
+              class="chip"
+              aria-pressed="false"
+              data-delivery-minutes="60"
+              data-label-en="1 hr"
+              data-label-es="1 hr"
+            >1 hr</button>
+            <button
+              type="button"
+              class="chip"
+              aria-pressed="false"
+              data-delivery-minutes="90"
+              data-label-en="1 hr 30 min"
+              data-label-es="1 hr 30 min"
+            >1 hr 30 min</button>
+          </div>
+          <p
+            class="delivery-time__selection"
+            data-delivery-selection
+            aria-live="polite"
+            data-i18n-skip-text="true"
+            hidden
+          ></p>
+        </div>
+        <div class="order-actions">
+          <button
+            type="button"
+            class="button button--ghost"
+            data-action="clear-cart"
+            data-i18n="clearOrder"
+            disabled
+          >Clear</button>
+        </div>
+        <button type="button" class="button button--primary" data-i18n="checkout">Secure checkout</button>
+      </article>
+    </section>
+  </main>
+
+  <aside class="fab-group" aria-label="Floating actions">
+    <button
+      class="fab"
+      type="button"
+      id="fabLanguage"
+      aria-expanded="false"
+      aria-controls="fabLanguageMenu"
+      data-fab-label="fabLanguageLabel"
+    >🌐</button>
+    <div class="fab-menu" id="fabLanguageMenu" role="menu">
+      <button class="fab-option" role="menuitem" data-action="language" data-lang="en" aria-pressed="false">EN</button>
+      <button class="fab-option" role="menuitem" data-action="language" data-lang="es" aria-pressed="false">ES</button>
+    </div>
+    <button
+      class="fab"
+      type="button"
+      id="fabTheme"
+      aria-expanded="false"
+      aria-controls="fabThemeMenu"
+      data-fab-label="fabThemeLabel"
+    >🎨</button>
+    <div class="fab-menu" id="fabThemeMenu" role="menu">
+      <button class="fab-option" role="menuitem" data-action="theme" data-theme="light" aria-pressed="false">Light</button>
+      <button class="fab-option" role="menuitem" data-action="theme" data-theme="dark" aria-pressed="false">Dark</button>
+    </div>
+    <button class="fab" type="button" id="fabChat" aria-pressed="false" data-fab-label="fabChatLabel">💬</button>
+    <button class="fab" type="button" id="fabPay" aria-pressed="false" data-fab-label="fabPayLabel">💳</button>
+  </aside>
+
+  <section
+    class="drawer"
+    id="chatDrawer"
+    aria-hidden="true"
+    aria-labelledby="chatDrawerTitle"
+    hidden
+  >
+    <div class="drawer__content">
+      <header class="drawer__header">
+        <h2 id="chatDrawerTitle" data-i18n="chatTitle">Live chat</h2>
+        <button
+          type="button"
+          class="drawer__close drawer__close--text"
+          data-close-drawer
+          data-close-target="fabChat"
+          data-i18n="chatClose"
+          data-i18n-attr="aria-label"
+          data-i18n-skip-text="true"
+          aria-label="Close chat"
+        >
+          <span class="drawer__close-icon" aria-hidden="true">✕</span>
+          <span class="drawer__close-label" data-i18n="chatClose">Close chat</span>
+        </button>
+      </header>
+      <div class="drawer__body">
+        <p data-i18n="chatWelcome">Hola 👋 ¿Cómo podemos ayudarte hoy?</p>
+        <form class="chat-form">
+          <label for="chatMessage" data-i18n="chatLabel">Message</label>
+          <textarea id="chatMessage" name="message" rows="3" placeholder="Type here…" data-i18n-placeholder="chatPlaceholder"></textarea>
+          <button type="submit" class="button button--primary" data-i18n="chatSend">Send</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section
+    class="drawer"
+    id="payDrawer"
+    aria-hidden="true"
+    aria-labelledby="payDrawerTitle"
+    hidden
+  >
+    <div class="drawer__content">
+      <header class="drawer__header">
+        <h2 id="payDrawerTitle" data-i18n="payTitle">Checkout preview</h2>
+        <button
+          type="button"
+          class="drawer__close"
+          data-close-drawer
+          data-close-target="fabPay"
+          aria-label="Close"
+        >✕</button>
+      </header>
+      <div class="drawer__body">
+        <ul class="payment-list" data-payment-items aria-live="polite"></ul>
+        <p class="payment-list__empty" data-payment-empty data-i18n="orderSummaryEmpty">Your basket is empty. Add menu favorites to see them here.</p>
+        <p class="payment-list__eta" data-payment-delivery aria-live="polite" hidden></p>
+        <p class="payment-list__total">
+          <span class="payment-list__total-amount">
+            <strong data-i18n="ordersTotal">Total</strong>: <span data-payment-total>$0.00</span>
+          </span>
+          <span class="payment-list__actions">
+            <button
+              type="button"
+              class="button button--ghost button--ghost--compact"
+              data-action="clear-cart"
+              data-i18n="clearOrder"
+              disabled
+            >Clear</button>
+            <button
+              type="button"
+              class="button button--ghost button--ghost--compact"
+              data-close-drawer
+              data-close-target="fabPay"
+              data-i18n="payCloseAction"
+            >Close</button>
+          </span>
+        </p>
+        <button type="button" class="button button--primary" data-i18n="payNow">Confirm transaction</button>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer" role="contentinfo">
+    <small>© <span id="copyrightYear"></span> Marxia Café y Bocaditos. <span data-i18n="rights">All rights reserved.</span></small>
+    <p class="footer__security">
+      <span class="footer__security-icon" aria-hidden="true">
+        <i class="fa-solid fa-cloudflare"></i>
+      </span>
+      <span class="footer__security-text" data-i18n="edgeSecurity">Edge protected via Cloudflare Zero Trust</span>
+    </p>
+  </footer>
+  <script src="main.js" defer></script>
 </body>
 </html>
