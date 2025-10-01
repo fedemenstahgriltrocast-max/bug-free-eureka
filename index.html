@@ -11,8 +11,6 @@
       position: absolute;
       top: 1rem;
       right: 1rem;
-      display: flex;
-      gap: 0.5rem;
     }
     .lang-switcher button {
       background-color: #fff;
@@ -22,25 +20,21 @@
       cursor: pointer;
       font-weight: 600;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-    .lang-switcher button.active {
-      background-color: #d65a00;
-      color: #fff;
-      border-color: #d65a00;
+      width: 50px;
+      text-align: center;
     }
   </style>
 </head>
 <body>
   <div class="pattern-bg">
     <div class="lang-switcher">
-      <button id="lang-en" class="active">EN</button>
-      <button id="lang-es">ES</button>
+      <button id="lang-toggle">EN</button>
     </div>
     <main class="container">
       <header class="header">
         <h1>Marxia Café y Bocaditos</h1>
-        <p class="subtitle">Breakfasts, pastries, and delivery throughout Guayaquil.</p>
-        <a href="app/order.html" class="btn">Order now</a>
+        <p class="subtitle" data-i18n="subtitle">Breakfasts, pastries, and delivery throughout Guayaquil.</p>
+        <a href="app/order.html" class="btn" data-i18n="orderNow">Order now</a>
       </header>
 
       <section class="cards">
@@ -66,22 +60,18 @@
   </div>
   <script src="main.js"></script>
   <script>
-    const enBtn = document.getElementById('lang-en');
-    const esBtn = document.getElementById('lang-es');
 
-    // Override the auto-detection from main.js, which is for the app page
-    applyI18n('en');
-
-    enBtn.addEventListener('click', () => {
-      applyI18n('en');
-      enBtn.classList.add('active');
-      esBtn.classList.remove('active');
-    });
-
-    esBtn.addEventListener('click', () => {
-      applyI18n('es');
-      esBtn.classList.add('active');
-      enBtn.classList.remove('active');
+    const langToggleBtn = document.getElementById('lang-toggle');
+    let currentLang = 'en';
+    // Initialize the page with English
+    applyI18n(currentLang);
+    langToggleBtn.addEventListener('click', () => {
+      // Switch language
+      currentLang = (currentLang === 'en') ? 'es' : 'en';
+      // Apply translations
+      applyI18n(currentLang);
+      // Update button text
+      langToggleBtn.textContent = currentLang.toUpperCase();
     });
   </script>
 </body>
