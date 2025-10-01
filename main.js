@@ -265,5 +265,3 @@ document.getElementById("langBtn").addEventListener("click", ()=>{
   // refresh dynamic empty-row label if empty
   if(cart.size===0) renderCart();
 });
-
-/* ——— Utilities ——— */

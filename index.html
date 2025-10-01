@@ -60,19 +60,16 @@
   </div>
   <script src="main.js"></script>
   <script>
+
     const langToggleBtn = document.getElementById('lang-toggle');
     let currentLang = 'en';
-
     // Initialize the page with English
     applyI18n(currentLang);
-
     langToggleBtn.addEventListener('click', () => {
       // Switch language
       currentLang = (currentLang === 'en') ? 'es' : 'en';
-
       // Apply translations
       applyI18n(currentLang);
-
       // Update button text
       langToggleBtn.textContent = currentLang.toUpperCase();
     });
