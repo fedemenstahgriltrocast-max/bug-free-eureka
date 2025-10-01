@@ -1745,8 +1745,8 @@ body::after {
   }
 
   .product-card {
-    flex-basis: calc((100% - var(--carousel-gap)) / 2);
-    max-width: 360px;
+    flex-basis: calc((100% - var(--carousel-gap)) / 1);
+    max-width: 520px;
   }
 }
 
