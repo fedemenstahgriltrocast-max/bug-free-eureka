@@ -68,19 +68,10 @@
 
   <main class="page" id="mainContent">
     <section class="order" aria-labelledby="order-title">
-      <div class="accordion">
-        <h2 class="accordion__title">
-          <button
-            class="accordion__trigger"
-            type="button"
-            aria-expanded="true"
-            aria-controls="seasonalFavorites"
-            id="order-title">
-            <span data-i18n="orderTitle">Our menu</span>
-            <span class="accordion__icon" aria-hidden="true">▾</span>
-          </button>
-        </h2>
-        <div class="accordion__content" id="seasonalFavorites" role="region" aria-labelledby="order-title">
+      <div class="order__header">
+        <h2 id="order-title" data-i18n="orderTitle">Our menu</h2>
+      </div>
+      <div id="seasonalFavorites" role="region" aria-labelledby="order-title">
           <p class="accordion__description" data-i18n="orderSubtitle">Tap to explore our handcrafted favorites.</p>
           <div class="product-carousel" data-carousel>
             <button
@@ -361,12 +352,10 @@
       </div>
     </section>
 
-    <section class="contact-landing" aria-labelledby="contact-title">
-      <h3 id="contact-title" data-i18n="contactTitle" class="contact-landing__title">Entregamos en</h3>
-      <p data-i18n="contactAreas">Saucés · Alborada · Guayacanes · Tarazana · Brisas del Río</p>
-      <p><a href="https://wa.me/593958741463" class="contact-landing__whatsapp">WhatsApp +593 958 741 463</a></p>
-    </section>
-
+    <article class="panel panel--contact" aria-labelledby="contact-title">
+      <p data-i18n="contactWhatsApp">WhatsApp <a href="https://wa.me/593958741463">+593 958 741 463</a></p>
+      <p><span data-i18n="contactTitle">Entregamos en</span> <span data-i18n="contactAreas">Saucés · Alborada · Guayacanes · Tarazana · Brisas del Río</span></p>
+    </article>
     <section class="insights" aria-labelledby="insights-title">
       <article class="panel panel--orders" aria-labelledby="orders-title">
         <header>
