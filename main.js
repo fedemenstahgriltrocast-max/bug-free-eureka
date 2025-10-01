@@ -112,6 +112,12 @@
       fabThemeLabel: 'Theme options',
       fabChatLabel: 'Live chat',
       fabPayLabel: 'Payment summary',
+      freshIngredients: 'Fresh Ingredients',
+      freshIngredientsDesc: 'Each order is prepared with locally sourced breads, fruits, and cheeses.',
+      fastDelivery: 'Fast Delivery',
+      fastDeliveryDesc: 'We deliver to Saucés, Alborada, Guayacanes, Tarazana, and Brisas del Río.',
+      celebrateMoment: 'Celebrate Every Moment',
+      celebrateMomentDesc: 'Surprise someone special with customizable breakfast boxes and pastries.',
     },
     es: {
       headline: 'Marxia Café y Bocaditos',
@@ -171,6 +177,12 @@
       fabThemeLabel: 'Opciones de tema',
       fabChatLabel: 'Chat en vivo',
       fabPayLabel: 'Resumen de pago',
+      freshIngredients: 'Ingredientes Frescos',
+      freshIngredientsDesc: 'Cada pedido se prepara con panes, frutas y quesos de origen local.',
+      fastDelivery: 'Entrega Rápida',
+      fastDeliveryDesc: 'Entregamos en Saucés, Alborada, Guayacanes, Tarazana y Brisas del Río.',
+      celebrateMoment: 'Celebra Cada Momento',
+      celebrateMomentDesc: 'Sorprende a alguien especial con cajas de desayuno y bocaditos personalizables.',
     },
   };
 
