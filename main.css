@@ -1353,6 +1353,11 @@ body {
   max-height: 240px;
   overflow-y: auto;
   padding-right: 0.25rem;
+  scrollbar-width: none;
+}
+
+.payment-list::-webkit-scrollbar {
+  display: none;
 }
 
 .payment-list li {
@@ -1610,6 +1615,11 @@ body {
 
   .drawer__content {
     border-radius: 20px 20px 0 0;
+  }
+
+  #payDrawer .drawer__content {
+    margin-bottom: calc(48px + 1rem + 10px);
+    max-height: 70vh;
   }
 }
 
