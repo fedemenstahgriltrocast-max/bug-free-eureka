@@ -1572,8 +1572,24 @@ body {
   }
 
   .fab-group {
-    right: 1rem;
-    bottom: 1rem;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    background: var(--surface);
+    padding: 0.5rem 0;
+    border-top: 1px solid var(--border-subtle);
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.08);
+    gap: 0;
+  }
+
+  .fab-menu {
+    bottom: 60px;
+    right: auto;
+    left: 50%;
+    transform: translateX(-50%);
   }
 
   .fab,
@@ -1581,6 +1597,15 @@ body {
     width: 48px;
     height: 48px;
     font-size: 1.1rem;
+    box-shadow: none;
+  }
+
+  .fab:hover,
+  .fab:focus-visible,
+  .fab-option:hover,
+  .fab-option:focus-visible {
+    transform: none;
+    box-shadow: none;
   }
 
   .drawer__content {
@@ -1589,14 +1614,81 @@ body {
 }
 
 @media (max-width: 768px) {
+  .product-carousel {
+    position: relative;
+    width: 100%;
+    padding-bottom: 1.5rem; /* Space for pagination */
+  }
+
   .product-carousel__viewport {
-    padding-inline: clamp(0.5rem, 7vw, 1.5rem);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .product-carousel__viewport::-webkit-scrollbar {
+    display: none;
+  }
+
+  .product-carousel__track {
+    display: flex;
+    gap: 1rem;
+    padding-inline: 5vw;
   }
 
   .product-card {
-    flex-basis: calc(100% - var(--carousel-gap));
-    max-width: 420px;
-    min-width: 260px;
+    flex: 0 0 90%;
+    scroll-snap-align: center;
+    max-width: none;
+  }
+
+  .product-carousel__control {
+    display: none;
+  }
+
+  .product-carousel__pagination {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .product-carousel__pagination button {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--chip-bg);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+  }
+
+  .product-carousel__pagination button.active {
+    background: var(--accent);
+    transform: scale(1.2);
+  }
+
+  .product-card__button {
+    font-size: 0;
+    padding: 0.75rem;
+  }
+
+  .product-card__button::before {
+    font-size: 1.2rem;
+    font-weight: 700;
+  }
+
+  .product-card__button[data-cart="add"]::before {
+    content: '+';
+  }
+
+  .product-card__button[data-cart="remove"]::before {
+    content: '-';
   }
 }
 
