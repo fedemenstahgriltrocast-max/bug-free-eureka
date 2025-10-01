@@ -18,6 +18,7 @@
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
   const carousel = document.querySelector('[data-carousel]');
   const carouselTrack = document.querySelector('.product-carousel__track');
+  const carouselPagination = document.querySelector('.product-carousel__pagination');
   const carouselPrevButton = carousel ? carousel.querySelector('[data-carousel-prev]') : null;
   const carouselNextButton = carousel ? carousel.querySelector('[data-carousel-next]') : null;
   const accordionTrigger = document.querySelector('.accordion__trigger');
@@ -209,6 +210,30 @@
     }
     if (carousel) {
       carousel.classList.toggle('product-carousel--static', maxSlideIndex === 0);
+    }
+
+    if (carouselPagination) {
+      const paginationButtons = Array.from(carouselPagination.children);
+      paginationButtons.forEach((button, index) => {
+        button.classList.toggle('active', index === currentSlideIndex);
+      });
+    }
+  };
+
+  const createCarouselPagination = () => {
+    if (!carouselPagination) {
+      return;
+    }
+    carouselPagination.innerHTML = '';
+    for (let i = 0; i <= maxSlideIndex; i++) {
+      const button = document.createElement('button');
+      button.setAttribute('aria-label', `Go to slide ${i + 1}`);
+      button.addEventListener('click', () => {
+        currentSlideIndex = i;
+        updateCarouselPosition();
+        updateCarouselControls();
+      });
+      carouselPagination.appendChild(button);
     }
   };
 
@@ -655,6 +680,7 @@
     maxSlideIndex = nextMaxIndex;
     currentSlideIndex = clamp(currentSlideIndex, 0, maxSlideIndex);
     window.requestAnimationFrame(() => {
+      createCarouselPagination();
       updateCarouselPosition();
       updateCarouselControls();
     });
@@ -1120,6 +1146,22 @@
       exitAllFabInteractions();
     }
   });
+
+  if (carousel) {
+    const viewport = carousel.querySelector('.product-carousel__viewport');
+    if (viewport) {
+      viewport.addEventListener('scroll', () => {
+        const scrollLeft = viewport.scrollLeft;
+        const cardWidth = productCards[0].offsetWidth;
+        const gap = getCarouselGap();
+        const newIndex = Math.round(scrollLeft / (cardWidth + gap));
+        if (newIndex !== currentSlideIndex) {
+          currentSlideIndex = newIndex;
+          updateCarouselControls();
+        }
+      });
+    }
+  }
 
   if (carouselPrevButton) {
     carouselPrevButton.addEventListener('click', () => moveCarousel(-1));
