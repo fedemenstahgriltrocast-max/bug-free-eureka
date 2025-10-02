@@ -334,10 +334,10 @@ body {
 }
 
 .order {
-  background: var(--surface);
+  background: transparent;
   border-radius: var(--radius-lg);
   padding: clamp(2rem, 4vw, 3rem);
-  box-shadow: var(--shadow-layered);
+  box-shadow: none;
   display: grid;
   gap: clamp(1.5rem, 4vw, 2.5rem);
   justify-items: center;
@@ -1360,6 +1360,13 @@ body {
     box-shadow: var(--shadow-layered-strong);
     filter: brightness(var(--hover-darken));
     transform: translateY(-6px);
+  }
+
+  .order:hover {
+    --shape-font-boost: 0px;
+    box-shadow: none;
+    filter: none;
+    transform: none;
   }
 
   .payment-list li:hover {
