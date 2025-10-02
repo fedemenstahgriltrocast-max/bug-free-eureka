@@ -464,18 +464,6 @@ body {
   background: linear-gradient(135deg, rgba(255, 179, 71, 0.35), rgba(255, 127, 80, 0.25));
 }
 
-.product-card:hover,
-.product-card:focus-within {
-  --shape-font-boost: 0px;
-  transform: none;
-  box-shadow: none;
-  filter: none;
-}
-
-.product-card:hover .product-card__image {
-  transform: none;
-}
-
 .product-card__info h3 {
   margin: 0;
   font-size: calc(1.1rem + (var(--shape-font-boost) * 0.5));
