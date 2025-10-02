@@ -457,7 +457,7 @@ body {
 
 .product-card:hover,
 .product-card:focus-within {
-  transform: translateY(-6px);
+  transform: none;
   box-shadow: none;
   filter: none;
 }
@@ -1369,7 +1369,6 @@ body {
     transform: translateY(-4px);
   }
 
-  .product-card:hover,
   .product-card:focus-within {
     --shape-font-boost: 3px;
   }
