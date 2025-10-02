@@ -16,11 +16,11 @@
   const languageToggle = document.querySelector('#languageToggle');
   const themeToggle = document.querySelector('#themeToggle');
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  const carousel = document.querySelector('[data-carousel]');
-  const carouselTrack = document.querySelector('.product-carousel__track');
-  const carouselPagination = document.querySelector('.product-carousel__pagination');
-  const carouselPrevButton = carousel ? carousel.querySelector('[data-carousel-prev]') : null;
-  const carouselNextButton = carousel ? carousel.querySelector('[data-carousel-next]') : null;
+  // const carousel = document.querySelector('[data-carousel]');
+  // const carouselTrack = document.querySelector('.product-carousel__track');
+  // const carouselPagination = document.querySelector('.product-carousel__pagination');
+  // const carouselPrevButton = carousel ? carousel.querySelector('[data-carousel-prev]') : null;
+  // const carouselNextButton = carousel ? carousel.querySelector('[data-carousel-next]') : null;
   const accordionTrigger = document.querySelector('.accordion__trigger');
   const accordionContent = document.querySelector('.accordion__content');
   const productCards = Array.from(document.querySelectorAll('.product-card'));
@@ -201,74 +201,74 @@
     return Number.isFinite(parsed) ? parsed : 0;
   };
 
-  const updateCarouselControls = () => {
-    if (carouselPrevButton) {
-      carouselPrevButton.disabled = currentSlideIndex <= 0;
-    }
-    if (carouselNextButton) {
-      carouselNextButton.disabled = currentSlideIndex >= maxSlideIndex;
-    }
-    if (carousel) {
-      carousel.classList.toggle('product-carousel--static', maxSlideIndex === 0);
-    }
+  // const updateCarouselControls = () => {
+  //   if (carouselPrevButton) {
+  //     carouselPrevButton.disabled = currentSlideIndex <= 0;
+  //   }
+  //   if (carouselNextButton) {
+  //     carouselNextButton.disabled = currentSlideIndex >= maxSlideIndex;
+  //   }
+  //   if (carousel) {
+  //     carousel.classList.toggle('product-carousel--static', maxSlideIndex === 0);
+  //   }
 
-    if (carouselPagination) {
-      const paginationButtons = Array.from(carouselPagination.children);
-      paginationButtons.forEach((button, index) => {
-        button.classList.toggle('active', index === currentSlideIndex);
-      });
-    }
-  };
+  //   if (carouselPagination) {
+  //     const paginationButtons = Array.from(carouselPagination.children);
+  //     paginationButtons.forEach((button, index) => {
+  //       button.classList.toggle('active', index === currentSlideIndex);
+  //     });
+  //   }
+  // };
 
-  const createCarouselPagination = () => {
-    if (!carouselPagination) {
-      return;
-    }
-    carouselPagination.innerHTML = '';
-    for (let i = 0; i <= maxSlideIndex; i++) {
-      const button = document.createElement('button');
-      button.setAttribute('aria-label', `Go to slide ${i + 1}`);
-      button.addEventListener('click', () => {
-        currentSlideIndex = i;
-        updateCarouselPosition();
-        updateCarouselControls();
-      });
-      carouselPagination.appendChild(button);
-    }
-  };
+  // const createCarouselPagination = () => {
+  //   if (!carouselPagination) {
+  //     return;
+  //   }
+  //   carouselPagination.innerHTML = '';
+  //   for (let i = 0; i <= maxSlideIndex; i++) {
+  //     const button = document.createElement('button');
+  //     button.setAttribute('aria-label', `Go to slide ${i + 1}`);
+  //     button.addEventListener('click', () => {
+  //       currentSlideIndex = i;
+  //       updateCarouselPosition();
+  //       updateCarouselControls();
+  //     });
+  //     carouselPagination.appendChild(button);
+  //   }
+  // };
 
-  const getCarouselStep = () => {
-    if (!carouselTrack) {
-      return 0;
-    }
-    const perView = getCardsPerView();
-    const startIndex = Math.min(currentSlideIndex * perView, Math.max(productCards.length - 1, 0));
-    const firstVisibleCard = productCards[startIndex] || productCards[0];
-    if (!firstVisibleCard) {
-      return 0;
-    }
-    const cardWidth = firstVisibleCard.getBoundingClientRect().width;
-    const gap = getCarouselGap();
-    return perView * cardWidth + Math.max(0, (perView - 1) * gap);
-  };
+  // const getCarouselStep = () => {
+  //   if (!carouselTrack) {
+  //     return 0;
+  //   }
+  //   const perView = getCardsPerView();
+  //   const startIndex = Math.min(currentSlideIndex * perView, Math.max(productCards.length - 1, 0));
+  //   const firstVisibleCard = productCards[startIndex] || productCards[0];
+  //   if (!firstVisibleCard) {
+  //     return 0;
+  //   }
+  //   const cardWidth = firstVisibleCard.getBoundingClientRect().width;
+  //   const gap = getCarouselGap();
+  //   return perView * cardWidth + Math.max(0, (perView - 1) * gap);
+  // };
 
-  const updateCarouselPosition = () => {
-    if (!carouselTrack) {
-      return;
-    }
-    const step = getCarouselStep();
-    const offset = step * currentSlideIndex;
-    carouselTrack.style.transform = step > 0 ? `translateX(-${offset}px)` : 'translateX(0)';
-  };
+  // const updateCarouselPosition = () => {
+  //   if (!carouselTrack) {
+  //     return;
+  //   }
+  //   const step = getCarouselStep();
+  //   const offset = step * currentSlideIndex;
+  //   carouselTrack.style.transform = step > 0 ? `translateX(-${offset}px)` : 'translateX(0)';
+  // };
 
-  const moveCarousel = (direction) => {
-    if (maxSlideIndex <= 0) {
-      return;
-    }
-    currentSlideIndex = clamp(currentSlideIndex + direction, 0, maxSlideIndex);
-    updateCarouselPosition();
-    updateCarouselControls();
-  };
+  // const moveCarousel = (direction) => {
+  //   if (maxSlideIndex <= 0) {
+  //     return;
+  //   }
+  //   currentSlideIndex = clamp(currentSlideIndex + direction, 0, maxSlideIndex);
+  //   updateCarouselPosition();
+  //   updateCarouselControls();
+  // };
 
   const getLocale = () => (currentLanguage === 'es' ? 'es-EC' : 'en-US');
   const formatCurrency = (value) => {
@@ -666,25 +666,25 @@
     updateCartDisplay();
   };
 
-  const updateCarousel = () => {
-    if (!carousel || !carouselTrack) {
-      return;
-    }
-    const totalCards = productCards.length;
-    const perView = getCardsPerView();
-    if (perView !== lastCarouselPerView) {
-      currentSlideIndex = Math.floor((currentSlideIndex * lastCarouselPerView) / Math.max(perView, 1));
-      lastCarouselPerView = perView;
-    }
-    const nextMaxIndex = Math.max(0, Math.ceil(totalCards / perView) - 1);
-    maxSlideIndex = nextMaxIndex;
-    currentSlideIndex = clamp(currentSlideIndex, 0, maxSlideIndex);
-    window.requestAnimationFrame(() => {
-      createCarouselPagination();
-      updateCarouselPosition();
-      updateCarouselControls();
-    });
-  };
+  // const updateCarousel = () => {
+  //   if (!carousel || !carouselTrack) {
+  //     return;
+  //   }
+  //   const totalCards = productCards.length;
+  //   const perView = getCardsPerView();
+  //   if (perView !== lastCarouselPerView) {
+  //     currentSlideIndex = Math.floor((currentSlideIndex * lastCarouselPerView) / Math.max(perView, 1));
+  //     lastCarouselPerView = perView;
+  //   }
+  //   const nextMaxIndex = Math.max(0, Math.ceil(totalCards / perView) - 1);
+  //   maxSlideIndex = nextMaxIndex;
+  //   currentSlideIndex = clamp(currentSlideIndex, 0, maxSlideIndex);
+  //   window.requestAnimationFrame(() => {
+  //     createCarouselPagination();
+  //     updateCarouselPosition();
+  //     updateCarouselControls();
+  //   });
+  // };
   const setCopyright = () => {
     if (copyright) {
       copyright.textContent = String(new Date().getFullYear());
@@ -1147,56 +1147,56 @@
     }
   });
 
-  if (carousel) {
-    const viewport = carousel.querySelector('.product-carousel__viewport');
-    if (viewport) {
-      viewport.addEventListener('scroll', () => {
-        const scrollLeft = viewport.scrollLeft;
-        const cardWidth = productCards[0].offsetWidth;
-        const gap = getCarouselGap();
-        const newIndex = Math.round(scrollLeft / (cardWidth + gap));
-        if (newIndex !== currentSlideIndex) {
-          currentSlideIndex = newIndex;
-          updateCarouselControls();
-        }
-      });
-    }
-  }
+  // if (carousel) {
+  //   const viewport = carousel.querySelector('.product-carousel__viewport');
+  //   if (viewport) {
+  //     viewport.addEventListener('scroll', () => {
+  //       const scrollLeft = viewport.scrollLeft;
+  //       const cardWidth = productCards[0].offsetWidth;
+  //       const gap = getCarouselGap();
+  //       const newIndex = Math.round(scrollLeft / (cardWidth + gap));
+  //       if (newIndex !== currentSlideIndex) {
+  //         currentSlideIndex = newIndex;
+  //         updateCarouselControls();
+  //       }
+  //     });
+  //   }
+  // }
 
-  if (carouselPrevButton) {
-    carouselPrevButton.addEventListener('click', () => moveCarousel(-1));
-  }
+  // if (carouselPrevButton) {
+  //   carouselPrevButton.addEventListener('click', () => moveCarousel(-1));
+  // }
 
-  if (carouselNextButton) {
-    carouselNextButton.addEventListener('click', () => moveCarousel(1));
-  }
+  // if (carouselNextButton) {
+  //   carouselNextButton.addEventListener('click', () => moveCarousel(1));
+  // }
 
   if (typeof largeScreenQuery.addEventListener === 'function') {
     largeScreenQuery.addEventListener('change', applyDrawerLayout);
-    largeScreenQuery.addEventListener('change', () => {
-      updateCarousel();
-    });
+    // largeScreenQuery.addEventListener('change', () => {
+    //   updateCarousel();
+    // });
   } else if (typeof largeScreenQuery.addListener === 'function') {
     largeScreenQuery.addListener(applyDrawerLayout);
-    largeScreenQuery.addListener(updateCarousel);
+    // largeScreenQuery.addListener(updateCarousel);
   }
 
-  if (typeof smallScreenQuery.addEventListener === 'function') {
-    smallScreenQuery.addEventListener('change', () => {
-      updateCarousel();
-    });
-  } else if (typeof smallScreenQuery.addListener === 'function') {
-    smallScreenQuery.addListener(updateCarousel);
-  }
+  // if (typeof smallScreenQuery.addEventListener === 'function') {
+  //   smallScreenQuery.addEventListener('change', () => {
+  //     updateCarousel();
+  //   });
+  // } else if (typeof smallScreenQuery.addListener === 'function') {
+  //   smallScreenQuery.addListener(updateCarousel);
+  // }
 
   if (accordionTrigger && accordionContent) {
     const expanded = accordionTrigger.getAttribute('aria-expanded') === 'true';
     accordionContent.hidden = !expanded;
-    const refreshCarouselLayout = () => {
-      window.requestAnimationFrame(() => {
-        updateCarousel();
-      });
-    };
+    // const refreshCarouselLayout = () => {
+    //   window.requestAnimationFrame(() => {
+    //     updateCarousel();
+    //   });
+    // };
 
     accordionTrigger.addEventListener('click', () => {
       const isExpanded = accordionTrigger.getAttribute('aria-expanded') === 'true';
@@ -1205,17 +1205,17 @@
       accordionContent.hidden = !nextExpanded;
       if (nextExpanded) {
         currentSlideIndex = 0;
-        refreshCarouselLayout();
+        // refreshCarouselLayout();
       }
     });
 
-    if (!accordionContent.hidden) {
-      refreshCarouselLayout();
-    }
+    // if (!accordionContent.hidden) {
+    //   refreshCarouselLayout();
+    // }
   }
 
   window.addEventListener('resize', () => {
-    updateCarousel();
+    // updateCarousel();
     if (largeScreenQuery.matches) {
       drawers.forEach((drawer) => {
         if (!draggableDrawerIds.has(drawer.id) || drawer.getAttribute('aria-hidden') === 'true') {
@@ -1274,6 +1274,6 @@
   restorePreferences();
   restoreDeliverySelection();
   applyDrawerLayout();
-  updateCarousel();
+  // updateCarousel();
   setCopyright();
 })();
