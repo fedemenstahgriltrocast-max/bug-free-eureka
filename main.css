@@ -472,6 +472,10 @@ body {
   filter: none;
 }
 
+.product-card:hover .product-card__image {
+  transform: none;
+}
+
 .product-card__info h3 {
   margin: 0;
   font-size: calc(1.1rem + (var(--shape-font-boost) * 0.5));
