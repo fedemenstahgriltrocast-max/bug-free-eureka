@@ -1,3 +1,18 @@
+/* Prefer locally installed Plus Jakarta Sans; add url() sources if you self-host later */
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: local("Plus Jakarta Sans"), local("PlusJakartaSans-Regular");
+}
+
+/* Make the font cascade explicit */
+html {
+  --font-sans: "Plus Jakarta Sans", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+  font-family: var(--font-sans);
+}
+
 :root {
   color-scheme: light;
   font-family: "Plus Jakarta Sans", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont,
@@ -64,6 +79,8 @@
 
 * {
   box-sizing: border-box;
+  /* ensure all elements use the same font cascade */
+  font-family: inherit;
 }
 
 body {
@@ -76,6 +93,8 @@ body {
   position: relative;
   overflow-x: hidden;
   transition: background var(--transition), color var(--transition);
+  /* inherit from html so body explicitly uses Plus Jakarta Sans */
+  font-family: var(--font-sans);
 }
 
 [data-theme="dark"] body {
@@ -365,8 +384,6 @@ body {
   transform: none;
   box-shadow: none;
 }
-
-
 .gallery{
   width: 100%;
   margin-inline: var(--side);
@@ -853,7 +870,6 @@ body {
 .footer__security-text {
   line-height: 1.3;
 }
-
 .fab-group {
   position: fixed;
   right: 1.5rem;
@@ -1141,7 +1157,7 @@ body {
   border-radius: var(--radius-md);
   border: 1px solid rgba(0, 0, 0, 0.08);
   padding: 0.75rem;
-  font-family: inherit;
+  font-family: inherit; /* ensure Jakarta Sans */
   resize: vertical;
 }
 
@@ -1267,7 +1283,6 @@ body {
     transform: translateY(-2px);
   }
 }
-
 @media (min-width: 900px) {
   .drawer {
     align-items: center;
@@ -1513,3 +1528,9 @@ body {
 .contact-landing a:focus-visible {
   text-decoration: underline;
 }
+
+/* Ensure native controls and form elements also render Plus Jakarta Sans */
+button, input, select, textarea {
+  font-family: inherit;
+}
+
