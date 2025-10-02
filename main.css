@@ -1371,6 +1371,13 @@ body {
     transform: translateY(-6px);
   }
 
+  .order:hover {
+    --shape-font-boost: 0px;
+    box-shadow: none;
+    filter: none;
+    transform: none;
+  }
+
   .payment-list li:hover {
     --shape-font-boost: 3px;
     box-shadow: var(--shadow-layered-strong);
