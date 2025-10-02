@@ -1385,7 +1385,6 @@ body {
     transform: translateY(-4px);
   }
 
-  .product-card:hover,
   .product-card:focus-within {
     --shape-font-boost: 3px;
   }
