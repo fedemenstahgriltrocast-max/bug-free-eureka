@@ -516,7 +516,7 @@ body {
   width: 100%;
 }
 
-.product-card__button:hover,
+
 .product-card__button:focus-visible {
   background: var(--accent);
   color: #101319;
@@ -528,7 +528,6 @@ body {
   color: var(--accent-strong);
 }
 
-.product-card__button--remove:hover,
 .product-card__button--remove:focus-visible {
   background: rgba(255, 95, 60, 0.25);
   color: var(--accent-strong);
