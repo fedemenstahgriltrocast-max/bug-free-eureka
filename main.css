@@ -466,6 +466,7 @@ body {
 
 .product-card:hover,
 .product-card:focus-within {
+  --shape-font-boost: 0px;
   transform: none;
   box-shadow: none;
   filter: none;
