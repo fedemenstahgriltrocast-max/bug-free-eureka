@@ -3,6 +3,7 @@ name: Import public repos into monorepo (subtree)
 on:
   workflow_dispatch: {}
 
+# We’ll set the token perms here, but also compute the branch dynamically.
 permissions:
   contents: write
 
@@ -11,8 +12,11 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  TARGET_BRANCH: main
+  # Keep your list as URL:DEST. Same account is fine.
   REPOS: |
+    https://github.com/fedemenstahgriltrocast-max/ganter-beast.git:apps/ganter-beast
+    https://github.com/fedemenstahgriltrocast-max/brasster-boogie.git:apps/brasster-boogie
+    https://github.com/fedemenstahgriltrocast-max/glowing-meme.git:apps/glowing-meme
     https://github.com/fedemenstahgriltrocast-max/agents-starter.git:apps/agents-starter
     https://github.com/fedemenstahgriltrocast-max/vllm.git:apps/vllm
     https://github.com/fedemenstahgriltrocast-max/ollama.git:apps/ollama
@@ -35,28 +39,36 @@ jobs:
   import:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout super repo
+      - name: Determine run branch
+        id: meta
+        run: |
+          # GitHub sets github.ref to refs/heads/<branch> for workflow_dispatch
+          ref="${GITHUB_REF##*/}"
+          echo "branch=$ref" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout super repo (same branch we ran from)
         uses: actions/checkout@v4
         with:
+          # Checkout the exact branch the button used (gh-pages, main, etc.)
+          ref: ${{ steps.meta.outputs.branch }}
           fetch-depth: 0
-          ref: ${{ env.TARGET_BRANCH }}
 
       - name: Configure git identity
         run: |
           git config user.name "monorepo-import-bot"
           git config user.email "actions@users.noreply.github.com"
 
-          - name: Import each repo via subtree (public)
+      - name: Import each repo via subtree (public)
         shell: bash
         run: |
           set -euo pipefail
           IFS=$'\n'
           for raw in $REPOS; do
-            # trim whitespace + CRLF
+            # Trim whitespace + CRLF
             line="$(echo "$raw" | tr -d '\r' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
             [ -z "$line" ] && continue
 
-            # split on the LAST colon: URL:DEST
+            # Split on the LAST colon: URL:DEST
             url="${line%:*}"
             dest="${line##*:}"
             if [[ -z "$url" || -z "$dest" ]]; then
@@ -70,29 +82,29 @@ jobs:
             echo "----"
             echo "Importing ${url} → ${dest}"
 
+            # Add remote and fetch
             git remote remove "$alias" >/dev/null 2>&1 || true
             git remote add "$alias" "$url"
             git fetch --prune "$alias"
 
-            # detect default branch (fallback: main)
+            # Detect default branch of the source (fallback: main)
             default_branch="$(git remote show "$alias" | sed -n 's/.*HEAD branch: //p')"
             if [ -z "$default_branch" ]; then default_branch="main"; fi
-            echo "Default branch detected for $repo_name: $default_branch"
+            echo "Default branch for $repo_name: $default_branch"
 
-            # Is 'dest' already tracked in the repo? (git-aware check)
+            # Decide add vs pull using git's tree (not filesystem)
             if git ls-tree -d --name-only HEAD "$dest" 2>/dev/null | grep -qx "$dest"; then
               echo "Tracked at HEAD → subtree PULL update..."
               git subtree pull --prefix="$dest" "$alias" "$default_branch" -m "Update ${repo_name} into ${dest}"
             else
               echo "Not tracked yet → subtree ADD import..."
-              # If a stray local dir exists from previous runs, remove it so 'add' can create it
-              if [ -d "$dest" ]; then
-                rmdir "$dest" 2>/dev/null || true
-              fi
+              # If a stray local dir exists from a previous failed attempt, remove it
+              if [ -d "$dest" ]; then rmdir "$dest" 2>/dev/null || true; fi
               git subtree add --prefix="$dest" "$alias" "$default_branch" -m "Import ${repo_name} into ${dest}"
             fi
 
             git remote remove "$alias" || true
           done
 
-          git push origin "${TARGET_BRANCH}"
+          # Push back to the exact branch we checked out
+          git push origin "${{ steps.meta.outputs.branch }}"
