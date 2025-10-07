@@ -14,8 +14,6 @@ env:
   TARGET_BRANCH: main
   # One per line: <FULL REPO URL>.git : <destination folder in this repo>
   REPOS: |
-    https://github.com/fedemenstahgriltrocast-max/brasster-boogie.git:apps/brasster-boogie
-    https://github.com/fedemenstahgriltrocast-max/glowing-meme.git:apps/glowing-meme
     https://github.com/fedemenstahgriltrocast-max/agents-starter.git:apps/agents-starter
     https://github.com/fedemenstahgriltrocast-max/vllm.git:apps/vllm
     https://github.com/fedemenstahgriltrocast-max/ollama.git:apps/ollama
