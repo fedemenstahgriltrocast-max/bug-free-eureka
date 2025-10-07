@@ -1,24 +1,13 @@
-name: repo-clean
+name: Monorepo cleanup (delete path + stop Jekyll)
 
 on:
-  workflow_dispatch:
-    inputs:
-      path_to_delete:
-        description: "Path (directory or file) to remove"
-        required: true
-        default: "apps/llama-cpp-python/vendor/llama.cpp"
-      also_disable_pages:
-        description: "Disable GitHub Pages (stop Pages/Jekyll workflow)"
-        required: false
-        default: "false"
+  workflow_dispatch: {}
 
 permissions:
   contents: write
-  pages: write   # needed only if disabling Pages
-  id-token: write
 
 jobs:
-  clean:
+  cleanup:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout main
@@ -29,47 +18,52 @@ jobs:
 
       - name: Configure git identity
         run: |
-          git config user.name "repo-clean-bot"
+          git config user.name  "monorepo-cleanup-bot"
           git config user.email "actions@users.noreply.github.com"
 
-      - name: Remove path (handles dirs, files, or submodules)
+      - name: Remove vendor/llama.cpp and add .nojekyll
         shell: bash
         run: |
           set -euo pipefail
-          P="${{ github.event.inputs.path_to_delete }}"
-          echo "Target to remove: $P"
 
-          # If path is a submodule, remove its .gitmodules entry too
-          if [ -f .gitmodules ] && git config -f .gitmodules --name-only --get-regexp '^submodule\.' | grep -q "$P"; then
-            echo "Detected submodule entry for $P -> removing"
-            git config -f .gitmodules --remove-section "submodule.$P" || true
-            git add .gitmodules
-          fi
-
-          # Remove tracked files/dirs (quietly)
-          if git ls-files --error-unmatch -- "$P" >/dev/null 2>&1; then
-            git rm -rqf -- "$P"
-          elif [ -d "$P" ] || [ -f "$P" ]; then
-            # Path exists but may be untracked—delete from FS and stage
-            rm -rf -- "$P"
-            git add -A
+          # 1) Delete the directory (ignore if missing)
+          TARGET_PATH="apps/llama-cpp-python/vendor/llama.cpp"
+          if [ -e "$TARGET_PATH" ]; then
+            echo "Deleting $TARGET_PATH ..."
+            git rm -r -f "$TARGET_PATH"
           else
-            echo "Path not found in repo: $P (nothing to do)"
+            echo "Path not found (skipping): $TARGET_PATH"
           fi
 
-          # Commit removal if there are changes
+          # 2) Add `.nojekyll` to stop Pages from using Jekyll
+          # (safe to run multiple times)
+          if [ ! -f ".nojekyll" ]; then
+            echo "Creating .nojekyll at repository root"
+            touch .nojekyll
+            git add .nojekyll
+          else
+            echo ".nojekyll already present"
+          fi
+
+          # 3) Disable any Action workflows that look like Jekyll
+          mkdir -p .github/workflows/disabled
+          shopt -s nullglob
+          moved_any=false
+          for f in .github/workflows/*jekyll*.yml .github/workflows/*jekyll*.yaml; do
+            base="$(basename "$f")"
+            echo "Disabling workflow: $base"
+            git mv "$f" ".github/workflows/disabled/${base}.disabled"
+            moved_any=true
+          done
+          $moved_any || echo "No Jekyll workflow files found."
+
+          # Commit only if there are changes
           if ! git diff --cached --quiet; then
-            git commit -m "chore: remove ${P}"
-            git push origin main
+            git commit -m "chore: remove vendor/llama.cpp, add .nojekyll, disable Jekyll workflows"
           else
             echo "No changes to commit."
           fi
 
-      - name: Disable GitHub Pages (optional)
-        if: ${{ github.event.inputs.also_disable_pages == 'true' }}
-        uses: actions/configure-pages@v5
-        with:
-          # Setting to 'disabled' via API isn't exposed here, so we overwrite
-          # the Pages config to point to a non-existent branch to effectively stop deployments.
-          # Simpler alternative below in Manual path B-2.
-          static_site_generator: "disabled"
+      - name: Push to main
+        run: git push origin main
+
