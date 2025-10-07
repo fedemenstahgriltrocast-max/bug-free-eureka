@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TinyLLM Chatbot</title>
+    <meta name="viewport" content="width=device-width, height=device-height, maximum-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            overflow: hidden; /* Hide scrollbars */
+        }
+        /* Style for links */
+        a {
+            color: #6d6d6d;
+            font-size: 12px;
+            text-decoration: none;
+        }
+        #container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        #messageContainer {
+            flex-grow: 1;
+            overflow-y: scroll; /* Enable vertical scrolling */
+            border-bottom: 1px solid #ccc;
+            padding: 10px;
+        }
+        #inputContainer {
+            border-top: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px; /* Add margin for spacing */
+        }
+        #messageInput {
+            flex: 1; /* Take up all available space */
+            width: 100%;
+            padding: 5px;
+            margin-right: 10px; /* Add margin for spacing */
+            resize: none; /* Disable textarea resizing */
+            height: 40px;
+        }
+        #sendButton {
+            margin-left: 10px; /* Add margin for spacing */
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        /* Custom wrapper for the textarea and handle */
+        .textarea-wrapper {
+            position: relative;
+            width: 100%;
+            flex: 1;
+            margin-right: 20px; /* Add margin for spacing */
+        }
+        /* Handle for resizing the textarea */
+        .resize-handle {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 5px;
+            background-color: #cccccc;
+            border-radius: 2px;
+            cursor: ns-resize;
+        }
+        .user-text {
+            color: red;
+        }
+        .ref-text {
+            color: rgb(191, 191, 191);
+            /* indent */
+            padding-left: 20px;
+        }
+        .user-input {
+            display: flex;
+            justify-content: space-between;
+            align-items: center; 
+        }
+        .code-box code {
+            display: block; /* Ensures line breaks are preserved */
+            font-family: "Courier New", Courier, monospace; /* Use a monospace font for code */
+            font-size: 14px;
+            line-height: 1.5;
+            color: #333;
+        }
+        /* Style for code container */
+        .code-container {
+            position: relative;
+        }
+        /* Style for code-box */
+        .code-box {
+            background-color: #f4f4f4;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            overflow-x: auto; /* Enable horizontal scrolling for long lines of code */
+        }
+        /* Style for copy button */
+        .copy-button {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .copy-button:hover {
+            background-color: #45a049;
+        }
+        .notification {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background-color: #4CAF50; /* Green color for success */
+            color: #fff;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .notification.error {
+            background-color: #f44336; /* Red color for error */
+        }
+        #footer {
+            text-align: center; 
+            font-size: 12px; 
+            color: #888; 
+            padding-top: 5px;
+        }
+        #footer a {
+            color: #888; 
+            text-decoration: none; 
+        }
+        /* Style for the pop-up dialogue */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        .popup-box {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            max-width: 800px;
+            overflow-y: auto;
+        }
+        .popup-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .popup-content {
+            margin-bottom: 0px;
+        }
+        .popup-content-text {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        .popup-table-container {
+            height: 60vh; /* Set the height to 60% of the viewport height */
+            overflow-y: auto; /* Enable vertical scrolling */
+            /* add border to table */
+            border: 1px solid #868686;
+            border-radius: 5px;
+        }
+        .popup-divider {
+            margin: 20px 0;
+            border-top: 1px solid #727272;
+        }
+        .popup-button-container {
+            /* set the buttons in the middle of the div */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            /* add margin to the top of the buttons */
+            margin-top: 20px;
+        }
+        .dialogue-button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .dialogue-button:hover {
+            background-color: #0056b3;
+        }
+        .dialogue-button-cancel {
+            padding: 10px 20px;
+            background-color: #dc3545;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .dialogue-button-cancel:hover {
+            background-color: #c82333;
+        }
+        .button-container {
+            display: flex;
+            flex-direction: column;
+        }
+        .table-container {
+            height: 80vh; /* Set the height to 90% of the viewport height */
+            overflow-y: auto; /* Enable vertical scrolling */
+            /* add border to table */
+            border: 1px solid #ddd;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            padding: 5px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .prompt-value {
+            width: calc(100% - 10px);
+            height: 40px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 5px;
+        }
+        .select-value {
+            width: calc(100% - 10px);
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 5px;
+        }
+        .leftcolumn {
+            width: 20px;
+        }
+        .rightcolumn {
+            width: 100%;
+        }
+        @media only screen and (max-width: 430px) {
+            /* Styles for iPhone or devices with smaller screens */
+            body {
+                font-family: Arial, sans-serif;
+                overflow: hidden; /* Hide scrollbars */
+                font-size: 16px;
+            }
+            #container {
+                display: flex;
+                flex-direction: column;
+                height: 90vh;
+            }
+            #messageContainer {
+                flex-grow: 1;
+                overflow-y: scroll; /* Enable vertical scrolling */
+                border-bottom: 1px solid #ccc;
+                box-sizing: border-box;
+                padding: 10px;
+                padding-top: 30px;
+            }
+            #inputContainer {
+                border-top: 1px solid #ccc;
+                padding: 10px;
+                margin-bottom: 10px; /* Add margin for spacing */
+                box-sizing: border-box;
+            }
+        }
+    </style>
+    <div class="popup-overlay" id="dialogueOverlay">
+        <div class="popup-box" style="width: 90%;">
+            <h2 class="popup-title">System Settings</h2>
+            <div class="popup-content">
+                <p class="popup-content-text">The TinyLLM Chatbot can be customized by changing the prompts used to generate responses.</p> 
+                <form id="settingsForm">
+                    <div class="popup-table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="leftcolumn">Prompt</th>
+                                    <th class="rightcolumn">Template</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div class="popup-divider"></div>
+                    <div class="popup-button-container">
+                        <div id="popup-buttons">
+                            <button type="button" class="dialogue-button" id="saveButton" onclick="saveSettings()">Save</button> 
+                            <button type="button" class="dialogue-button" id="resetButton" onclick="resetSettings()">Reset</button>
+                            <button type="button" class="dialogue-button-cancel" onclick="closeDialogue()">Cancel</button> 
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="popup-overlay" id="debugOverlay">
+        <div class="popup-box" style="width: 90%;">
+            <h2 class="popup-title">Session Conversation Thread</h2>
+            <div class="popup-content">
+                <form id="settingsForm">
+                    <div class="popup-table-container" id="conversation">
+                        JSON session data will be displayed here
+                    </div>
+                    <div class="popup-divider"></div>
+                    <div class="popup-button-container">
+                        <div id="popup-buttons">
+                            <button type="button" class="dialogue-button" onclick="convCopy()">Copy</button>
+                            <button type="button" class="dialogue-button-cancel" onclick="closeDialogue()">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="popup-overlay" id="modelOverlay">
+        <div class="popup-box" style="width: 90%;">
+            <h2 class="popup-title">LLM Models</h2>
+            <div class="popup-content">
+                <p class="popup-content-text">Use dropdown to select a model to use for the chatbot.</p>
+                <form id="modelForm">
+                    <div class="popup-table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="leftcolumn">Select Model</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <select id="modelSelect" class="select-value">
+                                            <option value="gpt2">GPT-2</option>
+                                            <option value="gpt3">GPT-3</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p>
+                                            <strong>Current Model:</strong> <span id="currentModel">FPO</span>
+                                        </p>  
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>  
+                                        <p>
+                                            <strong>List of Models:</strong> <br>
+                                            <span id="modelList">FPO</span>
+                                        </p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+                <div class="popup-divider"></div>
+                <div class="popup-button-container">
+                    <div id="popup-buttons">
+                        <button type="button" class="dialogue-button" onclick="saveModel()">Select</button>
+                        <button type="button" class="dialogue-button-cancel" onclick="closeDialogue()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+
+        // Pop-up dialogue functions
+
+        // Function to open the settings dialogue
+        function openDialogue() {
+            document.getElementById("dialogueOverlay").style.display = "flex";
+            // First clear the form from any previous settings
+            document.querySelector('tbody').innerHTML = '';
+            // Fetch the current settings and populate the form
+            fetch('/prompts')
+                .then(response => response.json())
+                .then(data => {
+                    Object.entries(data).forEach(([name, value]) => {
+                        // Skip if name is READONLY and value is True
+                         if (name === 'READONLY' && value === true) {
+                            // Hide saveButton and resetButton element
+                            document.getElementById('saveButton').style.display = 'none';
+                            document.getElementById('resetButton').style.display = 'none';
+                            // Change popup-title content to "System Settings (Read-Only)"
+                            document.querySelector('.popup-title').textContent = 'System Settings (Read-Only)';
+                            return;
+                        }
+                        document.querySelector('tbody').innerHTML += `
+                            <tr>
+                                <td>${name}</td>
+                                <td>
+                                    <textarea id="${name}" class="prompt-value" oninput="highlightTextarea(this)" onpaste="handlePaste(event)">${value}</textarea>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                });
+        }
+
+        // Function to open the model selection dialogue
+        function openModelDialogue() {
+            console.log('Opening model dialogue');
+            document.getElementById("modelOverlay").style.display = "flex";
+            // First clear the form from any previous settings
+            const modelSelect = document.getElementById('modelSelect');
+            modelSelect.innerHTML = '';
+            // Fetch the current models and populate the form
+            fetch('/models')
+            .then(response => response.json())
+            .then(data => {
+                const currentModel = getModel();
+                document.getElementById('currentModel').textContent = currentModel;
+                // List models as bullets
+                const modelList = document.getElementById('modelList');
+                modelList.innerHTML = data.map(model => `<li>${model}</li>`).join('');
+                // Create options for the models
+                data.forEach(model => {
+                const option = document.createElement('option');
+                option.value = model;
+                option.textContent = model;
+                if (model === currentModel) {
+                    option.selected = true;
+                }
+                modelSelect.appendChild(option);
+                });
+            });
+        }
+
+        // Function to read the footer and extract the model
+        function getModel() {
+            const footer = document.getElementById('footer').textContent;
+            const model = footer.split(' - ')[1];
+            return model;
+        }
+
+        // Function to save the selected model
+        function saveModel() {
+            const modelSelect = document.getElementById('modelSelect');
+            const selectedModel = modelSelect.value;
+            console.log('Selected model:', selectedModel);
+            // Send the selected model to server via socketio message
+            socket.emit('model', selectedModel);
+            // Close the dialogue
+            closeDialogue();
+        }
+
+        // Function to highlight the textarea when changed
+        function highlightTextarea(textarea) {
+            textarea.style.backgroundColor = '#ffffcc';
+        }
+    
+        // Generic function to close the dialogue
+        function closeDialogue() {
+            document.getElementById("dialogueOverlay").style.display = "none";
+            document.getElementById("debugOverlay").style.display = "none";
+            document.getElementById("modelOverlay").style.display = "none";
+            // Set focus back to the text input field
+            var textInput = document.getElementById("messageInput");
+            textInput.focus();
+        }
+
+        // Function to reset the settings to the default values
+        function resetSettings() {
+            // Verify that the user wants to reset the settings
+            if (!confirm('Are you sure you want to reset the settings to the default values?')) {
+                return;
+            }
+            // Reset the settings to the default values
+            // First clear the form from any previous settings
+            document.querySelector('tbody').innerHTML = '';
+            fetch('/resetprompts')
+                .then(response => response.json())
+                .then(data => {
+                    Object.entries(data).forEach(([name, value]) => {
+                        document.querySelector('tbody').innerHTML += `
+                            <tr>
+                                <td>${name}</td>
+                                <td>
+                                    <textarea id="${name}" class="prompt-value" oninput="highlightTextarea(this)">${value}</textarea>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                });
+        }
+
+        // Function to save the settings to the server
+        function saveSettings() {
+            // Combine name and value into a JSON payload
+            const payload = {};
+            const form = document.getElementById("settingsForm");
+            for (let i = 0; i < form.elements.length; i++) {
+                const element = form.elements[i];
+                if (element.tagName === "TEXTAREA") {
+                    payload[element.id] = element.value;
+                }
+            }
+            console.log('Settings payload:', payload);
+            // Post the payload to the /saveprompts API endpoint
+            fetch('/saveprompts', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            })
+                .then(response => {
+                    if (response.ok) {
+                        console.log('Settings saved successfully');
+                    } else {
+                        console.error('Failed to save settings');
+                    }
+                })
+                .catch(error => {
+                    console.error('An error occurred while saving settings:', error);
+                });
+            // Close the dialogue
+            closeDialogue();
+        }
+    </script>
+    <!-- END: pop-up-dialogue -->
+    <script src="/socket.io.js"></script>
+</head>
+<body>
+    <div id="container">
+        <div id="messageContainer">
+            <!-- Messages from the server will be displayed here -->
+        </div>
+        <div id="inputContainer">
+            <!-- User prompts go here -->
+            <div class="user-input">
+                <div class="textarea-wrapper">
+                    <div class="resize-handle" id="resize-handle"></div>
+                    <textarea id="messageInput" placeholder="Enter a message, slash command, URL, or drop an image..." onkeydown="checkEnter(event)"></textarea>
+                </div>
+                <div class="button-container">
+                    <button onclick="sendMessage()">Send</button>
+                    <button onclick="openDialogue()" style="margin-top: 10px;">Settings</button>
+                </div>
+            </div>
+            <div id="footer">TinyLLM Chatbot - <a href="https://github.com/jasonacox/TinyLLM">https://github.com/jasonacox/TinyLLM</a></div>
+        </div>
+    </div>
+    <script>
+        // Variables for resizing the textarea
+        let isResizing = false;
+        let startY;
+        let startHeight;
+
+        // Function to handle session storage of model
+        function setModel(model) {
+            sessionStorage.setItem('my_model', model);
+            // Also set the model in a cookie
+            document.cookie = `my_model=${model}`;
+        }
+
+        // Function to get the model from session storage
+        function getModel() {
+            // Check to see if there is one in session storage
+            if (!sessionStorage.getItem('my_model')) {
+                // If not, check to see if we have it in the cookie
+                if (document.cookie) {
+                    const cookie = document.cookie.split(';').find(c => c.trim().startsWith('my_model='));
+                    if (cookie) {
+                        const model = cookie.split('=')[1];
+                        sessionStorage.setItem('my_model', model);
+                        return model;
+                    }
+                }
+                return '';
+            }
+            return sessionStorage.getItem('my_model');
+        }
+
+        // Image upload functions
+        const dropArea = document.getElementById('messageInput');
+
+        // Prevent default behaviors for drag/drop
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            window.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        // Turn the background of the drop area yellow on dragover
+        ['dragenter', 'dragover'].forEach(eventName => {
+            window.addEventListener(eventName, () => dropArea.style.backgroundColor = '#ffffcc', false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            window.addEventListener(eventName, () => dropArea.style.backgroundColor = '', false);
+        });
+
+        // Handle file drop
+        window.addEventListener('drop', handleDrop, false);
+
+        function handleDrop(e) {
+            console.log('File dropped');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                const file = files[0];
+                uploadFile(file);
+            }
+        }
+        function handlePaste(event) {
+            // Detect if paste is an image
+            const items = (event.clipboardData || event.originalEvent.clipboardData).items;
+            for (const item of items) {
+                if (item.kind === 'file' && item.type.includes('image')) {
+                    const file = item.getAsFile();
+                    uploadFile(file);
+                }
+            }
+            // Otherwise paste as text
+            const text = (event.clipboardData || event.originalEvent.clipboardData).getData('text');
+            if (text) {
+                event.target.value += text;
+            }
+            event.preventDefault();
+        }
+
+        // Add event listener for paste event
+        document.getElementById('messageInput').addEventListener('paste', handlePaste);
+
+        // Upload file via Socket.IO - NOT USED due to payload size limitations
+        function uploadFileSocket(file) {
+            const updateContainer = document.getElementById('messageContainer');
+            const reader = new FileReader();
+            reader.readAsDataURL(file); // Convert the file to base64-encoded string
+            reader.onloadend = function() {
+                console.log('File uploaded:', file.name, 'size:', file.size);
+                socket.emit('image_upload', {
+                    fileName: file.name,
+                    data: reader.result
+                });
+                updateContainer.innerHTML += `<p class='user-text'>Uploaded image: ${file.name}</p>`;
+                updateContainer.innerHTML += `<img src="${reader.result}" style="max-width: 50%; height: auto;">`;
+            };
+        }
+
+        // Upload file via POST request
+        function uploadFile(file) {
+            const sessionId = socket.id;  // Get the session ID from the socket connection
+            const updateContainer = document.getElementById('messageContainer');
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append("session_id", sessionId);
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Check data.result for success or failure
+                    if (data.result === 'Success') {
+                        // Convert the image data to base64 image format
+                        console.log('File uploaded:', data.filename, 'size:', data.size);
+                        updateContainer.innerHTML += `<img src="data:image/png;base64,${data.image_data}" style="max-width: 50%; height: auto;">`;
+                        // Make sure the image is visible
+                        updateContainer.scrollTop = updateContainer.scrollHeight;
+                    } else {
+                        console.error('Error uploading file:', data.error);
+                        updateContainer.innerHTML += `<p class='user-text'>Error uploading file: ${data.error}</p>`;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error uploading file:', error);
+                });
+        }
+
+        // Handle the mousedown event on the resize handle
+        document.getElementById('resize-handle').addEventListener('mousedown', (e) => {
+            e.preventDefault();
+            isResizing = true;
+            startY = e.clientY;
+            startHeight = document.getElementById('messageInput').clientHeight;
+
+            // Add event listeners for mousemove and mouseup events
+            document.addEventListener('mousemove', resizeTextarea);
+            document.addEventListener('mouseup', stopResizing);
+        });
+
+        // Function to handle the resizing of the textarea
+        function resizeTextarea(e) {
+            if (isResizing) {
+                const newY = e.clientY;
+                const newHeight = startHeight - (newY - startY);
+                // Ensure not less than 3 rows
+                if (newHeight < 40) {
+                    document.getElementById('messageInput').style.height = '40px';
+                } else {
+                    document.getElementById('messageInput').style.height = `${newHeight}px`;
+                }
+            }
+        }
+
+        // Function to stop the resizing process
+        function stopResizing() {
+            isResizing = false;
+            document.removeEventListener('mousemove', resizeTextarea);
+            document.removeEventListener('mouseup', stopResizing);
+        }
+
+        // Check for user input
+        function checkEnter(event) {
+            // If Shift-Enter is pressed in the input field, just add a newline
+            if (event.key === "Enter" && event.shiftKey) {
+                event.preventDefault(); // Prevent form submission
+                const input = event.target;
+                input.value += "\n";
+            }
+            // If Enter is pressed in the input field, send the message
+            if (event.key === "Enter" && !event.shiftKey) {
+                event.preventDefault(); // Prevent form submission
+                sendMessage();
+            }
+        }
+
+        // Connect to the Socket.IO server
+        const socket = io.connect('http://' + document.domain + ':' + location.port);
+        var incode =false;
+
+        // Function to send prompt to the server
+        function sendMessage(visible = true) {
+            var message = document.getElementById('messageInput').value;
+            if (message != "") {
+                // Send the message to the server
+                socket.emit('message', {
+                    prompt: message,
+                    show: visible
+                });
+                // Clear the input field
+                document.getElementById('messageInput').value = "";
+            }
+        }
+
+        // Send prompt to LLM
+        function sendMessagePOST(visible = true) {
+            var dataToSend = {
+                prompt: document.getElementById('messageInput').value,
+                show: visible
+            };
+
+            // Clear form
+            document.getElementById('messageInput').value = "";
+
+            // Send a POST request to the backend
+            fetch('/send_message', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(dataToSend)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Response from backend:', data);
+                // Handle the response from backend as needed
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+        // Function to handle model dialog request
+        socket.on('model_dialog', function(data) {
+            console.log('Received model dialog request');
+            openModelDialogue();
+        });
+
+        // Function to handle updates received from the server
+        socket.on('update', function(data) {
+            const updateContainer = document.getElementById('messageContainer');
+
+            if (data.voice === "done") {
+                // Try to identify code and format it for display
+                updateContainer.innerHTML = updateContainer.innerHTML.replace(/```([\s\S]*?)```/g, function(match, codeBlock) {
+                    const codeTypeMatch = codeBlock.match(/^(\w+)<br>\n/);
+                    const codeType = codeTypeMatch ? codeTypeMatch[1] : '';
+                    const formattedCodeBlock = codeBlock.replace(/^\w+<br>\n/, '').replace(/<br>\n/g, '\n');
+
+                    // Add a copy-to-clipboard button
+                    const codeBox = `<div class="code-container"><pre class="code-box" data-code-type="${codeType}"><code>${formattedCodeBlock}</code></pre><button class="copy-button" onclick="copyToClipboard(this)">Copy ${codeType} code</button></div>\n`;
+                    return codeBox;
+                });
+
+                // Convert newline and carriage return characters outside the code-box to <br>
+                updateContainer.innerHTML = updateContainer.innerHTML.replace(/`([\s\S]*?)`/g, '<code>$1</code>');
+            }
+
+            if (data.voice === "user") {
+                // Encode html tags and newlines
+                data.update = data.update.replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/[\n\r]/g, "<br>");
+                // Escape the ` character
+                data.update = data.update.replace(/`/g, "&grave;");
+                // Convert tabs to 4 spaces, convert all two or more spaces to &nbsp;
+                data.update = data.update.replace(/\t/g, "&nbsp;&nbsp;&nbsp;&nbsp;").replace(/ /g, "&nbsp;");
+                // Convert any single &nbsp; sounded by characters on either side into a regular space ( )
+                data.update = data.update.replace(/&nbsp;([^&])/g, " $1").replace(/([^&])&nbsp;/g, "$1 ");
+                updateContainer.innerHTML += "<p class='user-text'>" + data.update + "</p>";
+            }
+
+            if (data.voice === "ai") {
+                // Encode html tags and newlines
+                data.update = data.update.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                updateContainer.innerHTML += data.update.replace(/[\n\r]/g, "<br>\n");
+            }
+
+            if (data.voice === "ref") {
+                updateContainer.innerHTML += "<p class='ref-text'>" + data.update.replace(/[\n\r]/g, "<br>\n") + "</p>";
+            }
+
+            if (data.voice === "links") {
+                // {LnkID:xxx:UEL} are used to replace LnkID with URL
+                var payload = JSON.parse(data.update);
+                var messageContainer = document.getElementById("messageContainer");
+                var messageText = messageContainer.innerHTML;
+                for (var key in payload) {
+                    var linkID = key;
+                    var linkURL = payload[key];
+                    var re = new RegExp(linkID, "g");
+                    messageText = messageText.replace(re, "<a href='" + linkURL + "' target='_blank'>[Link]</a>");
+                }
+                messageContainer.innerHTML = messageText;
+            }
+
+            if (data.voice === "footer") {
+                // Update the footer with the update message
+                document.getElementById('footer').innerHTML = data.update +
+                    ' - <a href="javascript:void(0);" onclick="requestConversation()">Debug Session</a>'
+                // Set my_model into session storage
+                setModel(data.model);
+                console.log('Model set:', data.model);
+            }
+
+            if (data.voice === "conversation") {
+                document.getElementById("debugOverlay").style.display = "flex";
+                // First clear the form from any previous settings
+                document.getElementById("conversation").innerHTML = `
+                    <pre style='white-space: pre-wrap'>${escapeHtml(JSON.stringify(data.update, null, 2))}</pre>
+                `;
+            }
+
+            function escapeHtml(unsafe) {
+                return unsafe
+                    .replace(/&/g, "&amp;")
+                    .replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;")
+                    .replace(/"/g, "&quot;")
+                    .replace(/'/g, "&#039;");
+            }
+
+            if (data.voice === "image") {
+                // Display filename and image
+                if (data.generated) {
+                    updateContainer.innerHTML += `<p>Generated image</p>`;
+                } else {
+                    updateContainer.innerHTML += `<p>Uploaded image: ${data.filename}</p>`;
+                }
+                updateContainer.innerHTML += `<img src="data:image/png;base64,${data.image_data}" style="max-width: 50%; height: auto;">`;
+            }
+
+            // Ensure we always show the latest
+            updateContainer.scrollTop = updateContainer.scrollHeight;
+        });
+
+        // Function to copy conversation to clipboard
+        function convCopy(button) {
+            const conversation = document.getElementById('conversation');
+            const conversationText = conversation.textContent || conversation.innerText;
+
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(conversationText)
+                    .then(() => {
+                        showNotification('Conversation copied to clipboard!');
+                    })
+                    .catch(err => {
+                        showNotification('Unable to copy to clipboard', true);
+                        console.error('Clipboard writeText failed:', err);
+                    });
+            } else {
+                // Clipboard API not supported in this browser so use textarea hack
+                // Create a temporary textarea element to facilitate copying
+                const textarea = document.createElement('textarea');
+                textarea.value = conversationText;
+                document.body.appendChild(textarea);
+
+                // Select and copy the text
+                textarea.select();
+                document.execCommand('copy');
+
+                // Remove the temporary textarea
+                document.body.removeChild(textarea);
+
+                // Show notification
+                showNotification('Conversation copied to clipboard!');
+            }
+        }
+        
+        // Function to copy code to clipboard
+        function copyToClipboard(button) {
+            const codeBox = button.parentNode.querySelector('.code-box');
+            const codeText = codeBox.textContent || codeBox.innerText;
+
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(codeText)
+                    .then(() => {
+                        showNotification('Code copied to clipboard!');
+                    })
+                    .catch(err => {
+                        showNotification('Unable to copy to clipboard', true);
+                        console.error('Clipboard writeText failed:', err);
+                    });
+            } else {
+                // Clipboard API not supported in this browser so use textarea hack
+                // Create a temporary textarea element to facilitate copying
+                const textarea = document.createElement('textarea');
+                textarea.value = codeText;
+                document.body.appendChild(textarea);
+
+                // Select and copy the text
+                textarea.select();
+                document.execCommand('copy');
+
+                // Remove the temporary textarea
+                document.body.removeChild(textarea);
+
+                // Show notification
+                showNotification('Code copied to clipboard!');
+            }
+        }
+
+        // Function to display a notification
+        function showNotification(message, isError = false) {
+            const notification = document.createElement('div');
+            notification.className = isError ? 'notification error' : 'notification';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            // Change focus back to the input field
+            var textInput = document.getElementById("messageInput");
+            textInput.focus();
+
+            // Automatically remove the notification after a certain time (e.g., 3 seconds)
+            setTimeout(() => {
+                document.body.removeChild(notification);
+            }, 3000);
+        }
+
+        // Function to get the version of the TinyLLM Chatbot
+        function getVersion() {
+            fetch('/version')
+                .then(response => response.json())
+                .then(data => {
+                const version = data.version;
+                const model = data.model;
+                document.getElementById('footer').innerHTML = '<a href="https://github.com/jasonacox/TinyLLM">' + 
+                    'TinyLLM Chatbot</a> ' + version + ' - ' + model +
+                    ' - <a href="javascript:void(0);" onclick="requestConversation()">Debug Session</a>';
+                })
+                .catch(error => {
+                console.error('Error fetching version:', error);
+                });
+        }
+
+        // Function to request a conversation via websockets
+        function requestConversation() {
+            socket.emit('request_conversation');
+        }
+
+        // Run once on reload
+        window.onload = function() {
+            document.getElementById('messageInput').value = "{start}";
+            sendMessage(false);
+
+            // Set the focus on the text input field
+            var textInput = document.getElementById("messageInput"); 
+            textInput.focus();
+
+            // Fetch version and update footer
+            getVersion();
+
+            // Check for my_model session storage
+            const model = getModel();
+            if (model) {
+                socket.emit('model', model);
+            }
+        };
+
+        // On window resize, scroll to the bottom of the message container
+        window.onresize = function() {
+            var messageContainer = document.getElementById("messageContainer");
+            messageContainer.scrollTop = messageContainer.scrollHeight;
+        };
+
+        // Set focus on the text input field when the window is focused
+        window.onfocus = function() {
+            var textInput = document.getElementById("messageInput"); 
+            textInput.focus();
+        };
+    </script>
+</body>
+</html>

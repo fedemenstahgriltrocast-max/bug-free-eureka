@@ -1,0 +1,45 @@
+# Dockerfile for docman - TinyLLM Document Manager
+#
+#   Author: Jason A. Cox
+#   22 Sept 2024
+#   https://github.com/jasonacox/TinyLLM
+
+# Use a base image
+FROM python:3.10-slim
+
+# Setting build related env vars
+ENV MAX_CHUNK_SIZE=1024
+ENV UPLOAD_FOLDER=uploads
+ENV WEAVIATE_HOST=localhost
+ENV WEAVIATE_GRPC_HOST=localhost
+ENV WEAVIATE_PORT=8080
+ENV WEAVIATE_GRPC_PORT=50051
+ENV PORT=5001
+ENV COLLECTIONS_ADMIN=true
+
+# Set the working directory
+WORKDIR /app
+
+# Install dependencies
+RUN apt-get update && apt-get install -y binutils
+RUN pip install fastapi uvicorn jinja2 bs4 pypdf requests lxml aiohttp
+RUN pip install weaviate-client pdfreader pypandoc
+RUN pip install python-multipart
+RUN pip install pandas openpyxl
+RUN pip install python-socketio
+RUN pip install passlib bcrypt
+
+# Copy local files into container
+COPY docman.py /app/docman.py
+COPY app/rag/documents.py /app/documents.py
+COPY docman /app/docman
+COPY setup_pandoc.py /app/setup_pandoc.py
+
+# Build Pandoc
+RUN python setup_pandoc.py
+
+# Network
+EXPOSE $PORT
+
+# Run the server
+CMD uvicorn docman:app --host 0.0.0.0 --port $PORT
