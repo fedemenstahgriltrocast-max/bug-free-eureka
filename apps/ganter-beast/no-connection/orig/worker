@@ -1,0 +1,12 @@
+name = "sequence-worker"
+main = "workers-directory/sequence-worker.js"
+compatibility_date = "2024-06-28"
+workers_dev = true
+
+[vars]
+FORWARDER_BASE = "https://example-forwarder.workers.dev"
+API_TOKEN = "set-with-wrangler-secret"
+ENCRYPTION_SECRET = "set-with-wrangler-secret"
+GATEWAY_TOKEN = "set-with-wrangler-secret"
+ALLOWED_ORIGINS = "https://marxia.example,https://www.marxia.example"
+CORS_ORIGIN = "https://marxia.example"

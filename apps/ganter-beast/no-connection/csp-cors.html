@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="
+        default-src 'self';
+        script-src 'self' 'nonce-2726c7f26c' https://static.cloudflareinsights.com;
+        script-src-elem 'self' 'nonce-2726c7f26c' https://static.cloudflareinsights.com;
+        style-src 'self' 'nonce-2726c7f26c';
+        style-src-elem 'self' 'nonce-2726c7f26c';
+        img-src 'self' data: https://maps.gstatic.com https://maps.googleapis.com https://maps.google.com;
+        connect-src 'self' https:;
+        font-src 'self';
+        frame-src https://www.google.com https://maps.google.com;
+        base-uri 'self';
+        form-action 'self';
+        upgrade-insecure-requests;
+        block-all-mixed-content
+      "
+    />
+    <title>Security Controls</title>
+  </head>
+  <body>
+    <h1>Content Security Policy &amp; CORS Guidance</h1>
+    <p>
+      The CSP configuration shown here was previously embedded in
+      <code>index.html</code>. Apply it as an HTTP response header to guarantee
+      enforcement across all browsers and to complement server-level CORS
+      controls.
+    </p>
+    <section>
+      <h2>Recommended Response Headers</h2>
+      <ul>
+        <li>
+          <code>Content-Security-Policy</code> – enforce the policy below.
+        </li>
+        <li>
+          <code>Access-Control-Allow-Origin</code> – restrict to the production
+          domain.
+        </li>
+        <li>
+          <code>Strict-Transport-Security</code> – require HTTPS for at least 6
+          months.
+        </li>
+        <li>
+          <code>X-Content-Type-Options: nosniff</code> – block MIME-type
+          confusion.
+        </li>
+        <li><code>Referrer-Policy: strict-origin-when-cross-origin</code>.</li>
+      </ul>
+    </section>
+    <pre>
+&lt;meta http-equiv="Content-Security-Policy"
+        content="
+        default-src 'self';
+        script-src 'self' 'nonce-2726c7f26c' https://static.cloudflareinsights.com;
+        script-src-elem 'self' 'nonce-2726c7f26c' https://static.cloudflareinsights.com;
+        style-src 'self' 'nonce-2726c7f26c';
+        style-src-elem 'self' 'nonce-2726c7f26c';
+        img-src 'self' data: https://maps.gstatic.com https://maps.googleapis.com https://maps.google.com;
+        connect-src 'self' https:;
+        font-src 'self';
+        frame-src https://www.google.com https://maps.google.com;
+        base-uri 'self';
+        form-action 'self';
+        upgrade-insecure-requests;
+        block-all-mixed-content
+      " /&gt;</pre
+    >
+  </body>
+</html>

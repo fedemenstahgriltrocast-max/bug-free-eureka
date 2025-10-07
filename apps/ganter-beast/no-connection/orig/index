@@ -1,0 +1,696 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src-elem 'self' https://cdnjs.cloudflare.com 'nonce-2726c7f26c'; style-src-attr 'unsafe-inline'; script-src 'self' 'nonce-2726c7f26c'; font-src 'self' https://cdnjs.cloudflare.com;" />
+  <title>Marxia Cafe y Bocaditos</title>
+  <!-- Removed external Font Awesome dependency; using Unicode icons instead for broader compatibility -->
+  <style nonce="2726c7f26c">
+    :root{
+      --bg:#0e1118; --ink:#ffffff; --muted:#c6cbe3; --card:#161b29;
+      --accent:#6f7dff; --accent-2:#1ea97a; --danger:#ff4d6d;
+      --line:rgba(255,255,255,.18); --chip:#212840; --input:#0c1020;
+      --shadow:0 14px 40px rgba(0,0,0,.35); --edge:16px;
+
+      --ink-light:#0a0e1a; --muted-light:#4a5670; --card-light:#ffffff;
+      --line-light:rgba(10,14,26,.12); --input-light:#ffffff; --shadow-light:0 12px 28px rgba(0,0,0,.08);
+
+      /* Seasonal palettes */
+      --summer-1:#ff7e5f; --summer-2:#feb47b;
+      --spring-1:#a1ffce; --spring-2:#faffd1;
+
+      /* Unified spacing */
+      --section-gap:24px; --field-gap:16px;
+    }
+
+    html,body{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif}
+    body{background:var(--bg);color:var(--ink);transition:background .45s ease,color .25s ease}
+    html[data-theme="light"] body{
+      color:var(--ink-light);
+      background:linear-gradient(45deg,var(--summer-1),var(--summer-2),var(--spring-1),var(--spring-2));
+      background-size:400% 400%;animation:lightTheme 15s ease infinite;
+    }
+    @keyframes lightTheme{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+    *,*::before,*::after{
+      box-sizing:border-box;
+      transition:background-color .35s ease,color .35s ease,border-color .35s ease,box-shadow .35s ease
+    }
+
+    .wrap{max-width:1100px;margin:0 auto;padding:16px}
+
+    header{position:relative;display:flex;justify-content:center;align-items:center;margin-bottom:12px;min-height:44px}
+    header .brand{font-weight:800;letter-spacing:.3px;text-align:center;font-size:36px;line-height:1.1}
+    .brand{font-weight:800;letter-spacing:.3px;text-align:center}
+    .actions{
+      position:fixed;right:10px;top:10px;display:flex;flex-direction:column;gap:6px;align-items:flex-end;z-index:1000;
+    }
+
+    .toggle{
+      all:unset;cursor:pointer;background:transparent;border:1px solid var(--line);
+      padding:8px 14px;border-radius:999px;font-size:14px;line-height:1;color:inherit;
+    }
+    html[data-theme="light"] .toggle{border-color:var(--line-light)}
+    .btn{
+      all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:8px;
+      padding:10px 14px;border-radius:999px;background:var(--accent);color:#fff;
+      font-size:14px;font-weight:700;box-shadow:var(--shadow);line-height:1;
+    }
+    .btn.alt{background:var(--accent-2)}
+
+    .chip{
+      all:unset;cursor:pointer;padding:8px 16px;border-radius:999px;
+      background:var(--chip);color:inherit;border:1px solid var(--line);
+      font-weight:600;letter-spacing:.2px;text-align:center;min-width:64px;
+      display:flex;align-items:center;justify-content:center;
+    }
+    .chip.sel{background:var(--accent);color:#fff;box-shadow:var(--shadow)}
+    html[data-theme="light"] .chip{background:#eef1fb;border-color:var(--line-light)}
+    html[data-theme="light"] .chip.sel{background:var(--accent);color:#fff}
+    .chips{display:flex;flex-direction:column;gap:10px;margin-top:10px;align-items:center}
+    .chips .chip{width:140px;max-width:100%;padding:8px 0;min-height:36px}
+    .click-highlight{
+      background:var(--accent) !important;color:#fff !important;
+      box-shadow:0 0 0 3px rgba(111,125,255,.65),0 0 0 8px rgba(111,125,255,.25) !important;
+    }
+
+    #clearBtn{
+      font-size:12px;font-weight:700;padding:14px 28px;border-radius:999px;
+      background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.35);
+      color:inherit;box-shadow:var(--shadow);
+      display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    }
+    #clearBtn:hover{background:rgba(255,255,255,.14)}
+    html[data-theme="light"] #clearBtn{
+      background:rgba(10,14,26,.06);
+      border-color:rgba(10,14,26,.18);
+      color:var(--ink-light);
+      box-shadow:var(--shadow-light);
+    }
+    html[data-theme="light"] #clearBtn:hover{background:rgba(10,14,26,.12)}
+
+    .delivery-label{font-size:12px;font-weight:700;letter-spacing:.15px}
+
+    /* Carousel */
+    .carousel{position:relative;margin-top:50px;margin-bottom:var(--section-gap)}
+    .track{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px}
+    .track::-webkit-scrollbar{height:8px}
+    .track::-webkit-scrollbar-thumb{background:rgba(255,255,255,.25);border-radius:999px}
+    html[data-theme="light"] .track::-webkit-scrollbar-thumb{background:rgba(20,20,30,.2)}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(0,0,0,.18));border:1px solid var(--line);border-radius:var(--edge);box-shadow:var(--shadow)}
+    html[data-theme="light"] .card{background:var(--card-light);border-color:var(--line-light);box-shadow:var(--shadow-light)}
+    .product{scroll-snap-align:start;flex:0 0 calc((100% - 32px)/3);min-width:260px;padding:14px;display:flex;flex-direction:column;gap:10px;align-items:center}
+    @media (max-width:900px){.product{flex-basis:calc((100% - 16px)/2)}}
+    @media (max-width:560px){.product{flex-basis:100%}}
+    .product-image{width:100%;height:180px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;color:#ffffff;background:repeating-linear-gradient(135deg,#172043,#172043 12px,#0e132a 12px,#0e132a 24px)}
+    html[data-theme="light"] .product-image{color:#2b3766;background:repeating-linear-gradient(135deg,#eef2ff,#eef2ff 12px,#dae2ff 12px,#dae2ff 24px)}
+    .product-title{font-weight:700}
+    .product-desc{font-size:.92rem;text-align:center}
+    .product-price{font-weight:800;color:#a9c6ff}
+    html[data-theme="light"] .product-price{color:#3344aa}
+    .qty{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+    .qty button{all:unset;cursor:pointer;padding:6px 12px;font-weight:800}
+    .qty input{all:unset;width:40px;text-align:center;padding:6px 4px}
+    .arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:2}
+    .arrow button{all:unset;cursor:pointer;background:var(--chip);border:1px solid var(--line);width:42px;height:42px;border-radius:999px;display:grid;place-items:center;font-weight:900;color:#fff}
+    .arrow.left{left:-6px} .arrow.right{right:-6px}
+    html[data-theme="light"] .arrow button{background:#eef1fb;border-color:var(--line-light);color:#0a0e1a}
+
+    .panel{padding:14px;margin-top:var(--section-gap)}
+    .row{display:flex;gap:10px;align-items:center}
+    .row.wrap{flex-wrap:wrap;justify-content:space-between}
+    .muted{color:var(--muted)}
+    html[data-theme="light"] .muted{color:var(--muted-light)}
+    .hr{height:1px;background:linear-gradient(90deg,transparent,var(--line),transparent);margin:12px 0}
+    html[data-theme="light"] .hr{background:linear-gradient(90deg,transparent,var(--line-light),transparent)}
+    /* Accordion under notice */
+    .accordion{overflow:hidden;border-radius:12px;border:1px solid var(--line);margin-top:8px}
+    .acc-head{display:flex;justify-content:center;align-items:center;gap:10px;padding:10px 12px;cursor:pointer;background:rgba(255,255,255,.06)}
+    .acc-head .acc-icon{transition:transform .25s}
+    .menu-title{font-weight:800;font-size:1.5rem;color:#fff}
+    html[data-theme="light"] .menu-title{color:#000}
+    .acc-head.open .acc-icon{transform:rotate(180deg)}
+    .acc-body{max-height:0;overflow:hidden;transition:max-height .35s ease}
+    .acc-inner{padding:12px}
+    .acc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    @media (max-width:800px){.acc-grid{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width:520px){.acc-grid{grid-template-columns:1fr}}
+    .ph{height:120px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:700;color:#cfe0ff;background:repeating-linear-gradient(135deg,#1b2244,#1b2244 12px,#0e132a 12px,#0e132a 24px)}
+
+    /* Bottom split: KPIs left, totals right */
+    .split{display:grid;grid-template-columns:2fr 1fr;gap:16px;margin-top:var(--section-gap)}
+    @media (max-width:960px){.split{grid-template-columns:1fr}}
+    .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    @media (max-width:960px){.kpis{grid-template-columns:1fr}}
+    .kpi{padding:16px;text-align:center}
+    .kpi h4{margin:6px 0 8px 0}
+    .csat{display:flex;flex-direction:column;align-items:center;gap:8px}
+    .csat-face{font-size:32px;margin-bottom:8px}
+    .stars{display:flex;gap:4px;margin-bottom:8px}
+    .stars button{all:unset;cursor:pointer;font-size:20px;color:var(--muted)}
+    .csat-footer{display:flex;flex-direction:column;align-items:center;margin-top:12px}
+    .counter{margin-bottom:8px;font-size:.9rem;text-align:left;line-height:1.4}
+    .counter div{display:flex;justify-content:space-between}
+    .kpi canvas{width:100%;max-width:220px;height:80px}
+
+    .totals{padding:16px}
+    .totals .line{display:flex;justify-content:space-between;align-items:center;margin:6px 0}
+    .totals strong{font-weight:800}
+
+    /* FAB only for chat and pay */
+    .fab{position:fixed;right:20px;bottom:20px;display:flex;flex-direction:column;gap:10px;z-index:1000}
+    .fab a,.fab button{border-radius:50px;padding:8px 14px;font-size:14px;font-weight:700;line-height:1;box-shadow:0 4px 10px rgba(0,0,0,.3)}
+    .fab a{background:#25D366;color:#fff;text-decoration:none}
+
+    /* Modal + inputs */
+    dialog{border:none;padding:0;background:transparent;width:min(96vw,600px)}
+    dialog::backdrop{background:rgba(0,0,0,.6)}
+    .modal{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);display:flex;flex-direction:column;max-height:90vh;overflow:hidden;width:100%}
+    html[data-theme="dark"] .modal{background:#0b0f16;border-color:rgba(255,255,255,.28);color:#ffffff}
+    html[data-theme="light"] .modal{background:#fff;border-color:var(--line-light);box-shadow:var(--shadow-light)}
+    .modal header,.modal footer{padding:12px 14px}
+    .modal header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line)}
+    .modal main{padding:14px;display:grid;gap:14px;overflow-y:auto;flex:1}
+    .modal footer{display:flex;justify-content:flex-end;gap:10px}
+    #orderItems{max-height:200px;overflow-y:auto}
+    @media(max-width:640px){dialog{width:100vw;height:100vh;border-radius:0}}
+    .close{all:unset;cursor:pointer;font-weight:800}
+
+    .fields{display:grid;grid-template-columns:1fr 1fr;column-gap:var(--field-gap);row-gap:var(--field-gap);margin-top:10px}
+    .fields.full{grid-template-columns:1fr auto}
+    .fields + .fields{margin-top:12px}
+    @media (max-width:640px){.fields,.fields.full{grid-template-columns:1fr}}
+
+    input,textarea{width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--input);color:var(--ink);caret-color:#fff}
+    input::placeholder,textarea::placeholder{color:rgba(255,255,255,.92)}
+    html[data-theme="light"] input,html[data-theme="light"] textarea{background:var(--input-light);border-color:var(--line-light);color:var(--ink-light)}
+    html[data-theme="light"] input::placeholder,html[data-theme="light"] textarea::placeholder{color:rgba(10,14,26,.6)}
+    .items{display:grid;gap:10px}
+    .item-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}
+    .inline-qty{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+    .inline-qty button{all:unset;cursor:pointer;padding:6px 10px;font-weight:800}
+    .inline-qty span{display:inline-block;min-width:28px;text-align:center}
+    html[data-theme="dark"] .muted, html[data-theme="dark"] .panel *{color:#fff}
+    html[data-theme="dark"] input,html[data-theme="dark"] textarea{color:#fff;border-color:rgba(255,255,255,.28)}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand" data-en="Marxia Cafe y Bocaditos" data-es="Marxia Cafe y Bocaditos">Marxia Cafe y Bocaditos</div>
+      <div class="actions">
+        <button id="langBtn" class="toggle" aria-label="Toggle Language">ES</button>
+        <button id="themeBtn" class="toggle" aria-label="Toggle Theme">Dark</button>
+      </div>
+    </header>
+
+    <!-- PRODUCT CAROUSEL -->
+    <section class="carousel">
+      <div class="arrow left"><button id="prev" aria-label="Previous">‹</button></div>
+      <div class="arrow right"><button id="next" aria-label="Next">›</button></div>
+      <div id="track" class="track" aria-live="polite"></div>
+    </section>
+
+    <!-- DELIVERY NOTICE + ACCORDION -->
+    <section class="panel card">
+      <div class="muted" style="text-align:center;font-weight:700;font-size:1.25rem"
+           data-en="We deliver only: Sauces, Alborada, Guayacanes, Tarazana Brisas del Rio"
+           data-es="Entregamos en: Saucés, Alborada, Guayacanes, Tarazana Brisas del Rio">
+        We deliver only: Sauces, Alborada, Guayacanes, Tarazana Brisas del Rio
+      </div>
+
+      <div id="zoneAcc" class="accordion">
+        <div class="acc-head" role="button" aria-expanded="false">
+          <span class="acc-icon" aria-hidden="true">▾</span>
+          <span class="menu-title" data-en="Our Menu" data-es="Nuestro Menú">Our Menu</span>
+          <span class="acc-icon" aria-hidden="true">▾</span>
+        </div>
+        <div class="acc-body">
+          <div class="acc-inner">
+            <div class="acc-grid">
+              <div class="ph">Photo A</div>
+              <div class="ph">Photo B</div>
+              <div class="ph">Photo C</div>
+            </div>
+            <div class="hr"></div>
+            <div class="muted" data-en="Add any description or conditions here."
+                 data-es="Agregue aquí cualquier descripción o condición.">Add any description or conditions here.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BOTTOM SPLIT: KPIs LEFT + TOTALS RIGHT -->
+    <section class="split">
+      <div class="kpis">
+        <div class="card kpi" id="kpi1">
+          <h4 data-en="Customer Satisfaction" data-es="Satisfacción del cliente">Customer Satisfaction</h4>
+          <div class="csat">
+            <div class="csat-face" role="img" aria-live="polite">😐</div>
+            <div class="stars" id="csatStars" aria-label="Rating">
+              <button type="button" aria-label="1 star" data-val="1">☆</button>
+              <button type="button" aria-label="2 stars" data-val="2">☆</button>
+              <button type="button" aria-label="3 stars" data-val="3">☆</button>
+              <button type="button" aria-label="4 stars" data-val="4">☆</button>
+              <button type="button" aria-label="5 stars" data-val="5">☆</button>
+            </div>
+            <div class="csat-footer">
+              <button class="btn" id="rateBtn" data-en="Rate" data-es="Calificar">Rate</button>
+              <div class="muted" data-en="Keep delighting guests." data-es="Sigue encantando a los clientes.">Keep delighting guests.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card kpi" id="kpi2">
+          <h4 data-en="Visits" data-es="Visitas">Visits</h4>
+          <div class="counter">
+            <div><span data-en="Today" data-es="Hoy">Today</span>: <span id="visitsToday">0</span></div>
+            <div><span data-en="This Month" data-es="Este Mes">This Month</span>: <span id="visitsMonth">0</span></div>
+            <div><span data-en="Last Year" data-es="El año pasado">Last Year</span>: <span id="visitsYear">0</span></div>
+          </div>
+          <canvas id="visitsChart" width="180" height="80" aria-hidden="true"></canvas>
+          <div class="muted" style="margin-top:8px" data-en="Foot & site traffic." data-es="Tráfico en local y web.">Foot & site traffic.</div>
+        </div>
+
+        <div class="card kpi" id="kpi3">
+          <h4 data-en="Online Sales" data-es="Ventas en línea">Online Sales</h4>
+          <div class="counter">
+            <div><span data-en="Today" data-es="Hoy">Today</span>: <span id="salesToday">0</span></div>
+            <div><span data-en="This Month" data-es="Este Mes">This Month</span>: <span id="salesMonth">0</span></div>
+            <div><span data-en="Last Year" data-es="El año pasado">Last Year</span>: <span id="salesYear">0</span></div>
+          </div>
+          <canvas id="salesChart" width="180" height="80" aria-hidden="true"></canvas>
+          <div class="muted" style="margin-top:8px" data-en="Room to grow." data-es="Espacio para crecer.">Room to grow.</div>
+        </div>
+      </div>
+
+      <!-- TOTALS -->
+      <div class="card totals">
+        <div class="line"><span class="muted" data-en="Subtotal" data-es="Subtotal">Subtotal</span><strong id="t_sub">$0.00</strong></div>
+        <div class="line"><span class="muted" data-en="VAT 15%" data-es="IVA 15%">VAT 15%</span><strong id="t_tax">$0.00</strong></div>
+        <div class="line"><span class="muted" data-en="Delivery 3.00" data-es="Entrega 3.00">Delivery 3.00</span><strong id="t_del">$0.00</strong></div>
+        <div class="line"><span class="muted" data-en="Total" data-es="Total">Total</span><strong id="t_total">$0.00</strong></div>
+
+        <div class="hr"></div>
+        <div class="row" style="justify-content:center">
+          <button id="clearBtn" class="toggle" data-en="Clear Cart" data-es="Vaciar Carrito">Clear Cart</button>
+        </div>
+
+        <div class="hr"></div>
+        <div class="row" style="justify-content:space-between;align-items:center">
+          <div class="muted delivery-label" data-en="Delivery Time" data-es="Tiempo de entrega">Delivery Time</div>
+          <strong id="t_deliveryTime" aria-live="polite">45 min</strong>
+        </div>
+        <div class="chips" id="delTimes">
+          <button class="chip sel" data-min="45">45 min</button>
+          <button class="chip" data-min="60">1 hr</button>
+          <button class="chip" data-min="90">1 hr 30 min</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- FABs for Chat and Pay -->
+  <div class="fab">
+    <a id="chatFab" href="https://wa.me/593958741463" target="_blank" rel="noopener noreferrer" data-en="💬 Chat" data-es="💬 Chat">💬 Chat</a>
+    <button id="fabPay" class="btn alt" data-en="Pay" data-es="Pagar">Pay</button>
+  </div>
+
+  <!-- ORDER MODAL -->
+  <dialog id="orderDlg">
+    <div class="modal">
+      <header>
+        <div class="brand" data-en="Order Review" data-es="Revisión de Pedido">Order Review</div>
+        <button class="close" id="closeDlg" aria-label="Close">×</button>
+      </header>
+      <main>
+        <section>
+          <div id="orderItems" class="items"></div>
+          <div class="hr"></div>
+          <div class="row" style="justify-content:space-between">
+            <div class="muted delivery-label" data-en="Delivery Time" data-es="Tiempo de entrega">Delivery Time</div>
+            <strong id="m_deliveryTime">45 min</strong>
+          </div>
+          <div class="row" style="justify-content:space-between"><div class="muted" data-en="Subtotal" data-es="Subtotal">Subtotal</div><strong id="m_sub">$0.00</strong></div>
+          <div class="row" style="justify-content:space-between"><div class="muted" data-en="VAT 15%" data-es="IVA 15%">VAT 15%</div><strong id="m_tax">$0.00</strong></div>
+          <div class="row" style="justify-content:space-between"><div class="muted" data-en="Delivery 3.00 (included)" data-es="Entrega 3.00 (incluida)">Delivery 3.00 (included)</div><strong id="m_del">$0.00</strong></div>
+          <div class="row" style="justify-content:space-between"><div class="muted" data-en="Total" data-es="Total">Total</div><strong id="m_total">$0.00</strong></div>
+        </section>
+
+        <div class="hr"></div>
+
+        <section>
+          <div class="muted" data-en="Instructions" data-es="Instrucciones">Instructions</div>
+          <textarea id="instructions" rows="3" data-ph-en="No onions, leave at gate, etc." data-ph-es="Sin cebolla, dejar en la puerta, etc." placeholder="No onions, leave at gate, etc."></textarea>
+        </section>
+
+        <div class="hr"></div>
+        <section>
+          <div class="muted" data-en="Customer Information" data-es="Información del Cliente">Información del Cliente</div>
+          <div class="fields">
+            <input id="firstName" required data-ph-en="Name" data-ph-es="Nombre" placeholder="Name" />
+            <input id="lastName" required data-ph-en="Last name" data-ph-es="Apellido" placeholder="Last name" />
+          </div>
+          <div class="fields">
+            <input id="idNumber" required data-ph-en="Céd / RUC" data-ph-es="Céd / RUC" placeholder="Céd / RUC" />
+            <input id="phone" required data-ph-en="+593 9xx xxx xxx" data-ph-es="+593 9xx xxx xxx" placeholder="+593 9xx xxx xxx" inputmode="tel" />
+          </div>
+          <div class="fields" style="grid-template-columns:1fr;">
+            <input id="email" required type="email" data-ph-en="Email" data-ph-es="Correo electrónico" placeholder="Email" />
+          </div>
+          <div class="fields full">
+            <input id="address" required style="min-width:0" data-ph-en="Address" data-ph-es="Dirección" placeholder="Address" />
+            <button id="locBtn" class="toggle" data-en="Use my location" data-es="Usar mi ubicación">Use my location</button>
+          </div>
+          <div id="gpsNote" class="muted" style="font-size:.9rem"></div>
+        </section>
+      </main>
+      <footer>
+        <button class="toggle" id="cancelBtn" data-en="Cancel" data-es="Cancelar">Cancel</button>
+        <button class="btn alt" id="confirmBtn" data-en="Pay" data-es="Pagar">Pay</button>
+      </footer>
+    </div>
+  </dialog>
+
+  <script nonce="2726c7f26c">
+    /* CONFIG */
+    const CLOUDFLARE_WORKER_URL = ""; // optional
+    const APPS_SCRIPT_URL = "";       // optional
+    const WHATSAPP_NUMBER = "593958741463";
+    const BUSINESS = {
+      name: "Marxia Cafe y Bocaditos",
+      address: "Av. Principal y Calle A",
+      city: "Guayaquil",
+      contact: "+593 99 999 9999",
+      logo_url: ""
+    };
+
+    /* DATA */
+    const VAT = 0.15, DELIVERY_FEE = 3.00;
+    const PRODUCTS = [
+      { id:"p1", name_en:"Option 1", name_es:"Opción 1", price:3.20, desc_en:"Tortilla, Chorizo, Fried Egg, Drink", desc_es:"Tortilla, Chorizo, Huevo frito, Bebida" },
+      { id:"p2", name_en:"Option 2", name_es:"Opción 2", price:2.70, desc_en:"Tortilla, Chorizo, Drink", desc_es:"Tortilla, Chorizo, Bebida" },
+      { id:"p3", name_en:"Option 3", name_es:"Opción 3", price:2.70, desc_en:"Tortilla, Fried Egg, Drink", desc_es:"Tortilla, Huevo frito, Bebida" },
+      { id:"p4", name_en:"Option 4", name_es:"Opción 4", price:6.40, desc_en:"Tortilla, Chorizo, Fried Egg, Drink (Large)", desc_es:"Tortilla, Chorizo, Huevo frito, Bebida (Grande)" },
+      { id:"p5", name_en:"Option 5", name_es:"Opción 5", price:2.25, desc_en:"Tortilla, Drink", desc_es:"Tortilla, Bebida" },
+    ];
+
+    /* STATE */
+    let lang = localStorage.getItem('lang') || 'en';
+    let theme = localStorage.getItem('theme') || 'dark';
+    const cart = new Map();
+    let deliveryMinutes = 45;
+    let gps = { lat:null, lng:null };
+
+    /* HELPERS */
+    const $ = s => document.querySelector(s);
+    const track = $('#track');
+    const t = (en,es)=> lang==='en'?en:es;
+    const fmt = n => '$'+n.toFixed(2);
+    const highlightTimers = new WeakMap();
+    function formatDeliveryTime(mins){
+      if(mins===45) return t('45 min','45 min');
+      if(mins===60) return t('1 hr','1 hr');
+      if(mins===90) return t('1 hr 30 min','1 hr 30 min');
+      return t(`${mins} min`,`${mins} min`);
+    }
+    function updateDeliveryTimeDisplays(){
+      const display=formatDeliveryTime(deliveryMinutes);
+      const summary=$('#t_deliveryTime'); if(summary) summary.textContent=display;
+      const modalDisplay=$('#m_deliveryTime'); if(modalDisplay) modalDisplay.textContent=display;
+    }
+    function setPh(el){ const ph = el.getAttribute(lang==='en'?'data-ph-en':'data-ph-es'); if(ph!==null) el.setAttribute('placeholder', ph); }
+
+    function renderProducts(){
+      track.innerHTML='';
+      PRODUCTS.forEach(p=>{
+        const nm = (lang==='en'?p.name_en:p.name_es);
+        const ds = (lang==='en'?p.desc_en:p.desc_es);
+        const el = document.createElement('article');
+        el.className='product card';
+        el.innerHTML = `
+          <div class="product-image">Product Image</div>
+          <div class="product-title">${nm}</div>
+          <div class="product-desc">${ds}</div>
+          <div class="product-price">${fmt(p.price)}</div>
+          <div class="qty" aria-label="${t('Quantity','Cantidad')} ${nm}">
+            <button type="button" aria-label="${t('Decrease','Disminuir')}">−</button>
+            <input type="text" inputmode="numeric" value="${cart.get(p.id)||0}" aria-label="${t('Quantity','Cantidad')}" />
+            <button type="button" aria-label="${t('Increase','Aumentar')}">+</button>
+          </div>`;
+        const [minus,input,plus]=el.querySelectorAll('.qty>*');
+        plus.addEventListener('click',()=>{cart.set(p.id,(cart.get(p.id)||0)+1); input.value=cart.get(p.id); recalc();});
+        minus.addEventListener('click',()=>{cart.set(p.id,Math.max(0,(cart.get(p.id)||0)-1)); input.value=cart.get(p.id); recalc();});
+        input.addEventListener('input',()=>{const v=Math.max(0,Math.min(999,parseInt(input.value.replace(/\D/g,''))||0)); cart.set(p.id,v); input.value=v; recalc();});
+        track.appendChild(el);
+      });
+    }
+
+    function totals(){
+      let sub=0; PRODUCTS.forEach(p=> sub+= p.price*(cart.get(p.id)||0));
+      const tax=sub*VAT, del=sub>0?DELIVERY_FEE:0, total=sub+tax+del;
+      return {sub,tax,del,total};
+    }
+    function recalc(){
+      const {sub,tax,del,total}=totals();
+      $('#t_sub').textContent=fmt(sub); $('#t_tax').textContent=fmt(tax);
+      $('#t_del').textContent=fmt(del); $('#t_total').textContent=fmt(total);
+    }
+
+    function syncLang(){
+      document.querySelectorAll('[data-en]').forEach(el=>{ el.textContent = el.getAttribute(lang==='en'?'data-en':'data-es'); });
+      document.querySelectorAll('[data-ph-en],[data-ph-es]').forEach(setPh);
+      $('#langBtn').textContent = lang==='en' ? 'ES' : 'EN';
+      renderProducts(); recalc();
+      updateDeliveryTimeDisplays();
+      $('#m_deliveryTime').previousElementSibling.textContent = t('Delivery Time','Tiempo de entrega');
+    }
+    function syncTheme(){
+      document.documentElement.setAttribute('data-theme', theme);
+      $('#themeBtn').textContent = theme==='light' ? t('Dark','Oscuro') : t('Light','Claro');
+    }
+    function scrollByCards(d){ const c=track.querySelector('.product'); const dx=c?(c.getBoundingClientRect().width+16):300; track.scrollBy({left:d*dx,behavior:'smooth'}); }
+
+    /* Accordion logic */
+    (function(){
+      const head = document.querySelector('#zoneAcc .acc-head');
+      const body = document.querySelector('#zoneAcc .acc-body');
+      head.addEventListener('click', ()=>{
+        const open = head.classList.toggle('open');
+        head.setAttribute('aria-expanded', open?'true':'false');
+        body.style.maxHeight = open ? body.scrollHeight+'px' : '0px';
+      });
+      // Resize guard
+      new ResizeObserver(()=>{ if(head.classList.contains('open')) body.style.maxHeight = body.scrollHeight+'px'; }).observe(body);
+    })();
+
+    /* Modal rendering */
+    function renderModal(){
+      const box=$('#orderItems'); box.innerHTML='';
+      PRODUCTS.forEach(p=>{
+        const q=cart.get(p.id)||0; if(!q) return;
+        const row=document.createElement('div'); row.className='item-row';
+        row.innerHTML=`<div><strong>${lang==='en'?p.name_en:p.name_es}</strong>
+          <div class="muted" style="font-size:.9rem">${lang==='en'?p.desc_en:p.desc_es}</div></div>
+          <div class="inline-qty" data-id="${p.id}">
+            <button aria-label="${t('Remove','Quitar')}">−</button><span>${q}</span>
+            <button aria-label="${t('Add','Agregar')}">+</button></div>`;
+        box.appendChild(row);
+      });
+      box.addEventListener('click', modalQtyHandler, {once:true});
+      const {sub,tax,del,total}=totals();
+      updateDeliveryTimeDisplays();
+      $('#m_sub').textContent=fmt(sub); $('#m_tax').textContent=fmt(tax);
+      $('#m_del').textContent=fmt(del); $('#m_total').textContent=fmt(total);
+    }
+    function modalQtyHandler(e){
+      const box=e.target.closest('.inline-qty'); if(!box) return;
+      const id=box.dataset.id; const span=box.querySelector('span');
+      if(e.target.textContent==='＋'||e.target.textContent==='+') cart.set(id,(cart.get(id)||0)+1);
+      else if(e.target.textContent==='−'||e.target.textContent==='-') cart.set(id,Math.max(0,(cart.get(id)||0)-1));
+      else return;
+      span.textContent=cart.get(id)||0; recalc(); renderModal();
+    }
+
+    /* CSAT rating */
+    function initCsat(){
+      let rating=0;
+      const stars=document.querySelectorAll('#csatStars button');
+      const face=document.querySelector('.csat-face');
+      const moods=['😞','🙁','😐','😄','🤩'];
+
+      const paint=val=>{
+        stars.forEach((s,i)=>{
+          s.textContent=i<val?'★':'☆';
+          s.style.color=i<val?'#ffd700':'var(--muted)';
+        });
+        const moodIdx=val?val-1:2;
+        face.textContent=moods[moodIdx];
+      };
+
+      stars.forEach((btn,i)=>{
+        const val=i+1;
+        btn.addEventListener('mouseenter',()=>paint(val));
+        btn.addEventListener('focus',()=>paint(val));
+        btn.addEventListener('mouseleave',()=>paint(rating));
+        btn.addEventListener('blur',()=>paint(rating));
+        btn.addEventListener('click',()=>{rating=val;paint(rating);});
+      });
+
+      $('#rateBtn').addEventListener('click',()=>{
+        alert(t('Thanks for rating!','Gracias por calificar!'));
+      });
+
+      paint(0);
+    }
+
+    /* Simple charts */
+    function drawBarChart(id,data){
+      const c=document.getElementById(id); if(!c) return;
+      const ctx=c.getContext('2d'); const w=c.width,h=c.height;
+      const max=Math.max(...data); const barW=w/data.length-10;
+      const color=getComputedStyle(document.documentElement).getPropertyValue('--accent');
+      data.forEach((v,i)=>{
+        const x=i*(barW+10)+5; const bh=(v/max)*h;
+        ctx.fillStyle=color; ctx.fillRect(x,h-bh,barW,bh);
+      });
+    }
+
+    function drawLineChart(id,data){
+      const c=document.getElementById(id); if(!c) return;
+      const ctx=c.getContext('2d'); const w=c.width,h=c.height;
+      const max=Math.max(...data); const step=w/(data.length-1);
+      const color=getComputedStyle(document.documentElement).getPropertyValue('--accent');
+      ctx.strokeStyle=color; ctx.lineWidth=2; ctx.beginPath();
+      data.forEach((v,i)=>{
+        const x=i*step; const y=h-(v/max)*h; if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+      });
+      ctx.stroke(); ctx.fillStyle=color;
+      data.forEach((v,i)=>{
+        const x=i*step; const y=h-(v/max)*h; ctx.beginPath(); ctx.arc(x,y,3,0,Math.PI*2); ctx.fill();
+      });
+    }
+
+    /* INIT */
+    renderProducts(); recalc(); syncLang(); syncTheme();
+    initCsat();
+    const visitCounts={today:25,month:600,year:7200};
+    $('#visitsToday').textContent=visitCounts.today;
+    $('#visitsMonth').textContent=visitCounts.month;
+    $('#visitsYear').textContent=visitCounts.year;
+    drawBarChart('visitsChart',[visitCounts.today,visitCounts.month,visitCounts.year]);
+
+    const salesCounts={today:12,month:320,year:2800};
+    $('#salesToday').textContent=salesCounts.today;
+    $('#salesMonth').textContent=salesCounts.month;
+    $('#salesYear').textContent=salesCounts.year;
+    drawLineChart('salesChart',[salesCounts.today,salesCounts.month,salesCounts.year]);
+
+    $('#prev').addEventListener('click',()=>scrollByCards(-1));
+    $('#next').addEventListener('click',()=>scrollByCards(1));
+    $('#langBtn').addEventListener('click',()=>{lang=(lang==='en'?'es':'en');localStorage.setItem('lang',lang);syncLang();});
+    $('#themeBtn').addEventListener('click',()=>{theme=(theme==='dark'?'light':'dark');localStorage.setItem('theme',theme);syncTheme();});
+    $('#clearBtn').addEventListener('click',e=>{e.preventDefault();cart.clear();renderProducts();recalc();});
+    $('#delTimes').addEventListener('click',e=>{
+      if(!e.target.classList.contains('chip')) return;
+      [...document.querySelectorAll('#delTimes .chip')].forEach(c=>c.classList.remove('sel'));
+      e.target.classList.add('sel'); deliveryMinutes=+e.target.dataset.min;
+      updateDeliveryTimeDisplays();
+    });
+
+    const openPay=()=>{ renderModal(); $('#orderDlg').showModal(); };
+    $('#fabPay').addEventListener('click',openPay);
+    $('#closeDlg').addEventListener('click',()=>$('#orderDlg').close());
+    $('#cancelBtn').addEventListener('click',()=>$('#orderDlg').close());
+
+    // GPS
+  $('#locBtn').addEventListener('click',async ()=>{
+    if(!navigator.geolocation){ alert(t('Geolocation not supported','Geolocalización no soportada')); return; }
+    let proceed=true;
+    if(navigator.permissions){
+      try{
+        const p=await navigator.permissions.query({name:'geolocation'});
+        if(p.state==='denied'){
+          alert(t('Location permission denied. Enable it in your device settings.','Permiso de ubicación denegado. Actívelo en la configuración de su dispositivo.'));
+          proceed=false;
+        }else if(p.state==='prompt'){
+          alert(t('Please allow location access when prompted.','Permita el acceso a la ubicación cuando se le solicite.'));
+        }
+      }catch{}
+    }else{
+      alert(t('Please allow location access when prompted.','Permita el acceso a la ubicación cuando se le solicite.'));
+    }
+    if(!proceed) return;
+    navigator.geolocation.getCurrentPosition(pos=>{
+      gps.lat=pos.coords.latitude; gps.lng=pos.coords.longitude;
+      $('#gpsNote').textContent=`GPS: ${gps.lat.toFixed(5)}, ${gps.lng.toFixed(5)}`;
+    },err=>{
+      if(err.code===err.PERMISSION_DENIED){
+        alert(t('Location permission required. Please allow access.','Se requiere permiso de ubicación. Por favor permita el acceso.'));
+        }else{
+          alert(t('Could not get location','No se pudo obtener la ubicación'));
+        }
+      },{enableHighAccuracy:true,timeout:8000});
+    });
+
+    // Submit to backend + WhatsApp
+    $('#confirmBtn').addEventListener('click', async ()=>{
+      const firstName=$('#firstName').value.trim();
+      const lastName=$('#lastName').value.trim();
+      const idNumber=$('#idNumber').value.trim();
+      const phone=$('#phone').value.trim();
+      const email=$('#email').value.trim();
+      const address=$('#address').value.trim();
+      const instructions=$('#instructions').value.trim();
+      const emailOK=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      const phoneOK=/^\+?593\d{9,10}$/.test(phone)||/^0\d{8,9}$/.test(phone);
+      if(!firstName||!lastName||!idNumber||!phoneOK||!emailOK||!address){
+        alert(t('Please fill all fields with valid data (Name, Last name, Céd/RUC, EC phone, Email, Address).',
+                'Complete todos los campos con datos válidos (Nombre, Apellido, Céd/RUC, teléfono EC, Correo, Dirección).')); return;
+      }
+      const items=PRODUCTS.map(p=>({id:p.id,name:(lang==='en'?p.name_en:p.name_es),desc:(lang==='en'?p.desc_en:p.desc_es),qty:(cart.get(p.id)||0),unit:p.price})).filter(i=>i.qty>0);
+      if(!items.length){ alert(t('Your cart is empty.','Su carrito está vacío.')); return; }
+      const {sub,tax,del,total}=totals();
+      const deliveryDisplay=formatDeliveryTime(deliveryMinutes);
+      const payload={
+        lang,timestamp:new Date().toISOString(),business:BUSINESS,
+        customer:{firstName,lastName,idNumber,phone,email,address,gps,city:""},
+        delivery:{minutes:deliveryMinutes,fee:DELIVERY_FEE,included:true,display:deliveryDisplay},
+        cart:{items,subtotal:sub,vat:tax,delivery:del,total,instructions}
+      };
+      
+      try{
+        if(CLOUDFLARE_WORKER_URL){
+          await fetch(CLOUDFLARE_WORKER_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({...payload,apps_script_url:APPS_SCRIPT_URL})});
+        }else if(APPS_SCRIPT_URL){
+          await fetch(APPS_SCRIPT_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
+        }
+      }
+      
+      catch(e){ console.warn("Backend request failed:",e); }
+      const maps=(gps.lat&&gps.lng)?`\nMaps: https://maps.google.com/?q=${gps.lat},${gps.lng}`:"";
+      const lines=items.map(i=>`• ${i.name} x${i.qty} = ${fmt(i.qty*i.unit)}`).join("\n");
+      const msg=`${t('Order','Pedido')} – ${BUSINESS.name}\n\n${t('Customer','Cliente')}: ${firstName} ${lastName}\nID: ${idNumber}\nTel: ${phone}\nEmail: ${email}\nDir: ${address}${maps}\n\n${t('Items Purchased','Artículos')}\n${lines}\n\n${t('Delivery Time','Tiempo de entrega')}: ${deliveryDisplay}\nSubtotal: ${fmt(sub)}\n${t('VAT 15%','IVA 15%')}: ${fmt(tax)}\n${t('Delivery','Entrega')}: ${fmt(del)}\n${t('Total','Total')}: ${fmt(total)}\n\n${t('Instructions','Instrucciones')}: ${instructions||'-'}`;
+      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`,'_blank');
+      $('#orderDlg').close();
+      alert(t('Order sent. We also opened WhatsApp with the details.','Pedido enviado. También abrimos WhatsApp con los detalles.'));
+    });
+
+    document.addEventListener('click',e=>{
+      const interactive=e.target.closest('button, a');
+      if(!interactive) return;
+      interactive.classList.add('click-highlight');
+      if(highlightTimers.has(interactive)) clearTimeout(highlightTimers.get(interactive));
+      const timer=setTimeout(()=>{
+        interactive.classList.remove('click-highlight');
+        highlightTimers.delete(interactive);
+      },3000);
+      highlightTimers.set(interactive,timer);
+    });
+
+    // Keyboard arrows for carousel
+    document.addEventListener('keydown',e=>{ if(e.key==='ArrowLeft')scrollByCards(-1); if(e.key==='ArrowRight')scrollByCards(1); });
+  </script>
+</body>
+</html>
+

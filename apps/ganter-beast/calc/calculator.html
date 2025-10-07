@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="es" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Marxia — Calculadora de pedidos</title>
+  <meta name="description" content="Calculadora interactiva de pedidos para Marxia Café y Bocaditos.">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+  <link rel="stylesheet" href="calculator.css">
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Orden Rápida</h1>
+      <div class="controls">
+        <button id="lang" class="toggle" aria-label="EN/ES">ES</button>
+        <button id="theme" class="toggle" aria-label="Light/Dark">🌙</button>
+      </div>
+    </header>
+
+    <div class="layout">
+      <section class="card">
+        <h2 class="title">Opciones</h2>
+        <div id="opts" class="grid"></div>
+
+        <div class="card mt-14">
+          <h2 class="title">Extras</h2>
+          <div id="extras" class="ex-list"></div>
+        </div>
+      </section>
+
+      <aside class="card">
+        <h2 class="title">Resumen</h2>
+        <div id="cart" class="cart" aria-live="polite" aria-atomic="true"></div>
+
+        <div class="totals" aria-live="polite" aria-atomic="true">
+          <div class="row"><div>Subtotal</div><div id="subtotal">—</div></div>
+          <div class="row"><div>IVA (15%)</div><div id="vat">—</div></div>
+          <div class="row"><div class="grand">TOTAL</div><div id="total" class="grand">—</div></div>
+        </div>
+
+        <div class="card mt-14">
+          <h2 class="title">Datos del cliente</h2>
+          <div class="field"><label>Nombre<input id="name" type="text" placeholder="Nombre y apellido (opcional)"></label></div>
+          <div class="field"><label>Email<input id="email" type="email" placeholder="cliente@correo.com" required></label></div>
+          <div class="field">
+            <label>WhatsApp
+              <input id="wa" type="tel" inputmode="tel" placeholder="+593 99 999 9999" value="+593 " autocomplete="tel" aria-describedby="waHelp">
+            </label>
+            <small id="waHelp" class="help">Formato: +593 99 999 9999</small>
+          </div>
+          <div class="field"><label>Dirección<input id="addr" type="text" placeholder="Calle y número" required></label></div>
+          <div class="field"><label>Email del negocio (CC)<input id="owner" type="email" placeholder="owner@marxia.com (opcional)"></label></div>
+        </div>
+
+        <button id="accept" class="accept-btn">Aceptar</button>
+      </aside>
+    </div>
+  </div>
+
+  <div id="loader" class="loader-overlay" role="status" aria-live="polite" aria-label="Enviando pedido"><div class="loader"></div></div>
+  <div id="toast" class="toast" role="alert" aria-live="assertive">¡Pedido enviado con éxito!</div>
+
+  <script src="calculator.js" type="module" defer></script>
+</body>
+</html>
