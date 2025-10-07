@@ -12,17 +12,28 @@ concurrency:
 
 env:
   TARGET_BRANCH: main
-  # ✏️ Edit this list to your needs.
-  # Each line is:  <source> : <destination-folder>
-  # You may use just a repo NAME (assumed to belong to this account),
-  # or a FULL https URL. Examples:
-  #   chattia:apps/chattia
-  #   vato:apps/vato
-  #   https://github.com/someuser/cafeteria-worker.git:apps/cafeteria
+  # One per line: <FULL REPO URL>.git : <destination folder in this repo>
   REPOS: |
-    chattia:apps/chattia
-    vato:apps/vato
-    cafeteria-worker:apps/cafeteria
+    https://github.com/fedemenstahgriltrocast-max/ganter-beast.git:apps/ganter-beast
+    https://github.com/fedemenstahgriltrocast-max/brasster-boogie.git:apps/brasster-boogie
+    https://github.com/fedemenstahgriltrocast-max/glowing-meme.git:apps/glowing-meme
+    https://github.com/fedemenstahgriltrocast-max/agents-starter.git:apps/agents-starter
+    https://github.com/fedemenstahgriltrocast-max/vllm.git:apps/vllm
+    https://github.com/fedemenstahgriltrocast-max/ollama.git:apps/ollama
+    https://github.com/fedemenstahgriltrocast-max/LibreChat.git:apps/LibreChat
+    https://github.com/fedemenstahgriltrocast-max/github-mcp-server.git:apps/github-mcp-server
+    https://github.com/fedemenstahgriltrocast-max/came-llama.git:apps/came-llama
+    https://github.com/fedemenstahgriltrocast-max/camello-purple.git:apps/camello-purple
+    https://github.com/fedemenstahgriltrocast-max/PurpleLlama.git:apps/PurpleLlama
+    https://github.com/fedemenstahgriltrocast-max/murmur.git:apps/murmur
+    https://github.com/fedemenstahgriltrocast-max/ollama-ui.git:apps/ollama-ui
+    https://github.com/fedemenstahgriltrocast-max/llama-cpp-python.git:apps/llama-cpp-python
+    https://github.com/fedemenstahgriltrocast-max/solution-ai-barista.git:apps/solution-ai-barista
+    https://github.com/fedemenstahgriltrocast-max/TinyLLM.git:apps/TinyLLM
+    https://github.com/fedemenstahgriltrocast-max/LangBot.git:apps/LangBot
+    https://github.com/fedemenstahgriltrocast-max/thorium-eter.git:apps/thorium-eter
+    https://github.com/fedemenstahgriltrocast-max/TinyLlama.git:apps/TinyLlama
+    https://github.com/fedemenstahgriltrocast-max/2checkout-python-sdk.git:apps/2checkout-python-sdk
 
 jobs:
   import:
@@ -39,29 +50,17 @@ jobs:
           git config user.name "monorepo-import-bot"
           git config user.email "actions@users.noreply.github.com"
 
-      - name: Import each repo via subtree (public only)
+      - name: Import each repo via subtree (public)
         shell: bash
-        env:
-          OWNER: ${{ github.repository_owner }}
         run: |
           set -euo pipefail
           IFS=$'\n'
           for line in $REPOS; do
             [ -z "$line" ] && continue
-            src="${line%%:*}"
+            url="${line%%:*}"
             dest="${line#*:}"
 
-            # Build URL:
-            # - If src starts with http, use as-is.
-            # - Else assume it's a repo under the same OWNER (this account).
-            if [[ "$src" == http* ]]; then
-              url="$src"
-            else
-              url="https://github.com/${OWNER}/${src}.git"
-            fi
-
-            # Derive a short alias for the remote
-            repo_name="${url##*/}"      # e.g., cafeteria-worker.git
+            repo_name="${url##*/}"      # e.g., my-repo.git
             repo_name="${repo_name%.git}"
             alias="src_${repo_name}"
 
@@ -72,17 +71,18 @@ jobs:
             git remote add "$alias" "$url"
             git fetch --prune "$alias"
 
-            # Detect default branch of source (falls back to main)
+            # Detect default branch (falls back to main)
             default_branch="$(git remote show "$alias" | sed -n 's/.*HEAD branch: //p')"
             if [ -z "$default_branch" ]; then default_branch="main"; fi
-            echo "Default branch detected: $default_branch"
+            echo "Default branch detected for $repo_name: $default_branch"
 
-            # First time → subtree add; subsequent runs → subtree pull
+            # First time → subtree add; next runs → subtree pull (update)
             if [ -d "$dest" ]; then
               echo "Folder exists → subtree PULL update..."
               git subtree pull --prefix="$dest" "$alias" "$default_branch" -m "Update ${repo_name} into ${dest}"
             else
               echo "Folder not found → subtree ADD import..."
+              mkdir -p "$dest"
               git subtree add --prefix="$dest" "$alias" "$default_branch" -m "Import ${repo_name} into ${dest}"
             fi
 
