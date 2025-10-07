@@ -27,7 +27,6 @@ env:
     https://github.com/fedemenstahgriltrocast-max/PurpleLlama.git:apps/PurpleLlama
     https://github.com/fedemenstahgriltrocast-max/murmur.git:apps/murmur
     https://github.com/fedemenstahgriltrocast-max/ollama-ui.git:apps/ollama-ui
-    https://github.com/fedemenstahgriltrocast-max/llama-cpp-python.git:apps/llama-cpp-python
     https://github.com/fedemenstahgriltrocast-max/solution-ai-barista.git:apps/solution-ai-barista
     https://github.com/fedemenstahgriltrocast-max/TinyLLM.git:apps/TinyLLM
     https://github.com/fedemenstahgriltrocast-max/LangBot.git:apps/LangBot
