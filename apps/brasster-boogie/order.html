@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Marxia Café y Bocaditos</title>
+  <meta name="description" content="Hand-crafted breakfasts, pastries, and coffee delivered across Guayaquil by Marxia Café y Bocaditos.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.marxia.com/">
+  <link rel="alternate" href="https://www.marxia.com/" hreflang="es">
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+    integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+    crossorigin="anonymous">
+  <link rel="stylesheet" href="main.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CafeOrCoffeeShop",
+    "name": "Marxia Café y Bocaditos",
+    "url": "https://www.marxia.com/",
+    "image": "https://www.marxia.com/assets/hero.jpg",
+    "servesCuisine": ["Breakfast", "Coffee", "Pastry"],
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Guayaquil",
+      "addressCountry": "EC"
+    },
+    "sameAs": [
+      "https://www.instagram.com/marxiacafe"
+    ],
+    "telephone": "+593958741463"
+  }
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#mainContent">Skip to content</a>
+  <header class="topbar" role="banner">
+    <div class="topbar__brand">
+      <span aria-hidden="true" class="logo">☕</span>
+      <p>
+        <strong id="brandTitle">Marxia Café y Bocaditos</strong>
+        <span id="brandSubtitle" data-i18n="brandSubtitle">Breakfasts, pastries &amp; catering in Guayaquil</span>
+      </p>
+    </div>
+    <nav aria-label="Quick settings" class="topbar__toggles">
+      <div class="toggle-group" role="group" aria-label="Language selection">
+        <button
+          class="toggle-button"
+          id="languageToggle"
+          type="button"
+          aria-pressed="false"
+          aria-label="Switch to Spanish"
+        >ES</button></div>
+
+      <div class="toggle-group" role="group" aria-label="Theme selection">
+        <button
+          class="toggle-button toggle-button--theme"
+          id="themeToggle"
+          type="button"
+          aria-pressed="false"
+          aria-label="Switch to dark theme"
+        >Dark</button></div></nav>
+  </header>
+
+  <main class="page" id="mainContent">
+    <section class="order" aria-labelledby="order-title">
+      <div class="order__header">
+        <h2 id="order-title" data-i18n="orderTitle">Our menu</h2>
+      </div>
+      <div id="seasonalFavorites" role="region" aria-labelledby="order-title">
+          <p class="accordion__description" data-i18n="orderSubtitle">Tap to explore our handcrafted favorites.</p>
+          <div class="gallery">
+            <div class="gallery__viewport">
+              <div class="gallery__track">
+                <img class="gallery__img" src="https://twilight-glade-ca07.distraction.workers.dev/img/cup-of-coffee" alt="Cup of Coffee">
+                <img class="gallery__img" src="https://twilight-glade-ca07.distraction.workers.dev/img/v2coffee-tortilla-eggs-sausage" alt="Coffee Tortilla Egg Sausage">
+                <img class="gallery__img" src="https://twilight-glade-ca07.distraction.workers.dev/img/tortilla" alt="Tortilla">
+                <img class="gallery__img" src="https://twilight-glade-ca07.distraction.workers.dev/img/friedEggs-sausage" alt="Fried Egg, Sausage">
+                <img class="gallery__img" src="https://twilight-glade-ca07.distraction.workers.dev/img/pepsi-cola" alt="Pepsi Cola">
+                <img class="gallery__img" src="https://twilight-glade-ca07.distraction.workers.dev/img/fanta-cola" alt="Fanta Cola">
+                <img class="gallery__img" src="https://twilight-glade-ca07.distraction.workers.dev/img/gallito-cola" alt="Gallito Cola">
+                <img class="gallery__img" src="https://twilight-glade-ca07.distraction.workers.dev/img/inca-cola" alt="Inca Cola">
+                <img class="gallery__img" src="https://twilight-glade-ca07.distraction.workers.dev/img/manzana-cola" alt="Manzana Cola">
+                <img class="gallery__img" src="https://twilight-glade-ca07.distraction.workers.dev/img/seven_up" alt="Seven Up">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <article class="panel panel--contact" aria-labelledby="contact-title">
+      <p data-i18n="contactWhatsApp">WhatsApp <a href="https://wa.me/593958741463">+593 958 741 463</a></p>
+      <p><span data-i18n="contactTitle">Entregamos en</span> <span data-i18n="contactAreas">Saucés · Alborada · Guayacanes · Tarazana · Brisas del Río</span></p>
+    </article>
+    <section class="insights" aria-labelledby="insights-title">
+      <article class="panel panel--orders" aria-labelledby="orders-title">
+        <header>
+          <h3 id="orders-title" data-i18n="ordersTitle">Order details</h3>
+          <p class="panel__meta" data-i18n="ordersMeta">Secure checkout enabled</p>
+        </header>
+        <h4 class="order-summary__heading" data-i18n="orderItems">Selected items</h4>
+        <ul class="order-summary__items" data-summary-items aria-live="polite"></ul>
+        <p class="order-summary__empty" id="orderSummaryEmpty" data-i18n="orderSummaryEmpty">Your basket is empty. Add menu favorites to see them here.</p>
+        <dl class="order-summary">
+          <div>
+            <dt data-i18n="ordersSubtotal">Subtotal</dt>
+            <dd data-summary="subtotal">$0.00</dd>
+          </div>
+          <div>
+            <dt data-i18n="ordersTax">VAT 15%</dt>
+            <dd data-summary="tax">$0.00</dd>
+          </div>
+          <div>
+            <dt data-i18n="ordersDelivery">Delivery</dt>
+            <dd data-summary="delivery">$0.00</dd>
+          </div>
+          <div class="order-summary__total">
+            <dt data-i18n="ordersTotal">Total</dt>
+            <dd data-summary="total">$0.00</dd>
+          </div>
+        </dl>
+        <div class="delivery-time" role="group" aria-labelledby="delivery-title">
+          <span id="delivery-title" data-i18n="deliveryTitle">Delivery time</span>
+          <div class="delivery-time__options">
+            <button
+              type="button"
+              class="chip"
+              aria-pressed="true"
+              data-delivery-minutes="45"
+              data-label-en="45 min"
+              data-label-es="45 min"
+            >45 min</button>
+            <button
+              type="button"
+              class="chip"
+              aria-pressed="false"
+              data-delivery-minutes="60"
+              data-label-en="1 hr"
+              data-label-es="1 hr"
+            >1 hr</button>
+            <button
+              type="button"
+              class="chip"
+              aria-pressed="false"
+              data-delivery-minutes="90"
+              data-label-en="1 hr 30 min"
+              data-label-es="1 hr 30 min"
+            >1 hr 30 min</button>
+          </div>
+          <p
+            class="delivery-time__selection"
+            data-delivery-selection
+            aria-live="polite"
+            data-i18n-skip-text="true"
+            hidden
+          ></p>
+        </div>
+        <div class="order-actions">
+          <button
+            type="button"
+            class="button button--ghost"
+            data-action="clear-cart"
+            data-i18n="clearOrder"
+            disabled
+          >Clear</button>
+        </div>
+        <button type="button" class="button button--primary" data-i18n="checkout">Secure checkout</button>
+      </article>
+
+      <header class="section-header">
+        <h2 id="insights-title" data-i18n="insightsTitle">Experience dashboard</h2>
+        <p data-i18n="insightsSubtitle"></p>
+      </header>
+      <div class="insights__grid insights__grid--metrics">
+        <article class="panel" aria-labelledby="sentiment-title">
+          <header>
+            <h3 id="sentiment-title" data-i18n="sentimentTitle">End consumer sentiment</h3>
+            <p class="panel__meta" data-i18n="sentimentUpdated">Updated every 30 minutes</p>
+          </header>
+          <div class="sentiment">
+            <div class="sentiment__score" aria-label="Average rating 4.6 out of 5">
+              <span class="sentiment__value">4.6</span>
+              <span class="sentiment__label" data-i18n="sentimentScore">Average rating</span>
+            </div>
+            <div class="sentiment__stars" role="img" aria-label="4.6 out of 5 stars">
+              ★★★★☆
+            </div>
+            <p class="sentiment__reviews" data-i18n="sentimentReviews">1,248 verified reviews</p>
+          </div>
+        </article>
+
+        <article class="panel" aria-labelledby="visitors-title">
+          <header>
+            <h3 id="visitors-title" data-i18n="visitorsTitle">Visitors</h3>
+            <p class="panel__meta" data-i18n="visitorsMeta">Foot &amp; site traffic</p>
+          </header>
+          <figure class="line-chart" aria-describedby="visitors-stats">
+            <svg viewBox="0 0 240 120" role="img" aria-labelledby="visitors-title">
+              <polyline class="line-chart__grid" points="0,100 240,100"></polyline>
+              <polyline class="line-chart__line" points="0,90 40,80 80,85 120,60 160,65 200,40 240,45"></polyline>
+            </svg>
+            <figcaption id="visitors-stats" data-i18n="visitorsCaption">Today 320 · This month 8,450 · Last year 92,300</figcaption>
+          </figure>
+        </article>
+
+        <article class="panel" aria-labelledby="sales-title">
+          <header>
+            <h3 id="sales-title" data-i18n="salesTitle">Online sales</h3>
+            <p class="panel__meta" data-i18n="salesMeta">Room to grow</p>
+          </header>
+          <figure class="line-chart" aria-describedby="sales-stats">
+            <svg viewBox="0 0 240 120" role="img" aria-labelledby="sales-title">
+              <polyline class="line-chart__grid" points="0,100 240,100"></polyline>
+              <polyline class="line-chart__line line-chart__line--accent" points="0,95 40,90 80,70 120,60 160,55 200,35 240,25"></polyline>
+            </svg>
+            <figcaption id="sales-stats" data-i18n="salesCaption">Today $620 · This month $18,400 · Last year $212,000</figcaption>
+          </figure>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <aside class="fab-group" aria-label="Floating actions">
+    <button
+      class="fab"
+      type="button"
+      id="fabLanguage"
+      aria-expanded="false"
+      aria-controls="fabLanguageMenu"
+      data-fab-label="fabLanguageLabel"
+    >🌐</button>
+    <div class="fab-menu" id="fabLanguageMenu" role="menu">
+      <button class="fab-option" role="menuitem" data-action="language" data-lang="en" aria-pressed="false">EN</button>
+      <button class="fab-option" role="menuitem" data-action="language" data-lang="es" aria-pressed="false">ES</button>
+    </div>
+    <button
+      class="fab"
+      type="button"
+      id="fabTheme"
+      aria-expanded="false"
+      aria-controls="fabThemeMenu"
+      data-fab-label="fabThemeLabel"
+    >🎨</button>
+    <div class="fab-menu" id="fabThemeMenu" role="menu">
+      <button class="fab-option" role="menuitem" data-action="theme" data-theme="light" aria-pressed="false">Light</button>
+      <button class="fab-option" role="menuitem" data-action="theme" data-theme="dark" aria-pressed="false">Dark</button>
+    </div>
+    <button class="fab" type="button" id="fabChat" aria-pressed="false" data-fab-label="fabChatLabel">💬</button>
+    <button class="fab" type="button" id="fabPay" aria-pressed="false" data-fab-label="fabPayLabel">💳</button>
+  </aside>
+  <section
+    class="drawer"
+    id="chatDrawer"
+    aria-hidden="true"
+    aria-labelledby="chatDrawerTitle"
+    hidden
+  >
+    <div class="drawer__content">
+      <header class="drawer__header">
+        <h2 id="chatDrawerTitle" data-i18n="chatTitle">Live chat</h2>
+        <button
+          type="button"
+          class="drawer__close drawer__close--text"
+          data-close-drawer
+          data-close-target="fabChat"
+          data-i18n="chatClose"
+          data-i18n-attr="aria-label"
+          data-i18n-skip-text="true"
+          aria-label="Close chat"
+        >
+          <span class="drawer__close-icon" aria-hidden="true">✕</span>
+          <span class="drawer__close-label" data-i18n="chatClose">Close chat</span>
+        </button>
+      </header>
+      <div class="drawer__body">
+        <p data-i18n="chatWelcome">Hola 👋 ¿Cómo podemos ayudarte hoy?</p>
+        <form class="chat-form">
+          <label for="chatMessage" data-i18n="chatLabel">Message</label>
+          <textarea id="chatMessage" name="message" rows="3" placeholder="Type here…" data-i18n-placeholder="chatPlaceholder"></textarea>
+          <button type="submit" class="button button--primary" data-i18n="chatSend">Send</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section
+    class="drawer"
+    id="payDrawer"
+    aria-hidden="true"
+    aria-labelledby="payDrawerTitle"
+    hidden
+  >
+    <div class="drawer__content">
+      <header class="drawer__header">
+        <h2 id="payDrawerTitle" data-i18n="payTitle">Checkout preview</h2>
+        <button
+          type="button"
+          class="drawer__close"
+          data-close-drawer
+          data-close-target="fabPay"
+          aria-label="Close"
+        >✕</button>
+      </header>
+      <div class="drawer__body">
+        <ul class="payment-list" data-payment-items aria-live="polite"></ul>
+        <p class="payment-list__empty" data-payment-empty data-i18n="orderSummaryEmpty">Your basket is empty. Add menu favorites to see them here.</p>
+        <p class="payment-list__eta" data-payment-delivery aria-live="polite" hidden></p>
+        <p class="payment-list__total">
+          <span class="payment-list__total-amount">
+            <strong data-i18n="ordersTotal">Total</strong>: <span data-payment-total>$0.00</span>
+          </span>
+          <span class="payment-list__actions">
+            <button
+              type="button"
+              class="button button--ghost button--ghost--compact"
+              data-action="clear-cart"
+              data-i18n="clearOrder"
+              disabled
+            >Clear</button>
+            <button
+              type="button"
+              class="button button--ghost button--ghost--compact"
+              data-close-drawer
+              data-close-target="fabPay"
+              data-i18n="payCloseAction"
+            >Close</button>
+          </span>
+        </p>
+        <button type="button" class="button button--primary" data-i18n="payNow">Confirm transaction</button>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer" role="contentinfo">
+    <small>© <span id="copyrightYear"></span> Marxia Café y Bocaditos. <span data-i18n="rights">All rights reserved.</span></small>
+    <p class="footer__security">
+      <span class="footer__security-icon" aria-hidden="true">
+        <i class="fa-solid fa-cloudflare"></i>
+      </span>
+      <span class="footer__security-text" data-i18n="edgeSecurity">Edge protected via Cloudflare Zero Trust</span>
+    </p>
+  </footer>
+  <script src="main.js" defer></script>
+</body>
+</html>
