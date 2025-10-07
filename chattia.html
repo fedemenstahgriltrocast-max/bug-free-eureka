@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>OPS AI Chatbot</title>
+
+<!-- Patched FontAwesome (CSP + SRI + CORS Safe) -->
+<link rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+  integrity="sha512-RXf+QSDCUqpphKAa+WAc3XQ8fE5H1aO/8e2wY+8Q1n8yVwDh1RZTf1TDN8E+u1n7eU5KyY7X2Qo+hqeZZn+UAQ=="
+  crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<style>
+/* ---------- COLOR SYSTEM ---------- */
+:root{
+  --clr-primary:#00c4ff;
+  --clr-accent :#ff3bdb;
+  --clr-accent-dark:#e000be;
+  --clr-bg  :#ffffff;
+  --clr-bg-dark:#121212;
+  --clr-tx  :#333333;
+  --clr-tx-dark:#f0f0f0;
+}
+body{margin:0;display:flex;align-items:center;justify-content:center;height:100vh;
+      font-family:'Segoe UI',Arial,sans-serif;background:var(--clr-bg);color:var(--clr-tx);
+      transition:background .3s,color .3s}
+body.dark{--clr-bg:var(--clr-bg-dark);--clr-tx:var(--clr-tx-dark)}
+
+/* ---------- CHATBOT ---------- */
+#chatbot-container{width:300px;height:540px;background:#251541;border:2px solid var(--clr-accent);
+  border-radius:18px;box-shadow:0 8px 32px #0006;display:flex;flex-direction:column;overflow:hidden}
+#chatbot-header{display:flex;justify-content:space-between;align-items:center;gap:.5rem;
+  background:linear-gradient(135deg,var(--clr-primary) 0%,var(--clr-accent) 100%);
+  color:#fff;font-weight:600;font-size:1.1rem;padding:.75rem 1rem}
+#chatbot-header .ctrl{cursor:pointer;font-size:.75rem;font-weight:500;user-select:none;opacity:.85}
+#chatbot-header .ctrl:hover{opacity:1}
+#chat-log{flex:1;overflow-y:auto;padding:1rem;background:#1b0e2d;color:#eee;font-size:.94rem}
+.chat-msg{margin:.5rem 0;max-width:90%}
+.user{margin-left:auto;background:var(--clr-primary);color:#000;padding:.5rem .7rem;border-radius:14px 14px 0 14px}
+.bot {margin-right:auto;background:#321b53;color:#fff;padding:.5rem .7rem;border-radius:14px 14px 14px 0}
+#chatbot-form-container{background:#220f3a;border-top:1px solid var(--clr-accent);padding:.55rem .7rem}
+#chatbot-input-row{display:flex;gap:.6rem}
+#chatbot-input{flex:1;background:transparent;border:none;color:#fff;font-size:.95rem;padding:.55rem .6rem}
+#chatbot-send{display:flex;align-items:center;gap:6px;background:var(--clr-accent);border:none;color:#fff;
+  font-weight:600;padding:.5rem .9rem;border-radius:8px;cursor:pointer;transition:.3s}
+#chatbot-send i{transition:transform .3s}
+#chatbot-send:hover i{transform:rotate(-45deg)}
+#chatbot-send:disabled{background:#555;cursor:not-allowed}
+.human-check{color:#ddd;font-size:.85rem;display:flex;align-items:center;margin-top:.3rem}
+.human-check input{margin-right:.4rem}
+@media(max-width:480px){#chatbot-container{height:75vh;width:90%}}
+</style>
+</head>
+<body>
+
+<!-- ---------- CHATBOT HTML ---------- -->
+<div id="chatbot-container" role="dialog" aria-modal="true">
+  <div id="chatbot-header">
+    <span id="title" data-en="OPS AI Chatbot" data-es="Chatbot OPS AI">OPS AI Chatbot</span>
+
+    <!-- tiny controls -->
+    <div>
+      <span id="langCtrl" class="ctrl">ES</span>
+      &nbsp;|&nbsp;
+      <span id="themeCtrl" class="ctrl">Dark</span>
+    </div>
+  </div>
+
+  <div id="chat-log" aria-live="polite"></div>
+
+  <div id="chatbot-form-container">
+    <form id="chatbot-input-row" autocomplete="off">
+      <input id="chatbot-input" type="text" placeholder="Type your message..." required maxlength="256"
+             data-en-ph="Type your message..." data-es-ph="Escriba su mensaje...">
+      <button id="chatbot-send" type="submit" disabled aria-label="Send">
+        <i class="fas fa-paper-plane"></i>
+      </button>
+    </form>
+    <label class="human-check">
+      <input type="checkbox" id="human-check">
+      <span id="human-label" data-en="I am human" data-es="Soy humano">I am human</span>
+    </label>
+  </div>
+</div>
+
+<!-- ---------- CHATBOT LOGIC ---------- -->
+<script>
+const qs=s=>document.querySelector(s),
+      qsa=s=>[...document.querySelectorAll(s)];
+
+/* === Language toggle === */
+const langCtrl   = qs('#langCtrl'),
+      transNodes = qsa('[data-en]'),
+      phNodes    = qsa('[data-en-ph]'),
+      humanLab   = qs('#human-label');
+
+langCtrl.onclick = () => {
+  const toES = langCtrl.textContent === 'ES';      // going EN→ES ?
+  document.documentElement.lang = toES ? 'es' : 'en';
+  langCtrl.textContent = toES ? 'EN' : 'ES';
+
+  // text nodes
+  transNodes.forEach(node => node.textContent = toES ? node.dataset.es : node.dataset.en);
+
+  // placeholders
+  phNodes.forEach(node => node.placeholder  = toES ? node.dataset.esPh : node.dataset.enPh);
+  humanLab.textContent = toES ? humanLab.dataset.es : humanLab.dataset.en;
+};
+
+/* === Theme toggle === */
+const themeCtrl = qs('#themeCtrl');
+themeCtrl.onclick = () => {
+  const dark = themeCtrl.textContent === 'Dark';
+  document.body.classList.toggle('dark', dark);
+  themeCtrl.textContent = dark ? 'Light' : 'Dark';
+};
+
+/* === Chatbot core === */
+const log   = qs('#chat-log'),
+      form  = qs('#chatbot-input-row'),
+      input = qs('#chatbot-input'),
+      send  = qs('#chatbot-send'),
+      guard = qs('#human-check');
+
+guard.onchange = () => send.disabled = !guard.checked;
+
+function addMsg(txt,cls){
+  const div = document.createElement('div');
+  div.className = 'chat-msg '+cls;
+  div.textContent = txt;
+  log.appendChild(div);
+  log.scrollTop = log.scrollHeight;
+}
+
+form.onsubmit = async e=>{
+  e.preventDefault();
+  if(!guard.checked) return;
+
+  const msg = input.value.trim();
+  if(!msg) return;
+  addMsg(msg,'user');
+  input.value=''; send.disabled=true;
+  addMsg('…','bot');
+
+  try{
+    const r = await fetch('https://your-cloudflare-worker.example.com/chat',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({message:msg})
+    });
+    const d = await r.json();
+    log.lastChild.textContent = d.reply || 'No reply.';
+  }catch{
+    log.lastChild.textContent = 'Error: Can’t reach AI.';
+  }
+  send.disabled=false;
+};
+</script>
+</body>
+</html>
