@@ -12,7 +12,6 @@ concurrency:
 
 env:
   TARGET_BRANCH: main
-  # One per line: <FULL REPO URL>.git : <destination folder in this repo>
   REPOS: |
     https://github.com/fedemenstahgriltrocast-max/agents-starter.git:apps/agents-starter
     https://github.com/fedemenstahgriltrocast-max/vllm.git:apps/vllm
@@ -52,28 +51,25 @@ jobs:
         run: |
           set -euo pipefail
           IFS=$'\n'
-          for line in $REPOS; do
+          for raw in $REPOS; do
+            line="$(echo "$raw" | tr -d '\r' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
             [ -z "$line" ] && continue
-            url="${line%%:*}"
-            dest="${line#*:}"
-
-            repo_name="${url##*/}"      # e.g., my-repo.git
-            repo_name="${repo_name%.git}"
+            url="${line%:*}"
+            dest="${line##*:}"
+            if [[ -z "$url" || -z "$dest" ]]; then
+              echo "Skipping malformed line: $line"
+              continue
+            fi
+            repo_name="${url##*/}"; repo_name="${repo_name%.git}"
             alias="src_${repo_name}"
-
             echo "----"
             echo "Importing ${url} → ${dest}"
-
             git remote remove "$alias" >/dev/null 2>&1 || true
             git remote add "$alias" "$url"
             git fetch --prune "$alias"
-
-            # Detect default branch (falls back to main)
             default_branch="$(git remote show "$alias" | sed -n 's/.*HEAD branch: //p')"
             if [ -z "$default_branch" ]; then default_branch="main"; fi
             echo "Default branch detected for $repo_name: $default_branch"
-
-            # First time → subtree add; next runs → subtree pull (update)
             if [ -d "$dest" ]; then
               echo "Folder exists → subtree PULL update..."
               git subtree pull --prefix="$dest" "$alias" "$default_branch" -m "Update ${repo_name} into ${dest}"
@@ -82,9 +78,6 @@ jobs:
               mkdir -p "$dest"
               git subtree add --prefix="$dest" "$alias" "$default_branch" -m "Import ${repo_name} into ${dest}"
             fi
-
             git remote remove "$alias" || true
           done
-
-          # Push changes back to this repo
           git push origin "${TARGET_BRANCH}"
