@@ -1,0 +1,93 @@
+name: Import public repos into monorepo (subtree)
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: monorepo-import
+  cancel-in-progress: false
+
+env:
+  TARGET_BRANCH: main
+  # ✏️ Edit this list to your needs.
+  # Each line is:  <source> : <destination-folder>
+  # You may use just a repo NAME (assumed to belong to this account),
+  # or a FULL https URL. Examples:
+  #   chattia:apps/chattia
+  #   vato:apps/vato
+  #   https://github.com/someuser/cafeteria-worker.git:apps/cafeteria
+  REPOS: |
+    chattia:apps/chattia
+    vato:apps/vato
+    cafeteria-worker:apps/cafeteria
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout super repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ env.TARGET_BRANCH }}
+
+      - name: Configure git identity
+        run: |
+          git config user.name "monorepo-import-bot"
+          git config user.email "actions@users.noreply.github.com"
+
+      - name: Import each repo via subtree (public only)
+        shell: bash
+        env:
+          OWNER: ${{ github.repository_owner }}
+        run: |
+          set -euo pipefail
+          IFS=$'\n'
+          for line in $REPOS; do
+            [ -z "$line" ] && continue
+            src="${line%%:*}"
+            dest="${line#*:}"
+
+            # Build URL:
+            # - If src starts with http, use as-is.
+            # - Else assume it's a repo under the same OWNER (this account).
+            if [[ "$src" == http* ]]; then
+              url="$src"
+            else
+              url="https://github.com/${OWNER}/${src}.git"
+            fi
+
+            # Derive a short alias for the remote
+            repo_name="${url##*/}"      # e.g., cafeteria-worker.git
+            repo_name="${repo_name%.git}"
+            alias="src_${repo_name}"
+
+            echo "----"
+            echo "Importing ${url} → ${dest}"
+
+            git remote remove "$alias" >/dev/null 2>&1 || true
+            git remote add "$alias" "$url"
+            git fetch --prune "$alias"
+
+            # Detect default branch of source (falls back to main)
+            default_branch="$(git remote show "$alias" | sed -n 's/.*HEAD branch: //p')"
+            if [ -z "$default_branch" ]; then default_branch="main"; fi
+            echo "Default branch detected: $default_branch"
+
+            # First time → subtree add; subsequent runs → subtree pull
+            if [ -d "$dest" ]; then
+              echo "Folder exists → subtree PULL update..."
+              git subtree pull --prefix="$dest" "$alias" "$default_branch" -m "Update ${repo_name} into ${dest}"
+            else
+              echo "Folder not found → subtree ADD import..."
+              git subtree add --prefix="$dest" "$alias" "$default_branch" -m "Import ${repo_name} into ${dest}"
+            fi
+
+            git remote remove "$alias" || true
+          done
+
+          # Push changes back to this repo
+          git push origin "${TARGET_BRANCH}"
