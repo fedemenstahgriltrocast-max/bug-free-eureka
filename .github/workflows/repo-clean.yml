@@ -1,0 +1,75 @@
+name: repo-clean
+
+on:
+  workflow_dispatch:
+    inputs:
+      path_to_delete:
+        description: "Path (directory or file) to remove"
+        required: true
+        default: "apps/llama-cpp-python/vendor/llama.cpp"
+      also_disable_pages:
+        description: "Disable GitHub Pages (stop Pages/Jekyll workflow)"
+        required: false
+        default: "false"
+
+permissions:
+  contents: write
+  pages: write   # needed only if disabling Pages
+  id-token: write
+
+jobs:
+  clean:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Configure git identity
+        run: |
+          git config user.name "repo-clean-bot"
+          git config user.email "actions@users.noreply.github.com"
+
+      - name: Remove path (handles dirs, files, or submodules)
+        shell: bash
+        run: |
+          set -euo pipefail
+          P="${{ github.event.inputs.path_to_delete }}"
+          echo "Target to remove: $P"
+
+          # If path is a submodule, remove its .gitmodules entry too
+          if [ -f .gitmodules ] && git config -f .gitmodules --name-only --get-regexp '^submodule\.' | grep -q "$P"; then
+            echo "Detected submodule entry for $P -> removing"
+            git config -f .gitmodules --remove-section "submodule.$P" || true
+            git add .gitmodules
+          fi
+
+          # Remove tracked files/dirs (quietly)
+          if git ls-files --error-unmatch -- "$P" >/dev/null 2>&1; then
+            git rm -rqf -- "$P"
+          elif [ -d "$P" ] || [ -f "$P" ]; then
+            # Path exists but may be untracked—delete from FS and stage
+            rm -rf -- "$P"
+            git add -A
+          else
+            echo "Path not found in repo: $P (nothing to do)"
+          fi
+
+          # Commit removal if there are changes
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: remove ${P}"
+            git push origin main
+          else
+            echo "No changes to commit."
+          fi
+
+      - name: Disable GitHub Pages (optional)
+        if: ${{ github.event.inputs.also_disable_pages == 'true' }}
+        uses: actions/configure-pages@v5
+        with:
+          # Setting to 'disabled' via API isn't exposed here, so we overwrite
+          # the Pages config to point to a non-existent branch to effectively stop deployments.
+          # Simpler alternative below in Manual path B-2.
+          static_site_generator: "disabled"
