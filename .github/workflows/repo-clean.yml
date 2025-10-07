@@ -1,4 +1,4 @@
-name: Monorepo cleanup (delete path + stop Jekyll)
+name: Fix submodules and remove llama.cpp vendor
 
 on:
   workflow_dispatch: {}
@@ -7,63 +7,57 @@ permissions:
   contents: write
 
 jobs:
-  cleanup:
+  scrub:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout main
+      - name: Checkout main (NO submodules)
         uses: actions/checkout@v4
         with:
           ref: main
           fetch-depth: 0
+          submodules: false
 
       - name: Configure git identity
         run: |
-          git config user.name  "monorepo-cleanup-bot"
+          git config user.name "submodule-scrub-bot"
           git config user.email "actions@users.noreply.github.com"
 
-      - name: Remove vendor/llama.cpp and add .nojekyll
+      - name: Remove submodule and metadata
         shell: bash
         run: |
           set -euo pipefail
+          TARGET="apps/llama-cpp-python/vendor/llama.cpp"
 
-          # 1) Delete the directory (ignore if missing)
-          TARGET_PATH="apps/llama-cpp-python/vendor/llama.cpp"
-          if [ -e "$TARGET_PATH" ]; then
-            echo "Deleting $TARGET_PATH ..."
-            git rm -r -f "$TARGET_PATH"
-          else
-            echo "Path not found (skipping): $TARGET_PATH"
+          echo "==> Remove gitlink (if any) and files"
+          # If the path is staged as a submodule (mode 160000), remove it from index
+          if git ls-files --stage "$TARGET" 2>/dev/null | grep -q '^160000'; then
+            git rm -f "$TARGET" || true
+          fi
+          # Remove any working tree leftovers
+          rm -rf "$TARGET"
+
+          echo "==> Clean .gitmodules entries"
+          # Remove possible entries under either path variant
+          if [ -f .gitmodules ]; then
+            git config -f .gitmodules --remove-section "submodule.apps/llama-cpp-python/vendor/llama.cpp" || true
+            git config -f .gitmodules --remove-section "submodule.vendor/llama.cpp" || true
+            # Also purge any lingering entry whose 'path' matches our TARGET
+            for name in $(git config -f .gitmodules --name-only --get-regexp '^submodule\..*\.path$' 2>/dev/null | sed 's/\.path$//'); do
+              p=$(git config -f .gitmodules --get "${name}.path" || true)
+              if [ "$p" = "$TARGET" ] || [ "$p" = "vendor/llama.cpp" ]; then
+                git config -f .gitmodules --remove-section "$name" || true
+              fi
+            done
+            git add .gitmodules || true
           fi
 
-          # 2) Add `.nojekyll` to stop Pages from using Jekyll
-          # (safe to run multiple times)
-          if [ ! -f ".nojekyll" ]; then
-            echo "Creating .nojekyll at repository root"
-            touch .nojekyll
-            git add .nojekyll
-          else
-            echo ".nojekyll already present"
-          fi
-
-          # 3) Disable any Action workflows that look like Jekyll
-          mkdir -p .github/workflows/disabled
-          shopt -s nullglob
-          moved_any=false
-          for f in .github/workflows/*jekyll*.yml .github/workflows/*jekyll*.yaml; do
-            base="$(basename "$f")"
-            echo "Disabling workflow: $base"
-            git mv "$f" ".github/workflows/disabled/${base}.disabled"
-            moved_any=true
-          done
-          $moved_any || echo "No Jekyll workflow files found."
-
-          # Commit only if there are changes
+          echo "==> Stage and commit changes (if any)"
+          git add -A
           if ! git diff --cached --quiet; then
-            git commit -m "chore: remove vendor/llama.cpp, add .nojekyll, disable Jekyll workflows"
+            git commit -m "chore: remove apps/llama-cpp-python/vendor/llama.cpp and scrub submodule metadata"
+            git push origin main
           else
             echo "No changes to commit."
           fi
 
-      - name: Push to main
-        run: git push origin main
 
