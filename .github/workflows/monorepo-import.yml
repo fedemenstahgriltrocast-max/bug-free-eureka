@@ -46,38 +46,53 @@ jobs:
           git config user.name "monorepo-import-bot"
           git config user.email "actions@users.noreply.github.com"
 
-      - name: Import each repo via subtree (public)
+          - name: Import each repo via subtree (public)
         shell: bash
         run: |
           set -euo pipefail
           IFS=$'\n'
           for raw in $REPOS; do
+            # trim whitespace + CRLF
             line="$(echo "$raw" | tr -d '\r' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
             [ -z "$line" ] && continue
+
+            # split on the LAST colon: URL:DEST
             url="${line%:*}"
             dest="${line##*:}"
             if [[ -z "$url" || -z "$dest" ]]; then
               echo "Skipping malformed line: $line"
               continue
             fi
+
             repo_name="${url##*/}"; repo_name="${repo_name%.git}"
             alias="src_${repo_name}"
+
             echo "----"
             echo "Importing ${url} → ${dest}"
+
             git remote remove "$alias" >/dev/null 2>&1 || true
             git remote add "$alias" "$url"
             git fetch --prune "$alias"
+
+            # detect default branch (fallback: main)
             default_branch="$(git remote show "$alias" | sed -n 's/.*HEAD branch: //p')"
             if [ -z "$default_branch" ]; then default_branch="main"; fi
             echo "Default branch detected for $repo_name: $default_branch"
-            if [ -d "$dest" ]; then
-              echo "Folder exists → subtree PULL update..."
+
+            # Is 'dest' already tracked in the repo? (git-aware check)
+            if git ls-tree -d --name-only HEAD "$dest" 2>/dev/null | grep -qx "$dest"; then
+              echo "Tracked at HEAD → subtree PULL update..."
               git subtree pull --prefix="$dest" "$alias" "$default_branch" -m "Update ${repo_name} into ${dest}"
             else
-              echo "Folder not found → subtree ADD import..."
-              mkdir -p "$dest"
+              echo "Not tracked yet → subtree ADD import..."
+              # If a stray local dir exists from previous runs, remove it so 'add' can create it
+              if [ -d "$dest" ]; then
+                rmdir "$dest" 2>/dev/null || true
+              fi
               git subtree add --prefix="$dest" "$alias" "$default_branch" -m "Import ${repo_name} into ${dest}"
             fi
+
             git remote remove "$alias" || true
           done
+
           git push origin "${TARGET_BRANCH}"
