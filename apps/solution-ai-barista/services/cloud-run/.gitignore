@@ -1,0 +1,16 @@
+# Compiled JavaScript files
+dist/
+
+# TypeScript v1 declaration files
+typings/
+
+# Node.js dependency directory
+node_modules/
+*.local
+
+# Temporary files
+.genkit/
+tmp/
+
+# Generated files
+libs/

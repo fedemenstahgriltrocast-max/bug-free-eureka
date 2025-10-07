@@ -1,0 +1,11 @@
+{
+    "name": "@ai-barista/shared",
+    "version": "1.0.0",
+    "description": "Shared code for the ai-barista project",
+    "scripts": {
+      "build": "tsc"
+    },
+    "devDependencies": {
+      "typescript": "^5.0.0"
+    }
+  }

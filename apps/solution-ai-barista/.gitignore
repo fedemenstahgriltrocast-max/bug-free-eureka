@@ -1,0 +1,8 @@
+.DS_Store
+dist
+genkit
+node_modules
+
+# Firebase files
+.firebaserc
+.firebase

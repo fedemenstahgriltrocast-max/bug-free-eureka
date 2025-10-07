@@ -1,0 +1,243 @@
+/**
+ * Copyright 2025 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+$text-1: #333;
+$text-2: #666;
+$text-3: #999;
+$line: #CCC;
+$time-bg: #EEE;
+$background: #F7F7F7;
+
+.center {
+	position: absolute;
+	top: 50%;
+	left: calc(50% + 1rem);
+	transform: translate(-50%, -50%);
+}
+
+.pic.coffee { background-image: url('../assets/coffee-logo.jpg')}
+.pic {
+	width: 4rem;
+	height: 4rem;
+	background-size: cover;
+	background-position: center;
+	border-radius: 50%;
+}
+
+.contact {
+	position: relative;
+	margin-bottom: 1rem;
+	padding-left: 5rem;
+	height: 4.5rem;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+
+	.pic {
+		position: absolute;
+		left: 0;
+	}
+
+	.name {
+		font-weight: 500;
+		margin-bottom: 0.125rem;
+	}
+
+	.message, .seen {
+		font-size: 0.9rem;
+		color: $text-3;
+	}
+}
+
+.action-grid{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    align-self: baseline;
+    place-items: center;
+}
+
+.chat {
+	position: relative;
+	
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	
+	width: 24rem;
+	height: 38rem;
+	z-index: 2;
+	box-sizing: border-box;
+	border-radius: 1rem;
+	
+	background: white;
+	box-shadow: 
+		0 0 8rem 0 rgba(black, 0.1),
+		0rem 2rem 4rem -3rem rgba(black, 0.5);
+	
+	.contact.bar {
+		flex-basis: 3.5rem;
+		flex-shrink: 0;
+		margin: 1rem;
+		box-sizing: border-box;
+	}
+	
+	.messages {
+		display: flex; 
+		flex-direction: column-reverse;
+		overflow-y: auto;
+
+		padding: 1rem;
+		background: $background;
+		flex-shrink: 2;
+		height: -webkit-fill-available;
+		
+		box-shadow: 
+			inset 0 2rem 2rem -2rem rgba(black, 0.05),
+			inset 0 -2rem 2rem -2rem rgba(black, 0.05);
+		
+		.time {
+			font-size: 0.8rem;
+			background: $time-bg;
+			padding: 0.25rem 1rem;
+			border-radius: 2rem;
+			color: $text-3;
+			width: fit-content;
+			margin: 0 auto;
+		}
+		
+		.message {
+			box-sizing: border-box;
+			padding: 0.5rem 1rem;
+			margin: 1rem;
+			background: #FFF;
+			border-radius: 1.125rem 1.125rem 1.125rem 0;
+			width: fit-content;
+			max-width: 66%;
+			
+			box-shadow: 
+				0 0 2rem rgba(black, 0.075),
+				0rem 1rem 1rem -1rem rgba(black, 0.1);
+			
+			&.user {
+				margin: 1rem 1rem 1rem auto ;
+				border-radius: 1.125rem 1.125rem 0 1.125rem;
+				background: $text-1;
+				color: white;
+			}
+			
+			.typing {
+				display: inline-block;
+				width: 0.8rem;
+				height: 0.8rem;
+				margin-right: 0rem;
+				box-sizing: border-box;
+				background: #ccc;
+				border-radius: 50%;
+				
+				&.typing-1 { animation: typing 3s infinite }
+				&.typing-2 { animation: typing 3s 250ms infinite }
+				&.typing-3 { animation: typing 3s 500ms infinite }
+			}
+
+			img {
+				max-width: -webkit-fill-available;
+				border-radius: 5%;
+				margin-top: inherit;
+			}
+		}
+	}
+	
+	.input {
+		box-sizing: border-box;
+		flex-basis: 4rem;
+		flex-shrink: 0;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		padding: .5rem;
+
+		.help {
+			width: -webkit-fill-available;
+			margin-bottom: .5rem;
+
+			.error {
+				background-color: pink;
+				border: 1px solid red;
+				border-radius: 15px;
+				margin: 20px 0;
+				overflow: auto;
+				padding: 20px;
+				text-wrap: auto;
+			}
+
+			button {
+				margin: .1rem;
+				width: inherit;
+			}
+		}
+
+		.forms {
+			display: flex;
+			align-items: center;
+			width: -webkit-fill-available;
+
+			.form-field {
+				width: -webkit-fill-available;
+			}
+		}	
+
+		::ng-deep {
+			.mat-mdc-form-field-infix {
+				display: flex;
+			}
+		}
+		
+		.media-preview {
+			max-width: 50px;
+			border-radius: 5%;
+		}
+	}
+}
+
+@keyframes typing {
+	0%, 75%, 100% {
+		transform: translate(0, 0.25rem) scale(0.9);
+		opacity: 0.5;
+	}
+	
+	25% {
+		transform: translate(0, -0.25rem) scale(1);
+		opacity: 1;
+	}
+}
+
+@media screen and (max-width: 600px) {
+	.chat {
+		width: 100%;
+		height: 100%;
+		border-radius: 0rem;
+		height: calc(100vh - 56px);
+	}
+	
+	.center {
+		position: relative;
+		top: 50%;
+		left: calc(50%);
+		width: 100vw;
+	}
+}
+

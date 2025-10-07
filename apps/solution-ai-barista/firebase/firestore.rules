@@ -1,0 +1,12 @@
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // In-progress session with the agent
+    match /agentSessions/{userId} {
+      allow read, write: if false;
+      // Access is only allowed by Admin SDK
+    }
+
+    // Final orders after submission are stored at /submittedOrders/{userId}/orders/{orderId}
+    // But access is only allowed by Admin SDK
+  }
+}

@@ -1,0 +1,81 @@
+<!--
+ Copyright 2025 Google LLC
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
+<div class="chat center">
+  <div class="contact bar">
+    <div class="pic coffee"></div>
+    <div class="name">Chat with your AI Barista</div>
+    <div class="seen">Today at 11:11am</div>
+  </div>
+  <div id="chat" class="messages">
+    @if (chatService.loading()) {
+      <div class="message barista">
+        <div class="typing typing-1"></div>
+        <div class="typing typing-2"></div>
+        <div class="typing typing-3"></div>
+      </div>
+    }
+    @for (entry of chatService.history(); track entry; let i = $index) {
+        @if (entry.role === 'user') {
+          <div class="message user">
+            {{ entry.text }}
+            @if (entry.media && entry.media.downloadUrl) {
+              <img [src]="entry.media.downloadUrl">
+            }
+          </div>
+        }
+        @if (entry.role === 'agent') {
+          <div class="message barista">
+            {{ entry.text }}
+          </div>
+        }
+    }
+    <div class="time">Today at 11:11am</div>
+  </div>
+  <form class="input">
+    <div class="help">
+      @if (chatService.error()) {
+        <pre class="error">{{ chatService.error()?.text }}</pre>
+      }
+      @for (response of chatService.suggestedResponses(); track response; let index = $index) {
+        <button (click)="ask(response)" mat-flat-button>{{ response }}</button>
+      }
+    </div>
+    <div class="forms">
+      <mat-form-field class="form-field" appearance="outline">
+        <mat-label>Chat with our agent</mat-label>
+        <textarea
+          matInput
+          (keypress)="keyPress($event)"
+          [formControl]="chatFormControl"
+          placeholder="Type a message...">
+        </textarea>
+        @if (mediaStorageService.media()) {
+          <img [src]="mediaStorageService.media()?.downloadUrl" class="media-preview">
+        }
+      </mat-form-field>
+      <div class="action-grid">
+        <button mat-icon-button (click)="ask()" [disabled]="chatService.loading() || !chatFormControl.value"><mat-icon>send</mat-icon></button>
+        <div></div>
+        <button mat-icon-button (click)="confirmOrder()" [disabled]="chatService.loading()"><mat-icon>coffee</mat-icon></button>
+        <button mat-icon-button (click)="file_input.click()" [disabled]="chatService.loading()">
+          <mat-icon>add_a_photo</mat-icon>
+          <input #file_input type="file" accept="image/*" style="display:none" (change)="setFileData($event)">
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

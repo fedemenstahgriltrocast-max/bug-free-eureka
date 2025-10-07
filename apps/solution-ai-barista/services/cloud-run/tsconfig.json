@@ -1,0 +1,24 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "module": "NodeNext",
+    "noImplicitReturns": true,
+    "outDir": "dist",
+    "rootDirs": ["src", "libs/shared"], 
+    "sourceMap": true,
+    "strict": true,
+    "target": "ESNext",
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "baseUrl": ".",
+    "moduleResolution": "nodenext",
+  },
+  "include": [
+    "src/**/*.ts",
+    "test/**/*.ts",
+    "generated-shared/dist/**/*.d.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

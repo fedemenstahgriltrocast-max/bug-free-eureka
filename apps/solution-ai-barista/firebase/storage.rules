@@ -1,0 +1,11 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Allow users to read and write their own media
+    match /users/{userId}/media/{file} {
+        allow read, write: if request.auth.uid == userId;
+    }
+    // Access to all other paths is denied by default
+  }
+}
